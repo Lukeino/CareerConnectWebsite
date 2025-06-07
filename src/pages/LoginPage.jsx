@@ -1,0 +1,167 @@
+import React, { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
+import { Mail, Lock, Briefcase } from 'lucide-react';
+import './LoginPage.css';
+
+const LoginPage = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  
+  const { login } = useAuth();
+  const { t } = useLanguage();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  const from = location.state?.from?.pathname || '/';
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const result = await login(formData.email, formData.password);
+
+      if (result.success) {
+        navigate(from, { replace: true });
+      } else {
+        setErrors({ submit: result.error });
+      }    } catch (error) {
+      setErrors({ submit: t('auth.loginFailed') });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (    <div className="login-page">
+      <div className="login-container">
+        <div className="login-header">
+          <div className="logo-section">
+            <Briefcase size={40} />
+            <h1>{t('auth.loginTitle')}</h1>
+          </div>
+          <p>CareerConnect</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label htmlFor="email">{t('auth.email')}</label>
+            <div className="input-group">
+              <Mail className="input-icon" size={18} />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className={errors.email ? 'error' : ''}
+                placeholder={t('auth.email')}
+                autoComplete="email"
+              />
+            </div>
+            {errors.email && <span className="error-message">{errors.email}</span>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">{t('auth.password')}</label>
+            <div className="input-group">
+              <Lock className="input-icon" size={18} />
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className={errors.password ? 'error' : ''}                placeholder={t('auth.password')}
+                autoComplete="current-password"
+              />
+            </div>
+            {errors.password && <span className="error-message">{errors.password}</span>}
+          </div>
+
+          <div className="form-options">
+            <label className="remember-me">
+              <input type="checkbox" />
+              <span>{t('common.rememberMe')}</span>
+            </label>
+            <Link to="/forgot-password" className="forgot-link">
+              {t('auth.forgotPassword')}
+            </Link>
+          </div>
+
+          {errors.submit && <div className="error-message submit-error">{errors.submit}</div>}
+
+          <button type="submit" disabled={loading} className="submit-btn">
+            {loading ? t('common.loading') : t('auth.loginButton')}
+          </button>
+
+          <div className="divider">
+            <span>o</span>
+          </div>
+
+          <p className="register-link">
+            {t('auth.registerLink')} <Link to="/register">{t('auth.registerButton')}</Link>
+          </p>
+
+          <div className="quick-signup">
+            <p>{t('homepage.getStarted')}:</p>
+            <div className="quick-buttons">
+              <Link to="/register?type=candidate" className="btn btn-outline">
+                {t('auth.candidate')}
+              </Link>
+              <Link to="/register?type=recruiter" className="btn btn-outline">
+                {t('auth.recruiter')}
+              </Link>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;

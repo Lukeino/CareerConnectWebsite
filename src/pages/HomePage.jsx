@@ -1,0 +1,210 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, MapPin, Briefcase, Users, Building2, TrendingUp } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
+import './HomePage.css';
+
+const HomePage = () => {
+  const { isAuthenticated, user } = useAuth();
+  const { t } = useLanguage();
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [location, setLocation] = useState('');
+  const [featuredJobs, setFeaturedJobs] = useState([]);
+
+  useEffect(() => {
+    // In a real app, this would fetch from your API
+    // For now, we'll use mock data
+    setFeaturedJobs([
+      {
+        id: 1,
+        title: 'Senior Frontend Developer',
+        company: 'TechCorp',
+        location: 'Milano, Italy',
+        salary: '€45,000 - €65,000',
+        type: 'Full-time',
+        posted: '2 days ago'
+      },
+      {
+        id: 2,
+        title: 'Product Manager',
+        company: 'InnovateLab',
+        location: 'Roma, Italy',
+        salary: '€50,000 - €70,000',
+        type: 'Full-time',
+        posted: '1 week ago'
+      },
+      {
+        id: 3,
+        title: 'UX/UI Designer',
+        company: 'DesignStudio',
+        location: 'Torino, Italy',
+        salary: '€35,000 - €50,000',
+        type: 'Full-time',
+        posted: '3 days ago'
+      }
+    ]);
+  }, []);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // Redirect to search results page with query parameters
+    const params = new URLSearchParams();
+    if (searchTerm) params.set('q', searchTerm);
+    if (location) params.set('location', location);
+    navigate(`/search?${params.toString()}`);
+  };
+
+  return (
+    <div className="homepage">
+      {/* Hero Section */}      <section className="hero">
+        <div className="hero-content">
+          <h1>{t('homepage.title')}</h1>
+          <p>{t('homepage.subtitle')}</p>
+          
+          <form onSubmit={handleSearch} className="search-form">
+            <div className="search-input-group">
+              <Search className="search-icon" size={20} />
+              <input
+                type="text"
+                placeholder={t('homepage.searchPlaceholder')}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="search-input"
+              />
+            </div>
+            <div className="search-input-group">
+              <MapPin className="search-icon" size={20} />              <input
+                type="text"
+                placeholder={t('pages.locationPlaceholder')}
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className="search-input"
+              /></div>
+            <button type="submit" className="search-btn">
+              {t('homepage.searchButton')}
+            </button>
+          </form>
+
+          {!isAuthenticated && (
+            <div className="cta-buttons">
+              <Link to="/register?type=candidate" className="btn btn-primary">
+                {t('homepage.getStarted')}
+              </Link>
+              <Link to="/register?type=recruiter" className="btn btn-outline">
+                {t('homepage.getStarted')}
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="stats">
+        <div className="stats-container">          <div className="stat-item">
+            <Briefcase className="stat-icon" size={32} />
+            <div className="stat-content">
+              <h3>10,000+</h3>
+              <p>{t('homepage.activeJobs')}</p>
+            </div>
+          </div>
+          <div className="stat-item">
+            <Users className="stat-icon" size={32} />
+            <div className="stat-content">
+              <h3>50,000+</h3>
+              <p>{t('homepage.jobSeekers')}</p>
+            </div>
+          </div>
+          <div className="stat-item">
+            <Building2 className="stat-icon" size={32} />
+            <div className="stat-content">
+              <h3>5,000+</h3>
+              <p>{t('homepage.companies')}</p>
+            </div>
+          </div>
+          <div className="stat-item">
+            <TrendingUp className="stat-icon" size={32} />
+            <div className="stat-content">
+              <h3>95%</h3>
+              <p>{t('homepage.successRate')}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Jobs */}      <section className="featured-jobs">
+        <div className="section-content">
+          <h2>{t('homepage.featuredJobs')}</h2>
+          <div className="jobs-grid">
+            {featuredJobs.map(job => (
+              <div key={job.id} className="job-card">
+                <div className="job-header">
+                  <h3>{job.title}</h3>
+                  <span className="job-type">{job.type}</span>
+                </div>
+                <div className="job-company">{job.company}</div>
+                <div className="job-location">
+                  <MapPin size={16} />
+                  {job.location}
+                </div>
+                <div className="job-salary">{job.salary}</div>
+                <div className="job-footer">
+                  <span className="job-posted">{job.posted}</span>
+                  <Link to={`/jobs/${job.id}`} className="apply-btn">
+                    {t('homepage.viewDetails')}
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="view-all">
+            <Link to="/jobs" className="btn btn-outline">
+              {t('homepage.viewAllJobs')}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* How it Works */}      <section className="how-it-works">
+        <div className="section-content">
+          <h2>{t('homepage.howItWorks')}</h2>
+          <div className="steps">
+            <div className="step">
+              <div className="step-number">1</div>
+              <h3>{t('homepage.createProfile')}</h3>
+              <p>{t('homepage.createProfileDesc')}</p>
+            </div>
+            <div className="step">
+              <div className="step-number">2</div>
+              <h3>{t('homepage.searchConnect')}</h3>
+              <p>{t('homepage.searchConnectDesc')}</p>
+            </div>
+            <div className="step">
+              <div className="step-number">3</div>
+              <h3>{t('homepage.applySucceed')}</h3>
+              <p>{t('homepage.applySucceedDesc')}</p>
+            </div>
+          </div>
+        </div>
+      </section>      {/* CTA Section */}
+      {!isAuthenticated && (
+        <section className="cta">
+          <div className="section-content">
+            <h2>{t('pages.readyNextStep')}</h2>
+            <p>{t('pages.joinThousands')}</p>
+            <div className="cta-buttons">
+              <Link to="/register?type=candidate" className="btn btn-primary">
+                {t('pages.lookingForJob')}
+              </Link>
+              <Link to="/register?type=recruiter" className="btn btn-outline">
+                {t('pages.hiringTalent')}
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+    </div>
+  );
+};
+
+export default HomePage;
