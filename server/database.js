@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 
 // Initialize database
-const dbPath = path.join(__dirname, '../database.sqlite');
+const dbPath = path.join(__dirname, 'db', 'database.sqlite');
 const db = new Database(dbPath);
 
 // Create tables

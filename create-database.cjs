@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 
 // Create database
-const dbPath = path.join(__dirname, 'src', 'database.sqlite');
+const dbPath = path.join(__dirname, 'server', 'db', 'database.sqlite');
 console.log('Creating database at:', dbPath);
 
 try {

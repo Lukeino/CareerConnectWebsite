@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);  const login = async (email, password) => {
     try {
-      const { userService } = await import('../services/hybridDatabase.js');
+      const { userService } = await import('../../server/hybridDatabase.js');
       const authenticatedUser = await userService.authenticateUser(email, password);
       
       setUser(authenticatedUser);
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     }
   };  const register = async (userData) => {
     try {
-      const { userService } = await import('../services/hybridDatabase.js');
+      const { userService } = await import('../../server/hybridDatabase.js');
       const newUser = await userService.createUser(userData);
       
       setUser(newUser);

@@ -8,7 +8,7 @@ const app = express();
 const PORT = 3001;
 
 // Initialize database
-const dbPath = path.join(__dirname, 'src', 'database.sqlite');
+const dbPath = path.join(__dirname, 'server', 'db', 'database.sqlite');
 console.log('Database path:', dbPath);
 const db = new Database(dbPath);
 
@@ -84,8 +84,17 @@ app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Server is running', dbPath });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+// Serve i file statici dal build React
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// Per tutte le richieste non gestite dalle API, restituisci index.html (React Router friendly)
+app.get(/^(?!\/api).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
   console.log(`📁 Database location: ${dbPath}`);
   console.log('✅ Ready to accept connections');
 });
+
