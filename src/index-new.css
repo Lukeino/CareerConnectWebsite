@@ -3,10 +3,9 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  
-  /* Professional color palette */
-  --primary-color: #0a66c2;
-  --primary-dark: #004182;
+    /* Professional color palette */
+  --primary-color: #0072b1;
+  --primary-dark: #005a8b;
   --secondary-color: #666;
   --success-color: #057642;
   --error-color: #d73027;

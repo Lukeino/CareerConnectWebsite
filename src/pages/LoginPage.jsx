@@ -87,11 +87,10 @@ const LoginPage = () => {
           <p>CareerConnect</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
+        <form onSubmit={handleSubmit} className="login-form">          <div className="form-group">
             <label htmlFor="email">{t('auth.email')}</label>
-            <div className="input-group">
-              <Mail className="input-icon" size={18} />
+            <div className="login-input-group">
+              <Mail className="login-input-icon" size={18} />
               <input
                 type="email"
                 id="email"
@@ -108,8 +107,8 @@ const LoginPage = () => {
 
           <div className="form-group">
             <label htmlFor="password">{t('auth.password')}</label>
-            <div className="input-group">
-              <Lock className="input-icon" size={18} />
+            <div className="login-input-group">
+              <Lock className="login-input-icon" size={18} />
               <input
                 type="password"
                 id="password"
@@ -137,27 +136,13 @@ const LoginPage = () => {
 
           <button type="submit" disabled={loading} className="submit-btn">
             {loading ? t('common.loading') : t('auth.loginButton')}
-          </button>
-
-          <div className="divider">
-            <span>o</span>
+          </button>          <div className="divider">
+            <span></span>
           </div>
 
           <p className="register-link">
             {t('auth.registerLink')} <Link to="/register">{t('auth.registerButton')}</Link>
           </p>
-
-          <div className="quick-signup">
-            <p>{t('homepage.getStarted')}:</p>
-            <div className="quick-buttons">
-              <Link to="/register?type=candidate" className="btn btn-outline">
-                {t('auth.candidate')}
-              </Link>
-              <Link to="/register?type=recruiter" className="btn btn-outline">
-                {t('auth.recruiter')}
-              </Link>
-            </div>
-          </div>
         </form>
       </div>
     </div>

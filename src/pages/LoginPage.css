@@ -30,7 +30,7 @@
 }
 
 .logo-section svg {
-  color: #0a66c2;
+  color: #0072b1;
 }
 
 .login-header h1 {
@@ -50,7 +50,7 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .form-group {
@@ -65,40 +65,44 @@
   margin-bottom: 8px;
 }
 
-.input-group {
+.login-input-group {
   position: relative;
 }
 
-.input-icon {
+.login-input-icon {
   position: absolute;
-  left: 16px;
+  left: 8px !important;
   top: 50%;
   transform: translateY(-50%);
   color: #666;
   z-index: 1;
+  pointer-events: none;
+  width: 18px !important;
+  height: 18px !important;
 }
 
-.input-group input {
+.login-input-group input {
   width: 100%;
-  padding: 16px 16px 16px 48px;
+  padding: 16px 16px 16px 36px !important;
   border: 1px solid #e6e6e6;
   border-radius: 8px;
   font-size: 16px;
   outline: none;
   transition: all 0.2s ease;
   background: white;
+  box-sizing: border-box;
 }
 
-.input-group input:focus {
-  border-color: #0a66c2;
-  box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1);
+.login-input-group input:focus {
+  border-color: #0072b1;
+  box-shadow: 0 0 0 3px rgba(0, 114, 177, 0.1);
 }
 
-.input-group input.error {
+.login-input-group input.error {
   border-color: #d73027;
 }
 
-.input-group input.error:focus {
+.login-input-group input.error:focus {
   box-shadow: 0 0 0 3px rgba(215, 48, 39, 0.1);
 }
 
@@ -121,11 +125,11 @@
 .remember-me input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: #0a66c2;
+  accent-color: #0072b1;
 }
 
 .forgot-link {
-  color: #0a66c2;
+  color: #0072b1;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
@@ -151,7 +155,7 @@
 }
 
 .submit-btn {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
   border: none;
   padding: 16px;
@@ -163,7 +167,7 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #004182;
+  background: #005a8b;
   transform: translateY(-1px);
 }
 
@@ -176,7 +180,7 @@
 .divider {
   position: relative;
   text-align: center;
-  margin: 8px 0;
+  margin: 12px 0 6px 0;
 }
 
 .divider::before {
@@ -203,51 +207,13 @@
 }
 
 .register-link a {
-  color: #0a66c2;
+  color: #0072b1;
   text-decoration: none;
   font-weight: 600;
 }
 
 .register-link a:hover {
   text-decoration: underline;
-}
-
-.quick-signup {
-  text-align: center;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 24px;
-  margin-top: 8px;
-}
-
-.quick-signup p {
-  color: #666;
-  font-size: 14px;
-  margin: 0 0 16px 0;
-}
-
-.quick-buttons {
-  display: flex;
-  gap: 12px;
-}
-
-.btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 14px;
-  text-align: center;
-  transition: all 0.2s ease;
-  border: 1px solid #e6e6e6;
-  color: #666;
-  background: white;
-}
-
-.btn:hover {
-  border-color: #0a66c2;
-  color: #0a66c2;
-  background: #f8fcff;
 }
 
 /* Demo Credentials */
@@ -260,7 +226,7 @@
 }
 
 .demo-credentials h4 {
-  color: #0a66c2;
+  color: #0072b1;
   margin: 0 0 12px 0;
   font-size: 14px;
   font-weight: 600;
@@ -295,15 +261,12 @@
   
   .login-header h1 {
     font-size: 24px;
-  }
-  
-  .input-group input {
-    padding: 14px 14px 14px 44px;
+  }  .login-input-group input {
+    padding: 14px 14px 14px 34px !important;
     font-size: 16px; /* Prevents zoom on iOS */
   }
-  
-  .quick-buttons {
-    flex-direction: column;
+    .login-input-icon {
+    left: 6px !important;
   }
 }
 

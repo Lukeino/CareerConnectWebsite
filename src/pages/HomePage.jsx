@@ -11,15 +11,16 @@ const HomePage = () => {
   const navigate = useNavigate();  const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
   const [featuredJobs, setFeaturedJobs] = useState([]);
+  const [allJobs, setAllJobs] = useState([]); // All active jobs for statistics
   const [companies, setCompanies] = useState([]);
   const [users, setUsers] = useState([]);
-  const [statsLoading, setStatsLoading] = useState(true);   // Fetch jobs from database/localStorage
+  const [statsLoading, setStatsLoading] = useState(true);// Fetch jobs from database/localStorage
     useEffect(() => {
       fetchJobs();
       fetchCompanies();
       fetchUsers();
     }, []);
-      const fetchJobs = async () => {
+    const fetchJobs = async () => {
     try {      // Fetch jobs from SQLite database via API
       const response = await fetch('http://localhost:3001/api/jobs');
       if (!response.ok) {
@@ -28,6 +29,7 @@ const HomePage = () => {
       
       const data = await response.json();
       const activeJobs = data.filter(job => job.status === 'active');
+      setAllJobs(activeJobs); // Store all active jobs for statistics
       setFeaturedJobs(activeJobs.slice(0, 6)); // Get first 6 active jobs for featured section
     } catch (error) {
       console.error('Error fetching jobs:', error);
@@ -80,10 +82,9 @@ const HomePage = () => {
       'internship': t('jobDetails.internship') || 'Stage'
     };
     return typeLabels[type] || type;
-  };
-  // Calculate real statistics
+  };  // Calculate real statistics
   const getStatistics = () => {
-    if (statsLoading || companies.length === 0) {
+    if (statsLoading) {
       return {
         totalJobs: 0,
         totalCompanies: 0,
@@ -92,16 +93,26 @@ const HomePage = () => {
       };
     }
 
-    const totalJobs = companies.reduce((total, company) => total + company.job_count, 0);
-    const totalCompanies = companies.length;
-    const citiesCovered = new Set(companies.flatMap(c => c.locations)).size;
+    // Calculate total jobs from all active jobs
+    const totalJobs = allJobs.length;
+    
+    // Calculate total companies that have active jobs
+    const companiesWithJobs = new Set(allJobs.map(job => job.company_name));
+    const totalCompanies = companiesWithJobs.size;
+    
+    // Calculate cities covered based on active job locations
+    const citiesWithJobs = new Set(allJobs.map(job => job.location).filter(location => location));
+    const citiesCovered = citiesWithJobs.size;
+    
+    // Calculate job seekers (candidates)
     const candidates = users.filter(user => user.user_type === 'candidate');
+    const jobSeekers = candidates.length;
 
     return {
       totalJobs: totalJobs.toLocaleString(),
       totalCompanies: totalCompanies.toLocaleString(),
       citiesCovered: citiesCovered.toLocaleString(),
-      jobSeekers: candidates.length.toLocaleString()
+      jobSeekers: jobSeekers.toLocaleString()
     };
   };
 
@@ -118,14 +129,69 @@ const HomePage = () => {
       const diffInDays = Math.floor(diffInHours / 24);
       return `${diffInDays} giorn${diffInDays === 1 ? 'o' : 'i'} fa`;
     }
-  };
-  const handleSearch = (e) => {
+  };  const handleSearch = (e) => {
     e.preventDefault();
     // Redirect to search results page with query parameters
     const params = new URLSearchParams();
     if (searchTerm) params.set('q', searchTerm);
     if (location) params.set('location', location);
     navigate(`/search?${params.toString()}`);
+  };
+
+  // DEBUG FUNCTION - Clear all database records
+  const handleDebugClearDatabase = async () => {
+    if (isAuthenticated) {
+      alert('Debug function not available when logged in');
+      return;
+    }
+
+    const confirmDelete = window.confirm(
+      '⚠️ WARNING: This will DELETE ALL RECORDS from the database!\n\n' +
+      'This includes:\n' +
+      '• All user accounts\n' +
+      '• All companies\n' +
+      '• All job postings\n\n' +
+      'This action CANNOT be undone!\n\nAre you absolutely sure?'
+    );
+
+    if (!confirmDelete) return;
+
+    const secondConfirm = window.confirm(
+      '🔥 FINAL WARNING 🔥\n\n' +
+      'You are about to permanently delete ALL DATA from the database.\n\n' +
+      'Type "YES" in the next prompt to confirm.'
+    );
+
+    if (!secondConfirm) return;
+
+    const finalConfirm = prompt('Type "YES" to confirm deletion of all database records:');
+    
+    if (finalConfirm !== 'YES') {
+      alert('Database clearing cancelled.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3001/api/debug/clear-database', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert('✅ Database cleared successfully! All records have been deleted.');
+        // Refresh the page to reflect changes
+        window.location.reload();
+      } else {
+        alert('❌ Error clearing database: ' + result.error);
+      }
+    } catch (error) {
+      console.error('Debug clear database error:', error);
+      alert('❌ Network error while clearing database: ' + error.message);
+    }
   };
 
   return (
@@ -153,24 +219,12 @@ const HomePage = () => {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 className="search-input"
-              /></div>
-            <button type="submit" className="search-btn">
+              /></div>            <button type="submit" className="search-btn">
               {t('homepage.searchButton')}
             </button>
           </form>
-
-          {!isAuthenticated && (
-            <div className="cta-buttons">
-              <Link to="/register?type=candidate" className="btn btn-primary">
-                {t('homepage.getStarted')}
-              </Link>
-              <Link to="/register?type=recruiter" className="btn btn-outline">
-                {t('homepage.getStarted')}
-              </Link>
-            </div>
-          )}
         </div>
-      </section>      {/* Stats Section */}
+      </section>{/* Stats Section */}
       <section className="stats">
         <div className="stats-container">
           <div className="stat-item">
@@ -271,8 +325,40 @@ const HomePage = () => {
                 {t('pages.hiringTalent')}
               </Link>
             </div>
-          </div>
-        </section>
+          </div>        </section>
+      )}
+
+      {/* DEBUG BUTTON - Only visible when NOT authenticated */}
+      {!isAuthenticated && (
+        <div 
+          style={{
+            position: 'fixed',
+            bottom: '10px',
+            right: '10px',
+            zIndex: 9999
+          }}
+        >
+          <button
+            onClick={handleDebugClearDatabase}
+            style={{
+              width: '20px',
+              height: '20px',
+              fontSize: '10px',
+              backgroundColor: '#ff4444',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              opacity: 0.3,
+              transition: 'opacity 0.3s ease'
+            }}
+            onMouseEnter={(e) => e.target.style.opacity = '1'}
+            onMouseLeave={(e) => e.target.style.opacity = '0.3'}
+            title="DEBUG: Clear Database"
+          >
+            🗑️
+          </button>
+        </div>
       )}
     </div>
   );

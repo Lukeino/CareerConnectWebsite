@@ -368,6 +368,53 @@ app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Server is running', dbPath });
 });
 
+// DEBUG ENDPOINT - Clear all database tables (DANGEROUS!)
+app.post('/api/debug/clear-database', (req, res) => {  try {
+    console.log('🔥 DEBUG: Clearing all database tables...');
+    
+    // Disable foreign key constraints temporarily
+    db.pragma('foreign_keys = OFF');
+    
+    // First, check what tables exist
+    const tables = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").all();
+    console.log('📋 Found tables:', tables.map(t => t.name));
+      // Delete all records from existing tables
+    tables.forEach(table => {
+      try {
+        const result = db.prepare(`DELETE FROM [${table.name}]`).run();
+        console.log(`🗑️ Cleared ${result.changes} records from ${table.name}`);
+      } catch (tableError) {
+        console.error(`❌ Error clearing table ${table.name}:`, tableError.message);
+      }
+    });
+    
+    // Reset auto-increment counters for the tables we cleared
+    const tableNames = tables.map(t => `'${t.name}'`).join(', ');
+    if (tableNames) {
+      db.prepare(`DELETE FROM sqlite_sequence WHERE name IN (${tableNames})`).run();
+      console.log('🔄 Reset auto-increment counters');
+    }
+    
+    // Re-enable foreign key constraints
+    db.pragma('foreign_keys = ON');
+    
+    console.log('✅ DEBUG: All database tables cleared successfully');
+    res.json({ 
+      success: true, 
+      message: 'All database tables cleared successfully',
+      clearedTables: tables.map(t => t.name),
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('❌ DEBUG: Error clearing database:', error.message);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to clear database',
+      details: error.message 
+    });
+  }
+});
+
 // Serve i file statici dal build React
 app.use(express.static(path.join(__dirname, 'dist')));
 

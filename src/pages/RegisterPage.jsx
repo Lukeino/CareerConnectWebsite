@@ -19,7 +19,7 @@ const RegisterPage = () => {
     company: '',
     userType: initialUserType
   });
-    const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   
   const { register } = useAuth();
@@ -114,8 +114,7 @@ const RegisterPage = () => {
         </div>
 
         {/* User Type Selection */}
-        <div className="user-type-selection">
-          <label className={`user-type-option ${formData.userType === 'candidate' ? 'selected' : ''}`}>
+        <div className="user-type-selection">          <label className={`user-type-option ${formData.userType === 'candidate' ? 'selected' : ''}`} data-type="candidate">
             <input
               type="radio"
               name="userType"
@@ -129,7 +128,7 @@ const RegisterPage = () => {
             </div>
           </label>
           
-          <label className={`user-type-option ${formData.userType === 'recruiter' ? 'selected' : ''}`}>
+          <label className={`user-type-option ${formData.userType === 'recruiter' ? 'selected' : ''}`} data-type="recruiter">
             <input
               type="radio"
               name="userType"
@@ -149,12 +148,13 @@ const RegisterPage = () => {
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="firstName">{t('auth.firstName')}</label>
-              <div className="input-group">
-                <User className="input-icon" size={18} />
+              <div className="register-input-group">
+                <User className="register-input-icon" size={18} />
                 <input
                   type="text"
                   id="firstName"
-                  name="firstName"                  value={formData.firstName}
+                  name="firstName"
+                  value={formData.firstName}
                   onChange={handleInputChange}
                   className={errors.firstName ? 'error' : ''}
                   placeholder={t('auth.firstName')}
@@ -165,8 +165,8 @@ const RegisterPage = () => {
 
             <div className="form-group">
               <label htmlFor="lastName">{t('auth.lastName')}</label>
-              <div className="input-group">
-                <UserCheck className="input-icon" size={18} />
+              <div className="register-input-group">
+                <UserCheck className="register-input-icon" size={18} />
                 <input
                   type="text"
                   id="lastName"
@@ -183,8 +183,8 @@ const RegisterPage = () => {
 
           <div className="form-group">
             <label htmlFor="email">{t('auth.email')}</label>
-            <div className="input-group">
-              <Mail className="input-icon" size={18} />
+            <div className="register-input-group">
+              <Mail className="register-input-icon" size={18} />
               <input
                 type="email"
                 id="email"
@@ -199,8 +199,8 @@ const RegisterPage = () => {
           </div>          <div className="form-row">
             <div className="form-group">
               <label htmlFor="password">{t('auth.password')}</label>
-              <div className="input-group">
-                <Lock className="input-icon" size={18} />
+              <div className="register-input-group">
+                <Lock className="register-input-icon" size={18} />
                 <input
                   type="password"
                   id="password"
@@ -216,8 +216,8 @@ const RegisterPage = () => {
 
             <div className="form-group">
               <label htmlFor="confirmPassword">{t('auth.confirmPassword')}</label>
-              <div className="input-group">
-                <Lock className="input-icon" size={18} />
+              <div className="register-input-group">
+                <Lock className="register-input-icon" size={18} />
                 <input
                   type="password"
                   id="confirmPassword"
@@ -232,8 +232,8 @@ const RegisterPage = () => {
             </div>
           </div>          <div className="form-group">
             <label htmlFor="phone">{t('auth.phoneOptional')}</label>
-            <div className="input-group">
-              <Phone className="input-icon" size={18} />
+            <div className="register-input-group">
+              <Phone className="register-input-icon" size={18} />
               <input
                 type="tel"
                 id="phone"
@@ -246,8 +246,8 @@ const RegisterPage = () => {
           </div>          {formData.userType === 'recruiter' && (
             <div className="form-group">
               <label htmlFor="company">{t('auth.companyName')}</label>
-              <div className="input-group">
-                <Building className="input-icon" size={18} />
+              <div className="register-input-group">
+                <Building className="register-input-icon" size={18} />
                 <input
                   type="text"
                   id="company"

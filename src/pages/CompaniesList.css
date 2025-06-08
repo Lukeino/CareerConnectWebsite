@@ -26,7 +26,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid #f3f3f3;
-  border-top: 3px solid #0a66c2;
+  border-top: 3px solid #0072b1;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
@@ -123,9 +123,9 @@
 .search-input:focus,
 .location-input:focus {
   outline: none;
-  border-color: #0a66c2;
+  border-color: #0072b1;
   background: white;
-  box-shadow: 0 0 0 2px rgba(10, 102, 194, 0.2);
+  box-shadow: 0 0 0 2px rgba(0, 114, 177, 0.2);
 }
 
 .sort-wrapper {
@@ -155,9 +155,9 @@
 
 .sort-select:focus {
   outline: none;
-  border-color: #0a66c2;
+  border-color: #0072b1;
   background: white;
-  box-shadow: 0 0 0 2px rgba(10, 102, 194, 0.2);
+  box-shadow: 0 0 0 2px rgba(0, 114, 177, 0.2);
 }
 
 .sort-select option {
@@ -168,8 +168,8 @@
 .clear-filters-btn {
   padding: 12px 20px;
   background: white;
-  border: 1px solid #0a66c2;
-  color: #0a66c2;
+  border: 1px solid #0072b1;
+  color: #0072b1;
   border-radius: 20px;
   cursor: pointer;
   font-weight: 600;
@@ -179,7 +179,7 @@
 }
 
 .clear-filters-btn:hover {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
 }
 
@@ -233,7 +233,7 @@
 
 .industry-count {
   background: #f3f2ef;
-  color: #0a66c2;
+  color: #0072b1;
   padding: 2px 8px;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -264,7 +264,7 @@
 .no-results-icon {
   margin-bottom: 24px;
   opacity: 0.5;
-  color: #0a66c2;
+  color: #0072b1;
 }
 
 .no-results h3 {
@@ -299,7 +299,7 @@
 
 .company-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-color: #0a66c2;
+  border-color: #0072b1;
 }
 
 .company-card-header {
@@ -312,7 +312,7 @@
 .company-logo {
   width: 56px;
   height: 56px;
-  background: linear-gradient(135deg, #0a66c2, #004182);
+  background: linear-gradient(135deg, #0072b1, #005a8b);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -342,7 +342,7 @@
 }
 
 .company-size {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
   padding: 2px 8px;
   border-radius: 4px;
@@ -356,7 +356,7 @@
 
 .job-count {
   font-weight: 500;
-  color: #0a66c2;
+  color: #0072b1;
 }
 
 .company-actions {
@@ -384,15 +384,15 @@
 }
 
 .save-btn:hover {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
-  border-color: #0a66c2;
+  border-color: #0072b1;
 }
 
 .view-btn:hover {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
-  border-color: #0a66c2;
+  border-color: #0072b1;
 }
 
 .view-company-btn {
@@ -410,9 +410,9 @@
 }
 
 .view-company-btn:hover {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
-  border-color: #0a66c2;
+  border-color: #0072b1;
 }
 
 .company-description {
@@ -441,12 +441,12 @@
 }
 
 .info-item svg {
-  color: #0a66c2;
+  color: #0072b1;
   flex-shrink: 0;
 }
 
 .website-link {
-  color: #0a66c2;
+  color: #0072b1;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -456,7 +456,7 @@
 }
 
 .website-link:hover {
-  color: #004182;
+  color: #005a8b;
   text-decoration: underline;
 }
 
@@ -505,25 +505,25 @@
 
 .btn-outline {
   background: transparent;
-  border: 1px solid #0a66c2;
-  color: #0a66c2;
+  border: 1px solid #0072b1;
+  color: #0072b1;
 }
 
 .btn-outline:hover {
-  background: rgba(10, 102, 194, 0.1);
-  border-color: #004182;
-  color: #004182;
+  background: rgba(0, 114, 177, 0.1);
+  border-color: #005a8b;
+  color: #005a8b;
 }
 
 .btn-primary {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
-  border: 1px solid #0a66c2;
+  border: 1px solid #0072b1;
 }
 
 .btn-primary:hover {
-  background: #004182;
-  border-color: #004182;
+  background: #005a8b;
+  border-color: #005a8b;
 }
 
 /* Stats Section */
@@ -550,7 +550,7 @@
   font-size: 2.5rem;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #0a66c2;
+  color: #0072b1;
 }
 
 .stat-label {

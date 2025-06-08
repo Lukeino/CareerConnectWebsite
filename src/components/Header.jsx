@@ -43,45 +43,46 @@ const Header = () => {
           <Link 
             to="/companies" 
             className={`nav-link ${isActive('/companies') ? 'active' : ''}`}
-          >
-            {t('header.companies')}
+          >          {t('header.companies')}
           </Link>
-          {/* Mostra il pulsante "Crea Offerta" solo per i reclutatori autenticati */}
-          {isAuthenticated && user?.user_type === 'recruiter' && (
-            <Link 
-              to="/create-job" 
-              className={`nav-link create-job-btn ${isActive('/create-job') ? 'active' : ''}`}
-            >
-              <Plus size={18} />
-              {t('header.createJob')}
-            </Link>
-          )}
         </nav>
 
-        <div className="language-selector">
-          <button 
-            className={`lang-btn ${currentLanguage === 'it' ? 'active' : ''}`}
-            onClick={() => changeLanguage('it')}
-          >
-            <Globe size={16} />
-            IT
-          </button>
-          <button 
-            className={`lang-btn ${currentLanguage === 'en' ? 'active' : ''}`}
-            onClick={() => changeLanguage('en')}
-          >
-            <Globe size={16} />
-            EN
-          </button>
-        </div>
+        <div className="header-right">
+          <div className="language-selector">
+            <button 
+              className={`lang-btn ${currentLanguage === 'it' ? 'active' : ''}`}
+              onClick={() => changeLanguage('it')}
+            >
+              <Globe size={16} />
+              IT
+            </button>
+            <button 
+              className={`lang-btn ${currentLanguage === 'en' ? 'active' : ''}`}
+              onClick={() => changeLanguage('en')}
+            >
+              <Globe size={16} />
+              EN
+            </button>
+          </div>
 
-        <div className="auth-section">
+          <div className="auth-section">
           {isAuthenticated ? (            <div className="user-menu">
+              {/* Pulsante "Crea Offerta" per i reclutatori - stile professionale */}
+              {user?.user_type === 'recruiter' && (
+                <Link
+                  to="/create-job" 
+                  className={`create-job-link ${isActive('/create-job') ? 'active' : ''}`}
+                >
+                  <Plus size={16} />
+                  <span>{t('header.createJob')}</span>
+                </Link>
+              )}
+              
               <div className="user-info">
                 <User size={20} />
                 <span>{user.first_name} {user.last_name}</span>
                 <span className="user-type">({user.user_type})</span>
-              </div>              <button onClick={handleLogout} className="logout-btn">
+              </div><button onClick={handleLogout} className="logout-btn">
                 <LogOut size={18} />
                 {t('header.logout')}
               </button>
@@ -96,8 +97,8 @@ const Header = () => {
                 <UserPlus size={16} />
                 {t('header.signup')}
               </Link>
-            </div>
-          )}
+            </div>            )}
+          </div>
         </div>
       </div>
     </header>

@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #0a66c2;
+  color: #a22c29;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
@@ -32,7 +32,7 @@
 }
 
 .back-btn:hover {
-  color: #004182;
+  color: #8b2320;
 }
 
 .page-header h1 {
@@ -81,7 +81,7 @@
 }
 
 .form-section h2 svg {
-  color: #0a66c2;
+  color: #a22c29;
 }
 
 .form-group {
@@ -100,7 +100,7 @@
 }
 
 .form-group label svg {
-  color: #0a66c2;
+  color: #a22c29;
   flex-shrink: 0;
 }
 
@@ -119,8 +119,8 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #0a66c2;
-  box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1);
+  border-color: #a22c29;
+  box-shadow: 0 0 0 3px rgba(162, 44, 41, 0.1);
 }
 
 .form-group input.error,
@@ -201,45 +201,24 @@
 
 .btn-outline {
   background: white;
-  color: #0a66c2;
-  border: 1px solid #0a66c2;
+  color: #a22c29;
+  border: 1px solid #a22c29;
 }
 
 .btn-outline:hover:not(:disabled) {
-  background: #f7f9fb;
+  background: #fdf6f6;
 }
 
 .btn-primary {
-  background: #0a66c2;
+  background: #a22c29;
   color: white;
-  border: 1px solid #0a66c2;
+  border: 1px solid #a22c29;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #004182;
-  border-color: #004182;
+  background: #8b2320;
+  border-color: #8b2320;
   transform: translateY(-1px);
-}
-
-/* Special styling for create job button in header */
-.create-job-btn {
-  background: #28a745 !important;
-  color: white !important;
-  border: 1px solid #28a745 !important;
-  padding: 8px 16px !important;
-  border-radius: 6px !important;
-  font-weight: 600 !important;
-}
-
-.create-job-btn:hover {
-  background: #218838 !important;
-  border-color: #218838 !important;
-  transform: translateY(-1px) !important;
-}
-
-.create-job-btn.active {
-  background: #1e7e34 !important;
-  border-color: #1e7e34 !important;
 }
 
 /* Responsive Design */

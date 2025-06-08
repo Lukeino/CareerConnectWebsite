@@ -17,19 +17,18 @@
   height: 64px;
 }
 
-.logo {
-  display: flex;
+.logo {  display: flex;
   align-items: center;
   gap: 12px;
   text-decoration: none;
-  color: #0a66c2;
+  color: #0072b1;
   font-size: 24px;
   font-weight: 700;
   transition: color 0.2s ease;
 }
 
 .logo:hover {
-  color: #004182;
+  color: #005a8b;
 }
 
 .nav {
@@ -49,12 +48,12 @@
 }
 
 .nav-link:hover {
-  color: #0a66c2;
+  color: #0072b1;
   background: #f3f6f8;
 }
 
 .nav-link.active {
-  color: #0a66c2;
+  color: #0072b1;
 }
 
 .nav-link.active::after {
@@ -65,35 +64,54 @@
   transform: translateX(-50%);
   width: 100%;
   height: 2px;
-  background: #0a66c2;
+  background: #0072b1;
 }
 
 /* Special styling for create job button */
-.nav-link.create-job-btn {
-  background: #28a745;
-  color: white;
-  border: 1px solid #28a745;
+.create-job-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   padding: 8px 16px;
-  border-radius: 6px;
+  background: #a22c29;
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: 14px;
   font-weight: 600;
   transition: all 0.2s ease;
+  border: 1px solid #a22c29;
+  margin-right: 12px;
 }
 
-.nav-link.create-job-btn:hover {
-  background: #218838;
-  border-color: #218838;
+.create-job-link:hover {
+  background: #8b2320;
+  border-color: #8b2320;
   color: white;
   transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(162, 44, 41, 0.3);
 }
 
-.nav-link.create-job-btn.active {
-  background: #1e7e34;
-  border-color: #1e7e34;
+.create-job-link.active {
+  background: #8b2320;
+  border-color: #8b2320;
   color: white;
 }
 
-.nav-link.create-job-btn.active::after {
-  display: none;
+.create-job-link svg {
+  flex-shrink: 0;
+}
+
+.create-job-link span {
+  white-space: nowrap;
+}
+
+/* Header right section */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
 }
 
 .language-selector {
@@ -121,24 +139,20 @@
 }
 
 .lang-btn:hover {
-  border-color: #0a66c2;
-  color: #0a66c2;
+  border-color: #0072b1;
+  color: #0072b1;
   background: #f3f6f8;
 }
 
 .lang-btn.active {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
-  border-color: #0a66c2;
+  border-color: #0072b1;
 }
 
 .lang-btn svg {
   width: 14px;
   height: 14px;
-}
-
-.auth-section {
-  margin-left: auto;
 }
 
 .auth-buttons {
@@ -183,18 +197,18 @@
 }
 
 .btn-outline {
-  color: #0a66c2;
-  border-color: #0a66c2;
+  color: #0072b1;
+  border-color: #0072b1;
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   position: relative;
 }
 
 .btn-outline:hover {
   background: linear-gradient(135deg, #f1f8ff 0%, #e6f3ff 100%);
-  border-color: #004182;
-  color: #004182;
+  border-color: #005a8b;
+  color: #005a8b;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(10, 102, 194, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 114, 177, 0.2);
 }
 
 .btn-outline:active {
@@ -202,17 +216,17 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #0a66c2 0%, #004182 100%);
+  background: linear-gradient(135deg, #0072b1 0%, #005a8b 100%);
   color: white;
-  border-color: #0a66c2;
-  box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3);
+  border-color: #0072b1;
+  box-shadow: 0 4px 12px rgba(0, 114, 177, 0.3);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #004182 0%, #003366 100%);
-  border-color: #003366;
+  background: linear-gradient(135deg, #005a8b 0%, #004973 100%);
+  border-color: #004973;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(10, 102, 194, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 114, 177, 0.4);
 }
 
 .btn-primary:active {
@@ -273,9 +287,17 @@
   .logo span {
     display: none;
   }
-  
-  .user-info span:not(.user-type) {
+    .user-info span:not(.user-type) {
     display: none;
+  }
+  
+  .create-job-link span {
+    display: none;
+  }
+  
+  .create-job-link {
+    padding: 8px 12px;
+    min-width: auto;
   }
     .auth-buttons {
     gap: 12px;

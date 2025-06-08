@@ -67,11 +67,11 @@
 }
 
 .search-input:focus {
-  border-color: #0a66c2;
+  border-color: #0072b1;
 }
 
 .search-btn {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
   border: none;
   padding: 16px 32px;
@@ -84,7 +84,7 @@
 }
 
 .search-btn:hover {
-  background: #004182;
+  background: #005a8b;
 }
 
 .cta-buttons {
@@ -117,7 +117,7 @@
 }
 
 .stat-icon {
-  color: #0a66c2;
+  color: #0072b1;
   flex-shrink: 0;
 }
 
@@ -171,8 +171,8 @@
 }
 
 .job-card:hover {
-  border-color: #0a66c2;
-  box-shadow: 0 4px 12px rgba(10, 102, 194, 0.1);
+  border-color: #0072b1;
+  box-shadow: 0 4px 12px rgba(0, 114, 177, 0.1);
   transform: translateY(-2px);
 }
 
@@ -193,7 +193,7 @@
 
 .job-type {
   background: #e7f3ff;
-  color: #0a66c2;
+  color: #0072b1;
   padding: 4px 12px;
   border-radius: 16px;
   font-size: 12px;
@@ -237,7 +237,7 @@
 }
 
 .apply-btn {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
   padding: 8px 16px;
   border-radius: 4px;
@@ -248,7 +248,7 @@
 }
 
 .apply-btn:hover {
-  background: #004182;
+  background: #005a8b;
 }
 
 .view-all {
@@ -275,7 +275,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
   display: flex;
   align-items: center;
@@ -300,7 +300,7 @@
 
 /* CTA Section */
 .cta {
-  background: linear-gradient(135deg, #004182 0%, #0a66c2 100%);
+  background: linear-gradient(135deg, #005a8b 0%, #0072b1 100%);
   color: white;
   padding: 80px 0;
   text-align: center;
@@ -334,35 +334,53 @@
 }
 
 .btn-primary {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
-  border-color: #0a66c2;
+  border-color: #0072b1;
 }
 
 .btn-primary:hover {
-  background: #004182;
-  border-color: #004182;
+  background: #005a8b;
+  border-color: #005a8b;
 }
 
 .btn-outline {
-  color: #0a66c2;
-  border-color: #0a66c2;
+  color: #0072b1;
+  border-color: #0072b1;
   background: transparent;
 }
 
 .btn-outline:hover {
-  background: #0a66c2;
+  background: #0072b1;
   color: white;
+}
+
+.cta .btn-primary {
+  background: white !important;
+  color: #0072b1 !important;
+  border-color: white !important;
+}
+
+.cta .btn-primary:hover {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #005a8b !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: none !important;
 }
 
 .cta .btn-outline {
-  color: white;
-  border-color: white;
+  background: white !important;
+  color: #a22c29 !important;
+  border-color: white !important;
 }
 
 .cta .btn-outline:hover {
-  background: white;
-  color: #0a66c2;
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #8b2320 !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: none !important;
 }
 
 /* Responsive Design */
