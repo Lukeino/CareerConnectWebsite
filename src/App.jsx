@@ -9,7 +9,10 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import JobDetailsPage from './pages/JobDetailsPage';
+import JobList from './pages/JobList';
 import SearchResultsPage from './pages/SearchResultsPage';
+import CompaniesList from './pages/CompaniesList';
+import CreateJobPage from './pages/CreateJobPage';
 import './App.css';
 
 // Protected Route component
@@ -53,12 +56,15 @@ const AppContent = () => {
                 <RegisterPage />
               </PublicRoute>
             } 
-          />
-          {/* Placeholder routes for future features */}
-          <Route path="/search" element={<SearchResultsPage />} />
-          <Route path="/jobs" element={<PlaceholderPage messageKey="pages.jobsComingSoon" />} />
+          />          {/* Placeholder routes for future features */}          <Route path="/search" element={<SearchResultsPage />} />
+          <Route path="/jobs" element={<JobList />} />
           <Route path="/jobs/:id" element={<JobDetailsPage />} />
-          <Route path="/companies" element={<PlaceholderPage messageKey="pages.companiesComingSoon" />} />
+          <Route path="/create-job" element={
+            <ProtectedRoute>
+              <CreateJobPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/companies" element={<CompaniesList />} />
           <Route path="/profile" element={
             <ProtectedRoute>
               <PlaceholderPage messageKey="pages.profileComingSoon" />

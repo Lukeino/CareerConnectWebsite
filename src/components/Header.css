@@ -68,6 +68,34 @@
   background: #0a66c2;
 }
 
+/* Special styling for create job button */
+.nav-link.create-job-btn {
+  background: #28a745;
+  color: white;
+  border: 1px solid #28a745;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.nav-link.create-job-btn:hover {
+  background: #218838;
+  border-color: #218838;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.nav-link.create-job-btn.active {
+  background: #1e7e34;
+  border-color: #1e7e34;
+  color: white;
+}
+
+.nav-link.create-job-btn.active::after {
+  display: none;
+}
+
 .language-selector {
   display: flex;
   gap: 4px;

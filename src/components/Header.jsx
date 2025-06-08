@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
-import { User, LogOut, Briefcase, LogIn, UserPlus, Globe } from 'lucide-react';
+import { User, LogOut, Briefcase, LogIn, UserPlus, Globe, Plus } from 'lucide-react';
 import './Header.css';
 
 const Header = () => {
@@ -10,6 +10,9 @@ const Header = () => {
   const { t, currentLanguage, changeLanguage } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Debug log per vedere quando l'user cambia
+  console.log('🔍 Header render - User state:', user);
 
   const handleLogout = () => {
     logout();
@@ -43,6 +46,16 @@ const Header = () => {
           >
             {t('header.companies')}
           </Link>
+          {/* Mostra il pulsante "Crea Offerta" solo per i reclutatori autenticati */}
+          {isAuthenticated && user?.user_type === 'recruiter' && (
+            <Link 
+              to="/create-job" 
+              className={`nav-link create-job-btn ${isActive('/create-job') ? 'active' : ''}`}
+            >
+              <Plus size={18} />
+              {t('header.createJob')}
+            </Link>
+          )}
         </nav>
 
         <div className="language-selector">

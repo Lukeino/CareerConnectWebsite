@@ -1,6 +1,5 @@
-export const translations = {
+const translations = {
   it: {
-    // Header
     header: {
       home: "Home",
       jobs: "Lavori",
@@ -8,9 +7,9 @@ export const translations = {
       login: "Accedi",
       signup: "Registrati",
       logout: "Esci",
-      profile: "Profilo"
+      profile: "Profilo",
+      createJob: "Crea Offerta"
     },
-      // Homepage
     homepage: {
       title: "Trova il Lavoro dei Tuoi Sogni",
       subtitle: "Connetti talenti e opportunità. Scopri migliaia di posizioni lavorative o trova il candidato perfetto per la tua azienda.",
@@ -40,7 +39,6 @@ export const translations = {
       applySucceed: "Candidati e Ottieni Successo",
       applySucceedDesc: "Invia candidature o offerte di lavoro e inizia la tua carriera ideale."
     },
-      // Auth
     auth: {
       loginTitle: "Accedi al Tuo Account",
       registerTitle: "Crea il Tuo Account",
@@ -61,7 +59,8 @@ export const translations = {
       loginError: "Errore durante l'accesso",
       registerError: "Errore durante la registrazione",
       invalidCredentials: "Credenziali non valide",
-      emailRequired: "L'email è obbligatoria",      passwordRequired: "La password è obbligatoria",
+      emailRequired: "L'email è obbligatoria",
+      passwordRequired: "La password è obbligatoria",
       passwordsNotMatch: "Le password non coincidono",
       forgotPassword: "Password dimenticata?",
       phoneNumber: "Numero di Telefono",
@@ -75,13 +74,14 @@ export const translations = {
       firstNameRequired: "Il nome è obbligatorio",
       lastNameRequired: "Il cognome è obbligatorio",
       emailInvalid: "Email non valida",
-      passwordTooShort: "La password deve essere di almeno 6 caratteri",      companyRequired: "Il nome dell'azienda è obbligatorio per i recruiter",
+      passwordTooShort: "La password deve essere di almeno 6 caratteri",
+      companyRequired: "Il nome dell'azienda è obbligatorio per i recruiter",
       registrationFailed: "Registrazione fallita. Riprova.",
       loginFailed: "Accesso fallito. Riprova.",
       creatingAccount: "Creazione account...",
       createAccount: "Crea Account",
       alreadyHaveAccount: "Hai già un account?"
-    },    // Common
+    },
     common: {
       loading: "Caricamento...",
       loadingApp: "Caricamento CareerConnect...",
@@ -96,10 +96,11 @@ export const translations = {
       next: "Avanti",
       previous: "Precedente",
       search: "Cerca",
-      filter: "Filtra",      sort: "Ordina",
+      filter: "Filtra",
+      sort: "Ordina",
       noResults: "Nessun risultato trovato",
       rememberMe: "Ricordami"
-    },    // Pages
+    },
     pages: {
       jobsComingSoon: "Pagina Lavori in arrivo...",
       companiesComingSoon: "Pagina Aziende in arrivo...",
@@ -110,8 +111,6 @@ export const translations = {
       hiringTalent: "Sto Assumendo Talenti",
       locationPlaceholder: "Città o località"
     },
-    
-    // Search Results
     searchResults: {
       title: "Risultati della Ricerca",
       jobsFound: "lavori trovati",
@@ -128,7 +127,6 @@ export const translations = {
       noResultsDesc: "Prova a modificare i criteri di ricerca o i filtri.",
       modifySearch: "Modifica la ricerca"
     },
-      // Job Details
     jobDetails: {
       jobDescription: "Descrizione del Lavoro",
       requirements: "Requisiti",
@@ -153,113 +151,10 @@ export const translations = {
       website: "Sito Web",
       employees: "dipendenti",
       applyNote: "Assicurati che il tuo profilo sia completo prima di candidarti.",
-      keyResponsibilities: "Responsabilità Principali:",
-      // Mock data translations
-      jobs: {
-        1: {
-          title: "Sviluppatore Frontend Senior",
-          company: "TechCorp",
-          description: `Stiamo cercando uno Sviluppatore Frontend Senior di talento per unirsi al nostro team dinamico. Sarai responsabile dello sviluppo e manutenzione di applicazioni web utilizzando tecnologie moderne come React, TypeScript e Next.js.
-
-Responsabilità principali:
-• Sviluppare applicazioni web responsive e user-friendly
-• Collaborare con i designer UX/UI per implementare i design
-• Ottimizzare le applicazioni per massima velocità e scalabilità
-• Scrivere codice pulito e manutenibile seguendo le best practices
-• Partecipare a code review e riunioni di team
-• Rimanere aggiornato sulle ultime tecnologie frontend`,
-          requirements: [
-            "5+ anni di esperienza nello sviluppo frontend",
-            "Conoscenza esperta di React e TypeScript",
-            "Esperienza con Next.js e strumenti di build moderni",
-            "Forte comprensione di CSS, HTML5 e design responsive",
-            "Conoscenza di state management (Redux, Zustand)",
-            "Familiarità con Git e pratiche di sviluppo agile",
-            "Eccellenti capacità di problem-solving",
-            "Fluente in italiano e inglese"
-          ],
-          benefits: [
-            "Stipendio competitivo e bonus di performance",
-            "Assicurazione sanitaria e dentale",
-            "Orari flessibili e opzioni di lavoro remoto",
-            "Budget per sviluppo professionale",
-            "Ufficio moderno con attrezzature all'avanguardia",
-            "Eventi di team building e ritiri aziendali",
-            "25 giorni di ferie pagate",
-            "Stock option per posizioni senior"
-          ],
-          companyInfo: {
-            description: "TechCorp è un'azienda tecnologica leader specializzata in soluzioni software innovative. Serviamo clienti in tutta Europa e ci impegniamo a creare prodotti all'avanguardia che fanno la differenza."
-          }
-        },
-        2: {
-          title: "Product Manager",
-          company: "InnovateLab",
-          description: `Unisciti al nostro team di prodotto come Product Manager e aiuta a plasmare il futuro dei nostri prodotti innovativi. Lavorerai a stretto contatto con i team di engineering, design e business per offrire esperienze utente eccezionali.
-
-Responsabilità principali:
-• Definire strategia e roadmap del prodotto
-• Raccogliere e analizzare feedback degli utenti e ricerche di mercato
-• Lavorare con i team di design e engineering per sviluppare funzionalità
-• Definire e tracciare metriche chiave del prodotto
-• Collaborare con stakeholder in tutta l'organizzazione`,
-          requirements: [
-            "3+ anni di esperienza nel product management",
-            "Forte mentalità analitica e data-driven",
-            "Esperienza con ricerca utenti e test di usabilità",
-            "Conoscenza delle metodologie di sviluppo agile",
-            "Eccellenti capacità di comunicazione e leadership",
-            "Laurea in Business, Ingegneria o campo correlato"
-          ],
-          benefits: [
-            "Pacchetto salariale competitivo",
-            "Benefici per salute e benessere",
-            "Accordi di lavoro flessibili",
-            "Opportunità di apprendimento e sviluppo",
-            "Stock option",
-            "Ambiente d'ufficio moderno"
-          ],
-          companyInfo: {
-            description: "InnovateLab è una startup in rapida crescita focalizzata sulla creazione di soluzioni innovative per l'era digitale."
-          }
-        },
-        3: {
-          title: "UX/UI Designer",
-          company: "DesignStudio",
-          description: `Stiamo cercando un UX/UI Designer creativo per unirsi al nostro team di design. Sarai responsabile della creazione di interfacce utente belle e intuitive per i nostri prodotti digitali.
-
-Responsabilità principali:
-• Progettare interfacce utente per applicazioni web e mobile
-• Creare wireframe, prototipi e design ad alta fedeltà
-• Condurre ricerche utenti e test di usabilità
-• Collaborare con i team di prodotto e engineering
-• Mantenere ed evolvere i design system`,
-          requirements: [
-            "3+ anni di esperienza in UX/UI design",
-            "Competenza in Figma, Sketch o Adobe Creative Suite",
-            "Portfolio forte che mostra design web e mobile",
-            "Comprensione dei principi di design centrato sull'utente",
-            "Conoscenza di HTML/CSS è un plus",
-            "Eccellenti capacità di design visivo"
-          ],
-          benefits: [
-            "Libertà creativa e autonomia",
-            "Strumenti e attrezzature di design moderne",
-            "Orari di lavoro flessibili",
-            "Budget per sviluppo professionale",
-            "Ambiente di team collaborativo",
-            "Assicurazione sanitaria"
-          ],
-          companyInfo: {
-            description: "DesignStudio è un'agenzia creativa specializzata in design digitale e branding per aziende innovative."
-          }
-        }
-      }
+      keyResponsibilities: "Responsabilità Principali:"
     }
   },
-  
   en: {
-    // Header
     header: {
       home: "Home",
       jobs: "Jobs",
@@ -267,9 +162,9 @@ Responsabilità principali:
       login: "Login",
       signup: "Sign Up",
       logout: "Logout",
-      profile: "Profile"
+      profile: "Profile",
+      createJob: "Create Job"
     },
-      // Homepage
     homepage: {
       title: "Find Your Dream Job",
       subtitle: "Connect talent with opportunity. Discover thousands of job positions or find the perfect candidate for your company.",
@@ -299,8 +194,6 @@ Responsabilità principali:
       applySucceed: "Apply & Succeed",
       applySucceedDesc: "Submit applications or job offers and start your ideal career journey."
     },
-    
-    // Auth
     auth: {
       loginTitle: "Sign In to Your Account",
       registerTitle: "Create Your Account",
@@ -321,7 +214,8 @@ Responsabilità principali:
       loginError: "Error during login",
       registerError: "Error during registration",
       invalidCredentials: "Invalid credentials",
-      emailRequired: "Email is required",      passwordRequired: "Password is required",
+      emailRequired: "Email is required",
+      passwordRequired: "Password is required",
       passwordsNotMatch: "Passwords do not match",
       phoneNumber: "Phone Number",
       phoneOptional: "Phone Number (Optional)",
@@ -334,13 +228,14 @@ Responsabilità principali:
       firstNameRequired: "First name is required",
       lastNameRequired: "Last name is required",
       emailInvalid: "Email is invalid",
-      passwordTooShort: "Password must be at least 6 characters",      companyRequired: "Company name is required for recruiters",
+      passwordTooShort: "Password must be at least 6 characters",
+      companyRequired: "Company name is required for recruiters",
       registrationFailed: "Registration failed. Please try again.",
       loginFailed: "Login failed. Please try again.",
       creatingAccount: "Creating Account...",
       createAccount: "Create Account",
       alreadyHaveAccount: "Already have an account?"
-    },    // Common
+    },
     common: {
       loading: "Loading...",
       loadingApp: "Loading CareerConnect...",
@@ -355,10 +250,11 @@ Responsabilità principali:
       next: "Next",
       previous: "Previous",
       search: "Search",
-      filter: "Filter",      sort: "Sort",
+      filter: "Filter",
+      sort: "Sort",
       noResults: "No results found",
       rememberMe: "Remember me"
-    },    // Pages
+    },
     pages: {
       jobsComingSoon: "Jobs page coming soon...",
       companiesComingSoon: "Companies page coming soon...",
@@ -369,8 +265,6 @@ Responsabilità principali:
       hiringTalent: "I'm Hiring Talent",
       locationPlaceholder: "City or location"
     },
-    
-    // Search Results
     searchResults: {
       title: "Search Results",
       jobsFound: "jobs found",
@@ -387,7 +281,6 @@ Responsabilità principali:
       noResultsDesc: "Try modifying your search criteria or filters.",
       modifySearch: "Modify search"
     },
-      // Job Details
     jobDetails: {
       jobDescription: "Job Description",
       requirements: "Requirements",
@@ -410,110 +303,10 @@ Responsabilità principali:
       companySize: "Size",
       industry: "Industry",
       website: "Website",
-      employees: "employees",
-      applyNote: "Make sure your profile is complete before applying.",
-      keyResponsibilities: "Key Responsibilities:",
-      // Mock data translations
-      jobs: {
-        1: {
-          title: "Senior Frontend Developer",
-          company: "TechCorp",
-          description: `We are looking for a talented Senior Frontend Developer to join our dynamic team. You will be responsible for developing and maintaining web applications using modern technologies like React, TypeScript, and Next.js.
-
-Key responsibilities:
-• Develop responsive and user-friendly web applications
-• Collaborate with UX/UI designers to implement designs
-• Optimize applications for maximum speed and scalability
-• Write clean, maintainable code following best practices
-• Participate in code reviews and team meetings
-• Stay up-to-date with latest frontend technologies`,
-          requirements: [
-            "5+ years of experience in frontend development",
-            "Expert knowledge of React and TypeScript",
-            "Experience with Next.js and modern build tools",
-            "Strong understanding of CSS, HTML5, and responsive design",
-            "Knowledge of state management (Redux, Zustand)",
-            "Familiarity with Git and agile development practices",
-            "Excellent problem-solving skills",
-            "Fluent in Italian and English"
-          ],
-          benefits: [
-            "Competitive salary and performance bonuses",
-            "Health insurance and dental coverage",
-            "Flexible working hours and remote work options",
-            "Professional development budget",
-            "Modern office with latest equipment",
-            "Team building events and company retreats",
-            "25 days paid vacation",
-            "Stock options for senior positions"
-          ],
-          companyInfo: {
-            description: "TechCorp is a leading technology company specializing in innovative software solutions. We serve clients across Europe and are committed to creating cutting-edge products that make a difference."
-          }
-        },
-        2: {
-          title: "Product Manager",
-          company: "InnovateLab",
-          description: `Join our product team as a Product Manager and help shape the future of our innovative products. You'll work closely with engineering, design, and business teams to deliver exceptional user experiences.
-
-Key responsibilities:
-• Define product strategy and roadmap
-• Gather and analyze user feedback and market research
-• Work with design and engineering teams to deliver features
-• Define and track key product metrics
-• Collaborate with stakeholders across the organization`,
-          requirements: [
-            "3+ years of product management experience",
-            "Strong analytical and data-driven mindset",
-            "Experience with user research and usability testing",
-            "Knowledge of agile development methodologies",
-            "Excellent communication and leadership skills",
-            "University degree in Business, Engineering, or related field"
-          ],
-          benefits: [
-            "Competitive salary package",
-            "Health and wellness benefits",
-            "Flexible work arrangements",
-            "Learning and development opportunities",
-            "Stock options",
-            "Modern office environment"
-          ],
-          companyInfo: {
-            description: "InnovateLab is a fast-growing startup focused on creating innovative solutions for the digital age."
-          }
-        },
-        3: {
-          title: "UX/UI Designer",
-          company: "DesignStudio",
-          description: `We're seeking a creative UX/UI Designer to join our design team. You'll be responsible for creating beautiful and intuitive user interfaces for our digital products.
-
-Key responsibilities:
-• Design user interfaces for web and mobile applications
-• Create wireframes, prototypes, and high-fidelity designs
-• Conduct user research and usability testing
-• Collaborate with product and engineering teams
-• Maintain and evolve design systems`,
-          requirements: [
-            "3+ years of UX/UI design experience",
-            "Proficiency in Figma, Sketch, or Adobe Creative Suite",
-            "Strong portfolio showcasing web and mobile designs",
-            "Understanding of user-centered design principles",
-            "Knowledge of HTML/CSS is a plus",
-            "Excellent visual design skills"
-          ],
-          benefits: [
-            "Creative freedom and autonomy",
-            "Modern design tools and equipment",
-            "Flexible working hours",
-            "Professional development budget",
-            "Collaborative team environment",
-            "Health insurance"
-          ],
-          companyInfo: {
-            description: "DesignStudio is a creative agency specializing in digital design and branding for innovative companies."
-          }
-        }
-      }
+      employees: "employees",      applyNote: "Make sure your profile is complete before applying.",
+      keyResponsibilities: "Key Responsibilities:"
     }
   }
 };
+
+export { translations };

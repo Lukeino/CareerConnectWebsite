@@ -14,84 +14,33 @@ const SearchResultsPage = () => {
   const [location, setLocation] = useState(searchParams.get('location') || '');
   const [selectedJobType, setSelectedJobType] = useState('');
   const [selectedSalaryRange, setSelectedSalaryRange] = useState('');
-  const [showFilters, setShowFilters] = useState(false);
-
-  // Mock job data - in a real app this would come from your API
-  const allJobs = [
-    {
-      id: 1,
-      title: 'Senior Frontend Developer',
-      company: 'TechCorp',
-      location: 'Milano, Italy',
-      salary: '€45,000 - €65,000',
-      type: 'full-time',
-      posted: '2 days ago',
-      description: 'Sviluppatore Frontend Senior con esperienza in React'
-    },
-    {
-      id: 2,
-      title: 'Product Manager',
-      company: 'InnovateLab',
-      location: 'Roma, Italy',
-      salary: '€50,000 - €70,000',
-      type: 'full-time',
-      posted: '1 week ago',
-      description: 'Product Manager per gestire il team di sviluppo prodotto'
-    },
-    {
-      id: 3,
-      title: 'UX/UI Designer',
-      company: 'DesignStudio',
-      location: 'Torino, Italy',
-      salary: '€35,000 - €50,000',
-      type: 'full-time',
-      posted: '3 days ago',
-      description: 'Designer UX/UI per creare interfacce innovative'
-    },
-    {
-      id: 4,
-      title: 'Backend Developer',
-      company: 'DataTech',
-      location: 'Milano, Italy',
-      salary: '€40,000 - €60,000',
-      type: 'full-time',
-      posted: '5 days ago',
-      description: 'Sviluppatore Backend con esperienza in Node.js'
-    },
-    {
-      id: 5,
-      title: 'Marketing Specialist',
-      company: 'CreativeAgency',
-      location: 'Roma, Italy',
-      salary: '€30,000 - €45,000',
-      type: 'part-time',
-      posted: '1 week ago',
-      description: 'Specialista Marketing per campagne digitali'
-    },
-    {
-      id: 6,
-      title: 'Data Scientist',
-      company: 'AI Solutions',
-      location: 'Bologna, Italy',
-      salary: '€55,000 - €75,000',
-      type: 'full-time',
-      posted: '3 days ago',
-      description: 'Data Scientist per analisi avanzate e machine learning'
+  const [showFilters, setShowFilters] = useState(false);  // Fetch jobs from database
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:3001/api/jobs');
+      if (!response.ok) {
+        throw new Error('Failed to fetch jobs');
+      }
+      
+      const data = await response.json();
+      const activeJobs = data.filter(job => job.status === 'active');
+      setJobs(activeJobs);
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+      setJobs([]);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setJobs(allJobs);
-      setLoading(false);
-    }, 500);
+    fetchJobs();
   }, []);
 
   useEffect(() => {
     filterJobs();
   }, [jobs, searchTerm, location, selectedJobType, selectedSalaryRange]);
-
   const filterJobs = () => {
     let filtered = [...jobs];
 
@@ -99,7 +48,7 @@ const SearchResultsPage = () => {
     if (searchTerm) {
       filtered = filtered.filter(job =>
         job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
@@ -113,16 +62,21 @@ const SearchResultsPage = () => {
 
     // Filter by job type
     if (selectedJobType) {
-      filtered = filtered.filter(job => job.type === selectedJobType);
+      filtered = filtered.filter(job => job.job_type === selectedJobType);
     }
 
     // Filter by salary range
     if (selectedSalaryRange) {
-      const [min, max] = selectedSalaryRange.split('-').map(s => parseInt(s.replace(/[€,]/g, '')));
+      const [min, max] = selectedSalaryRange.split('-').map(Number);
       filtered = filtered.filter(job => {
-        const jobSalary = job.salary.replace(/[€,]/g, '');
-        const jobMin = parseInt(jobSalary.split(' - ')[0]);
-        return jobMin >= min && jobMin <= max;
+        const salaryMin = job.salary_min || 0;
+        const salaryMax = job.salary_max || 0;
+        
+        if (max) {
+          return (salaryMin >= min && salaryMin <= max) || (salaryMax >= min && salaryMax <= max);
+        } else {
+          return salaryMin >= min || salaryMax >= min;
+        }
       });
     }
 
@@ -145,7 +99,6 @@ const SearchResultsPage = () => {
     setLocation('');
     setSearchParams({});
   };
-
   const getJobTypeText = (type) => {
     const typeMap = {
       'full-time': t('jobDetails.fullTime'),
@@ -154,6 +107,26 @@ const SearchResultsPage = () => {
       'internship': t('jobDetails.internship')
     };
     return typeMap[type] || type;
+  };
+
+  const formatSalary = (min, max) => {
+    if (!min && !max) return 'Stipendio da concordare';
+    if (min && max) return `€${min.toLocaleString()} - €${max.toLocaleString()}`;
+    if (min) return `Da €${min.toLocaleString()}`;
+    if (max) return `Fino a €${max.toLocaleString()}`;
+  };
+
+  const getTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+    
+    if (diffInHours < 24) {
+      return `${diffInHours} ore fa`;
+    } else {
+      const diffInDays = Math.floor(diffInHours / 24);
+      return `${diffInDays} giorn${diffInDays === 1 ? 'o' : 'i'} fa`;
+    }
   };
 
   if (loading) {
@@ -337,23 +310,22 @@ const SearchResultsPage = () => {
                   {t('searchResults.clearAllFilters')}
                 </button>
               </div>
-            ) : (
-              <div className="jobs-list">
+            ) : (              <div className="jobs-list">
                 {filteredJobs.map(job => (
                   <div key={job.id} className="job-card">
                     <div className="job-header">
                       <h3>{job.title}</h3>
-                      <span className="job-type">{getJobTypeText(job.type)}</span>
+                      <span className="job-type">{getJobTypeText(job.job_type)}</span>
                     </div>
-                    <div className="job-company">{job.company}</div>
+                    <div className="job-company">{job.company_name}</div>
                     <div className="job-location">
                       <MapPin size={16} />
                       {job.location}
                     </div>
-                    <div className="job-salary">{job.salary}</div>
+                    <div className="job-salary">{formatSalary(job.salary_min, job.salary_max)}</div>
                     <p className="job-description">{job.description}</p>
                     <div className="job-footer">
-                      <span className="job-posted">{job.posted}</span>
+                      <span className="job-posted">{getTimeAgo(job.created_at)}</span>
                       <Link to={`/jobs/${job.id}`} className="apply-btn">
                         {t('homepage.viewDetails')}
                       </Link>

@@ -8,44 +8,117 @@ import './HomePage.css';
 const HomePage = () => {
   const { isAuthenticated, user } = useAuth();
   const { t } = useLanguage();
-  const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();  const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
   const [featuredJobs, setFeaturedJobs] = useState([]);
-
-  useEffect(() => {
-    // In a real app, this would fetch from your API
-    // For now, we'll use mock data
-    setFeaturedJobs([
-      {
-        id: 1,
-        title: 'Senior Frontend Developer',
-        company: 'TechCorp',
-        location: 'Milano, Italy',
-        salary: '€45,000 - €65,000',
-        type: 'Full-time',
-        posted: '2 days ago'
-      },
-      {
-        id: 2,
-        title: 'Product Manager',
-        company: 'InnovateLab',
-        location: 'Roma, Italy',
-        salary: '€50,000 - €70,000',
-        type: 'Full-time',
-        posted: '1 week ago'
-      },
-      {
-        id: 3,
-        title: 'UX/UI Designer',
-        company: 'DesignStudio',
-        location: 'Torino, Italy',
-        salary: '€35,000 - €50,000',
-        type: 'Full-time',
-        posted: '3 days ago'
+  const [companies, setCompanies] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [statsLoading, setStatsLoading] = useState(true);   // Fetch jobs from database/localStorage
+    useEffect(() => {
+      fetchJobs();
+      fetchCompanies();
+      fetchUsers();
+    }, []);
+      const fetchJobs = async () => {
+    try {      // Fetch jobs from SQLite database via API
+      const response = await fetch('http://localhost:3001/api/jobs');
+      if (!response.ok) {
+        throw new Error('Failed to fetch jobs');
       }
-    ]);
-  }, []);
+      
+      const data = await response.json();
+      const activeJobs = data.filter(job => job.status === 'active');
+      setFeaturedJobs(activeJobs.slice(0, 6)); // Get first 6 active jobs for featured section
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+    }
+  }
+
+  const fetchCompanies = async () => {
+    try {
+      setStatsLoading(true);
+      const response = await fetch('http://localhost:3001/api/companies');
+      if (!response.ok) {
+        throw new Error('Failed to fetch companies');
+      }
+      
+      const data = await response.json();
+      setCompanies(data);
+    } catch (error) {
+      console.error('Error fetching companies:', error);
+    } finally {
+      setStatsLoading(false);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/users');
+      if (!response.ok) {
+        throw new Error('Failed to fetch users');
+      }
+      
+      const data = await response.json();
+      setUsers(data.users || []);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const formatSalary = (min, max) => {
+    if (!min && !max) return 'Stipendio da concordare';
+    if (min && max) return `€${min.toLocaleString()} - €${max.toLocaleString()}`;
+    if (min) return `Da €${min.toLocaleString()}`;
+    if (max) return `Fino a €${max.toLocaleString()}`;
+  };
+
+  const getJobTypeLabel = (type) => {
+    const typeLabels = {
+      'full-time': t('jobDetails.fullTime') || 'Tempo Pieno',
+      'part-time': t('jobDetails.partTime') || 'Tempo Parziale',
+      'contract': t('jobDetails.contract') || 'Contratto',
+      'internship': t('jobDetails.internship') || 'Stage'
+    };
+    return typeLabels[type] || type;
+  };
+  // Calculate real statistics
+  const getStatistics = () => {
+    if (statsLoading || companies.length === 0) {
+      return {
+        totalJobs: 0,
+        totalCompanies: 0,
+        citiesCovered: 0,
+        jobSeekers: 0
+      };
+    }
+
+    const totalJobs = companies.reduce((total, company) => total + company.job_count, 0);
+    const totalCompanies = companies.length;
+    const citiesCovered = new Set(companies.flatMap(c => c.locations)).size;
+    const candidates = users.filter(user => user.user_type === 'candidate');
+
+    return {
+      totalJobs: totalJobs.toLocaleString(),
+      totalCompanies: totalCompanies.toLocaleString(),
+      citiesCovered: citiesCovered.toLocaleString(),
+      jobSeekers: candidates.length.toLocaleString()
+    };
+  };
+
+  const statistics = getStatistics();
+
+  const getTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+    
+    if (diffInHours < 24) {
+      return `${diffInHours} ore fa`;
+    } else {
+      const diffInDays = Math.floor(diffInHours / 24);
+      return `${diffInDays} giorn${diffInDays === 1 ? 'o' : 'i'} fa`;
+    }
+  };
   const handleSearch = (e) => {
     e.preventDefault();
     // Redirect to search results page with query parameters
@@ -97,36 +170,35 @@ const HomePage = () => {
             </div>
           )}
         </div>
-      </section>
-
-      {/* Stats Section */}
+      </section>      {/* Stats Section */}
       <section className="stats">
-        <div className="stats-container">          <div className="stat-item">
+        <div className="stats-container">
+          <div className="stat-item">
             <Briefcase className="stat-icon" size={32} />
             <div className="stat-content">
-              <h3>10,000+</h3>
+              <h3>{statistics.totalJobs}</h3>
               <p>{t('homepage.activeJobs')}</p>
             </div>
           </div>
           <div className="stat-item">
             <Users className="stat-icon" size={32} />
             <div className="stat-content">
-              <h3>50,000+</h3>
+              <h3>{statistics.jobSeekers}</h3>
               <p>{t('homepage.jobSeekers')}</p>
             </div>
           </div>
           <div className="stat-item">
             <Building2 className="stat-icon" size={32} />
             <div className="stat-content">
-              <h3>5,000+</h3>
+              <h3>{statistics.totalCompanies}</h3>
               <p>{t('homepage.companies')}</p>
             </div>
           </div>
           <div className="stat-item">
-            <TrendingUp className="stat-icon" size={32} />
+            <MapPin className="stat-icon" size={32} />
             <div className="stat-content">
-              <h3>95%</h3>
-              <p>{t('homepage.successRate')}</p>
+              <h3>{statistics.citiesCovered}</h3>
+              <p>Città Coperte</p>
             </div>
           </div>
         </div>
@@ -134,22 +206,21 @@ const HomePage = () => {
 
       {/* Featured Jobs */}      <section className="featured-jobs">
         <div className="section-content">
-          <h2>{t('homepage.featuredJobs')}</h2>
-          <div className="jobs-grid">
+          <h2>{t('homepage.featuredJobs')}</h2>          <div className="jobs-grid">
             {featuredJobs.map(job => (
               <div key={job.id} className="job-card">
                 <div className="job-header">
                   <h3>{job.title}</h3>
-                  <span className="job-type">{job.type}</span>
+                  <span className="job-type">{getJobTypeLabel(job.job_type)}</span>
                 </div>
-                <div className="job-company">{job.company}</div>
+                <div className="job-company">{job.company_name}</div>
                 <div className="job-location">
                   <MapPin size={16} />
                   {job.location}
                 </div>
-                <div className="job-salary">{job.salary}</div>
+                <div className="job-salary">{formatSalary(job.salary_min, job.salary_max)}</div>
                 <div className="job-footer">
-                  <span className="job-posted">{job.posted}</span>
+                  <span className="job-posted">{getTimeAgo(job.created_at)}</span>
                   <Link to={`/jobs/${job.id}`} className="apply-btn">
                     {t('homepage.viewDetails')}
                   </Link>

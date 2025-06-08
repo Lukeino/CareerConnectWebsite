@@ -23,77 +23,31 @@ const JobDetailsPage = () => {
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
-
-  useEffect(() => {
-    // Simulate fetching job data
-    // In a real app, this would fetch from your API
-    const fetchJob = () => {
-      // Get job data based on current language
-      const jobTranslations = t('jobDetails.jobs');
-      const baseJobData = {
-        1: {
-          id: 1,
-          location: 'Milano, Italy',
-          salary: '€45,000 - €65,000',
-          type: 'full-time',
-          posted: '2 days ago',
-          companyInfo: {
-            employees: '200-500',
-            industry: 'Technology',
-            website: 'https://techcorp.com'
+  useEffect(() => {    // Fetch job data from API
+    const fetchJob = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`http://localhost:3001/api/jobs/${id}`);
+        if (!response.ok) {
+          if (response.status === 404) {
+            setJob(null);
+          } else {
+            throw new Error('Failed to fetch job');
           }
-        },
-        2: {
-          id: 2,
-          location: 'Roma, Italy',
-          salary: '€50,000 - €70,000',
-          type: 'full-time',
-          posted: '1 week ago',
-          companyInfo: {
-            employees: '50-200',
-            industry: 'Technology',
-            website: 'https://innovatelab.com'
-          }
-        },
-        3: {
-          id: 3,
-          location: 'Torino, Italy',
-          salary: '€35,000 - €50,000',
-          type: 'full-time',
-          posted: '3 days ago',
-          companyInfo: {
-            employees: '20-50',
-            industry: 'Design',
-            website: 'https://designstudio.com'
-          }
+        } else {
+          const jobData = await response.json();
+          setJob(jobData);
         }
-      };
-
-      const baseData = baseJobData[id];
-      const translatedData = jobTranslations[id];
-      
-      if (baseData && translatedData) {
-        const jobData = {
-          ...baseData,
-          title: translatedData.title,
-          company: translatedData.company,
-          description: translatedData.description,
-          requirements: translatedData.requirements,
-          benefits: translatedData.benefits,
-          companyInfo: {
-            ...baseData.companyInfo,
-            name: translatedData.company,
-            description: translatedData.companyInfo.description
-          }
-        };
-        setJob(jobData);
+      } catch (error) {
+        console.error('Error fetching job:', error);
+        setJob(null);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchJob();
-  }, [id, t]);
-
+  }, [id]);
   const getJobTypeText = (type) => {
     const typeMap = {
       'full-time': t('jobDetails.fullTime'),
@@ -102,6 +56,26 @@ const JobDetailsPage = () => {
       'internship': t('jobDetails.internship')
     };
     return typeMap[type] || type;
+  };
+
+  const formatSalary = (min, max) => {
+    if (!min && !max) return 'Stipendio da concordare';
+    if (min && max) return `€${min.toLocaleString()} - €${max.toLocaleString()}`;
+    if (min) return `Da €${min.toLocaleString()}`;
+    if (max) return `Fino a €${max.toLocaleString()}`;
+  };
+
+  const getTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+    
+    if (diffInHours < 24) {
+      return `${diffInHours} ore fa`;
+    } else {
+      const diffInDays = Math.floor(diffInHours / 24);
+      return `${diffInDays} giorn${diffInDays === 1 ? 'o' : 'i'} fa`;
+    }
   };
 
   const handleSaveJob = () => {
@@ -180,9 +154,7 @@ const JobDetailsPage = () => {
               </button>
             )}
           </div>
-        </div>
-
-        {/* Job Info */}
+        </div>        {/* Job Info */}
         <div className="job-info-section">
           <div className="job-header">
             <div className="job-title-section">
@@ -190,7 +162,7 @@ const JobDetailsPage = () => {
               <div className="job-meta">
                 <div className="meta-item">
                   <Building2 size={16} />
-                  <span>{job.company}</span>
+                  <span>{job.company_name}</span>
                 </div>
                 <div className="meta-item">
                   <MapPin size={16} />
@@ -198,11 +170,11 @@ const JobDetailsPage = () => {
                 </div>
                 <div className="meta-item">
                   <Clock size={16} />
-                  <span>{getJobTypeText(job.type)}</span>
+                  <span>{getJobTypeText(job.job_type)}</span>
                 </div>
                 <div className="meta-item">
                   <Calendar size={16} />
-                  <span>{job.posted}</span>
+                  <span>{getTimeAgo(job.created_at)}</span>
                 </div>
               </div>
             </div>
@@ -210,7 +182,7 @@ const JobDetailsPage = () => {
             <div className="salary-section">
               <div className="salary">
                 <DollarSign size={20} />
-                <span>{job.salary}</span>
+                <span>{formatSalary(job.salary_min, job.salary_max)}</span>
               </div>
               {isCandidate && (
                 <button onClick={handleApply} className="apply-button">
@@ -219,9 +191,7 @@ const JobDetailsPage = () => {
               )}
             </div>
           </div>
-        </div>
-
-        {/* Main Content */}
+        </div>        {/* Main Content */}
         <div className="job-content">
           <div className="job-main">
             {/* Job Description */}
@@ -235,53 +205,49 @@ const JobDetailsPage = () => {
             </section>
 
             {/* Requirements */}
-            <section className="content-section">
-              <h2>{t('jobDetails.requirements')}</h2>
-              <ul className="requirements-list">
-                {job.requirements.map((requirement, index) => (
-                  <li key={index}>
-                    <CheckCircle size={16} />
-                    <span>{requirement}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
+            {job.requirements && (
+              <section className="content-section">
+                <h2>{t('jobDetails.requirements')}</h2>
+                <ul className="requirements-list">
+                  {job.requirements.split(',').map((requirement, index) => (
+                    <li key={index}>
+                      <CheckCircle size={16} />
+                      <span>{requirement.trim()}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
             {/* Benefits */}
-            <section className="content-section">
-              <h2>{t('jobDetails.benefits')}</h2>
-              <ul className="benefits-list">
-                {job.benefits.map((benefit, index) => (
-                  <li key={index}>
-                    <CheckCircle size={16} />
-                    <span>{benefit}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          </div>
-
-          {/* Sidebar */}
+            {job.benefits && (
+              <section className="content-section">
+                <h2>{t('jobDetails.benefits')}</h2>
+                <ul className="benefits-list">
+                  {job.benefits.split(',').map((benefit, index) => (
+                    <li key={index}>
+                      <CheckCircle size={16} />
+                      <span>{benefit.trim()}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </div>          {/* Sidebar */}
           <div className="job-sidebar">
             <div className="company-card">
               <h3>{t('jobDetails.companyInfo')}</h3>
               <div className="company-details">
-                <h4>{job.companyInfo.name}</h4>
-                <p>{job.companyInfo.description}</p>
+                <h4>{job.company_name}</h4>
+                <p>Informazioni azienda non disponibili</p>
                 <div className="company-stats">
                   <div className="stat">
-                    <span className="label">{t('jobDetails.industry')}:</span>
-                    <span className="value">{job.companyInfo.industry}</span>
+                    <span className="label">{t('jobDetails.location')}:</span>
+                    <span className="value">{job.location}</span>
                   </div>
                   <div className="stat">
-                    <span className="label">{t('jobDetails.companySize')}:</span>
-                    <span className="value">{job.companyInfo.employees} {t('jobDetails.employees')}</span>
-                  </div>
-                  <div className="stat">
-                    <span className="label">{t('jobDetails.website')}:</span>
-                    <a href={job.companyInfo.website} target="_blank" rel="noopener noreferrer" className="value">
-                      {job.companyInfo.website}
-                    </a>
+                    <span className="label">Recruiter:</span>
+                    <span className="value">{job.recruiter_name}</span>
                   </div>
                 </div>
               </div>
