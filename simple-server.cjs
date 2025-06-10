@@ -12,6 +12,22 @@ const dbPath = path.join(__dirname, 'server', 'db', 'database.sqlite');
 console.log('Database path:', dbPath);
 const db = new Database(dbPath);
 
+// Create applications table if it doesn't exist
+db.exec(`
+  CREATE TABLE IF NOT EXISTS applications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    job_id INTEGER NOT NULL,
+    candidate_id INTEGER NOT NULL,
+    candidate_name TEXT NOT NULL,
+    candidate_email TEXT NOT NULL,
+    applied_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status TEXT DEFAULT 'pending',
+    FOREIGN KEY (job_id) REFERENCES jobs (id),
+    FOREIGN KEY (candidate_id) REFERENCES users (id),
+    UNIQUE(job_id, candidate_id)
+  )
+`);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -164,6 +180,64 @@ app.get('/api/jobs/:id', (req, res) => {
     res.status(500).json({ success: false, error: error.message });  }
 });
 
+// Get jobs by recruiter
+app.get('/api/jobs/recruiter/:recruiterId', (req, res) => {
+  try {
+    const { recruiterId } = req.params;
+    console.log(`Fetching jobs for recruiter ID: ${recruiterId}`);
+      const stmt = db.prepare(`
+      SELECT 
+        j.*,
+        u.company as company_name,
+        u.first_name || ' ' || u.last_name as recruiter_name,
+        COALESCE(COUNT(a.id), 0) as applications_count
+      FROM jobs j
+      LEFT JOIN users u ON j.recruiter_id = u.id
+      LEFT JOIN applications a ON j.id = a.job_id
+      WHERE j.recruiter_id = ?
+      GROUP BY j.id, u.company, u.first_name, u.last_name
+      ORDER BY j.created_at DESC
+    `);
+    
+    const jobs = stmt.all(recruiterId);
+    console.log(`Found ${jobs.length} jobs for recruiter ${recruiterId}`);
+    res.json(jobs);
+  } catch (error) {
+    console.error('Error fetching recruiter jobs:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Delete job (for recruiters)
+app.delete('/api/jobs/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(`Deleting job ID: ${id}`);
+    
+    // First check if job exists and get recruiter info
+    const checkStmt = db.prepare('SELECT recruiter_id FROM jobs WHERE id = ?');
+    const job = checkStmt.get(id);
+    
+    if (!job) {
+      return res.status(404).json({ success: false, error: 'Job not found' });
+    }
+    
+    // Delete the job
+    const deleteStmt = db.prepare('DELETE FROM jobs WHERE id = ?');
+    const result = deleteStmt.run(id);
+    
+    if (result.changes > 0) {
+      console.log(`Job ${id} deleted successfully`);
+      res.json({ success: true, message: 'Job deleted successfully' });
+    } else {
+      res.status(404).json({ success: false, error: 'Job not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting job:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // Create new job (for recruiters)
 app.post('/api/jobs', async (req, res) => {
   try {
@@ -213,14 +287,12 @@ app.post('/api/jobs', async (req, res) => {
       const companyStmt = db.prepare('SELECT id FROM companies WHERE name = ?');
       const company = companyStmt.get(recruiter.company);
       company_id = company ? company.id : null;
-    }
-
-    // Insert job
+    }    // Insert job with local timestamp
     const insertJobStmt = db.prepare(`
       INSERT INTO jobs (
         title, description, company_id, recruiter_id, location, 
-        job_type, salary_min, salary_max, requirements, benefits, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        job_type, salary_min, salary_max, requirements, benefits, status, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now', 'localtime'))
     `);
 
     const result = insertJobStmt.run(
@@ -410,6 +482,232 @@ app.post('/api/debug/clear-database', (req, res) => {  try {
     res.status(500).json({ 
       success: false, 
       error: 'Failed to clear database',
+      details: error.message 
+    });  }
+});
+
+// === APPLICATION ENDPOINTS ===
+
+// Submit job application
+app.post('/api/applications', async (req, res) => {
+  try {
+    const { job_id, candidate_id } = req.body;
+    
+    console.log('Application request:', { job_id, candidate_id });
+      // Get candidate info
+    const candidateStmt = db.prepare('SELECT id, first_name, last_name, email FROM users WHERE id = ? AND user_type = ?');
+    const candidate = candidateStmt.get(candidate_id, 'candidate');
+    
+    if (!candidate) {
+      return res.status(404).json({ success: false, error: 'Candidate not found' });
+    }
+    
+    // Check if job exists
+    const jobStmt = db.prepare('SELECT id FROM jobs WHERE id = ?');
+    const job = jobStmt.get(job_id);
+    
+    if (!job) {
+      return res.status(404).json({ success: false, error: 'Job not found' });
+    }
+    
+    // Insert application (UNIQUE constraint will prevent duplicates)
+    const insertStmt = db.prepare(`
+      INSERT INTO applications (job_id, candidate_id, candidate_name, candidate_email)
+      VALUES (?, ?, ?, ?)
+    `);
+    
+    const candidateName = `${candidate.first_name} ${candidate.last_name}`;
+    const result = insertStmt.run(job_id, candidate_id, candidateName, candidate.email);
+    
+    console.log('Application created:', { id: result.lastInsertRowid });
+    
+    res.json({ 
+      success: true, 
+      message: 'Application submitted successfully',
+      application_id: result.lastInsertRowid
+    });
+    
+  } catch (error) {
+    console.error('Error submitting application:', error);
+    
+    if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'You have already applied for this job' 
+      });
+    }
+    
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to submit application',
+      details: error.message 
+    });
+  }
+});
+
+// Get applications for a specific job (for recruiters)
+app.get('/api/jobs/:jobId/applications', async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    console.log('Getting applications for job:', jobId);
+    
+    const stmt = db.prepare(`
+      SELECT 
+        a.id,
+        a.candidate_name,
+        a.candidate_email,
+        a.applied_at,
+        a.status,
+        u.phone
+      FROM applications a
+      LEFT JOIN users u ON a.candidate_id = u.id
+      WHERE a.job_id = ?
+      ORDER BY a.applied_at DESC
+    `);
+    
+    const applications = stmt.all(jobId);
+    console.log(`Found ${applications.length} applications for job ${jobId}`);
+    
+    res.json({ success: true, applications });
+    
+  } catch (error) {
+    console.error('Error fetching applications:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to fetch applications',
+      details: error.message 
+    });
+  }
+});
+
+// Delete application (for recruiters - removes application without notifying candidate)
+app.delete('/api/applications/:applicationId', async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+    
+    console.log('Deleting application:', { applicationId });
+    
+    const stmt = db.prepare('DELETE FROM applications WHERE id = ?');
+    const result = stmt.run(applicationId);
+    
+    if (result.changes > 0) {
+      res.json({ success: true, message: 'Application deleted successfully' });
+    } else {
+      res.status(404).json({ success: false, error: 'Application not found' });
+    }
+    
+  } catch (error) {
+    console.error('Error deleting application:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to update application status',
+      details: error.message 
+    });
+  }
+});
+
+// Check if user has applied for a job
+app.get('/api/applications/check/:jobId/:candidateId', async (req, res) => {
+  try {
+    const { jobId, candidateId } = req.params;
+    
+    const stmt = db.prepare('SELECT id FROM applications WHERE job_id = ? AND candidate_id = ?');
+    const application = stmt.get(jobId, candidateId);
+    
+    res.json({ 
+      success: true, 
+      hasApplied: !!application,
+      applicationId: application?.id || null
+    });
+    
+  } catch (error) {
+    console.error('Error checking application status:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to check application status' 
+    });
+  }
+});
+
+// === ADMIN ENDPOINTS ===
+
+// Get applications count for admin dashboard
+app.get('/api/admin/applications-count', async (req, res) => {
+  try {
+    const stmt = db.prepare('SELECT COUNT(*) as count FROM applications');
+    const result = stmt.get();
+    res.json({ success: true, count: result.count });
+  } catch (error) {
+    console.error('Error getting applications count:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to get applications count',
+      details: error.message 
+    });
+  }
+});
+
+// Get admin statistics
+app.get('/api/admin/stats', async (req, res) => {
+  try {
+    // Get user statistics
+    const usersStmt = db.prepare(`
+      SELECT 
+        user_type,
+        COUNT(*) as count
+      FROM users 
+      WHERE user_type != 'admin'
+      GROUP BY user_type
+    `);
+    const userStats = usersStmt.all();
+    
+    // Get job statistics
+    const jobsStmt = db.prepare(`
+      SELECT 
+        status,
+        COUNT(*) as count
+      FROM jobs
+      GROUP BY status
+    `);
+    const jobStats = jobsStmt.all();
+    
+    // Get applications count
+    const applicationsStmt = db.prepare('SELECT COUNT(*) as count FROM applications');
+    const applicationsCount = applicationsStmt.get();
+    
+    // Get recent activity (last 30 days)
+    const recentUsersStmt = db.prepare(`
+      SELECT COUNT(*) as count 
+      FROM users 
+      WHERE created_at >= datetime('now', '-30 days')
+      AND user_type != 'admin'
+    `);
+    const recentUsers = recentUsersStmt.get();
+    
+    const recentJobsStmt = db.prepare(`
+      SELECT COUNT(*) as count 
+      FROM jobs 
+      WHERE created_at >= datetime('now', '-30 days')
+    `);
+    const recentJobs = recentJobsStmt.get();
+    
+    res.json({
+      success: true,
+      stats: {
+        users: userStats,
+        jobs: jobStats,
+        applications: applicationsCount.count,
+        recentActivity: {
+          users: recentUsers.count,
+          jobs: recentJobs.count
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error getting admin stats:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to get admin statistics',
       details: error.message 
     });
   }

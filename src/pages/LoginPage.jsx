@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Mail, Lock, Briefcase } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -13,6 +13,7 @@ const LoginPage = () => {
   
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   
   const { login } = useAuth();
   const { t } = useLanguage();
@@ -78,13 +79,8 @@ const LoginPage = () => {
   };
 
   return (    <div className="login-page">
-      <div className="login-container">
-        <div className="login-header">
-          <div className="logo-section">
-            <Briefcase size={40} />
-            <h1>{t('auth.loginTitle')}</h1>
-          </div>
-          <p>CareerConnect</p>
+      <div className="login-container">        <div className="login-header">
+          <h1>{t('auth.loginTitle')}</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">          <div className="form-group">
@@ -103,14 +99,12 @@ const LoginPage = () => {
               />
             </div>
             {errors.email && <span className="error-message">{errors.email}</span>}
-          </div>
-
-          <div className="form-group">
+          </div>          <div className="form-group">
             <label htmlFor="password">{t('auth.password')}</label>
             <div className="login-input-group">
               <Lock className="login-input-icon" size={18} />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 value={formData.password}
@@ -118,6 +112,13 @@ const LoginPage = () => {
                 className={errors.password ? 'error' : ''}                placeholder={t('auth.password')}
                 autoComplete="current-password"
               />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
             {errors.password && <span className="error-message">{errors.password}</span>}
           </div>

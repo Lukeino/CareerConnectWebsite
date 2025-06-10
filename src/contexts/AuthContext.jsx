@@ -92,7 +92,6 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('careerconnect_user');
   };
-
   const value = {
     user,
     login,
@@ -101,7 +100,8 @@ export const AuthProvider = ({ children }) => {
     loading,
     isAuthenticated: !!user,
     isRecruiter: user?.user_type === 'recruiter',
-    isCandidate: user?.user_type === 'candidate'
+    isCandidate: user?.user_type === 'candidate',
+    isAdmin: user?.user_type === 'admin'
   };
 
   return (

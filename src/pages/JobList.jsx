@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
-import { MapPin, Clock, DollarSign, Building, Search, Filter, ChevronRight } from 'lucide-react';
+import { MapPin, Clock, Building, Search, Filter } from 'lucide-react';
 import './JobList.css';
 
 const JobList = () => {
@@ -65,9 +65,7 @@ const JobList = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const formatSalary = (min, max) => {
+  };  const formatSalary = (min, max) => {
     if (!min && !max) return 'Stipendio da concordare';
     if (min && max) return `€${min.toLocaleString()} - €${max.toLocaleString()}`;
     if (min) return `Da €${min.toLocaleString()}`;
@@ -82,18 +80,43 @@ const JobList = () => {
       'internship': t('jobDetails.internship') || 'Stage'
     };
     return typeLabels[type] || type;
+  };  // Funzione per generare numeri pseudo-casuali deterministici
+  const seededRandom = (seed, min, max) => {
+    const x = Math.sin(seed) * 10000;
+    const random = x - Math.floor(x);
+    return Math.floor(random * (max - min + 1)) + min;
   };
-
-  const getTimeAgo = (dateString) => {
+  const getTimeAgo = (dateString, jobId = '') => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+    const diffInMs = now - date;
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    const diffInWeeks = Math.floor(diffInDays / 7);
+    const diffInMonths = Math.floor(diffInDays / 30);
     
-    if (diffInHours < 24) {
-      return `${diffInHours} ore fa`;
+    // Se la data è invalida o futura, mostra un messaggio di errore
+    if (isNaN(date.getTime()) || diffInMs < 0) {
+      return 'Data non valida';
+    }
+    
+    // Usa sempre il tempo reale - nessuna variazione artificiale
+    if (diffInMinutes < 1) {
+      return 'Appena pubblicato';
+    } else if (diffInMinutes < 60) {
+      return `${diffInMinutes} minut${diffInMinutes === 1 ? 'o' : 'i'} fa`;
+    } else if (diffInHours < 24) {
+      return `${diffInHours} or${diffInHours === 1 ? 'a' : 'e'} fa`;
+    } else if (diffInDays < 7) {
+      return diffInDays === 1 ? '1 giorno fa' : `${diffInDays} giorni fa`;
+    } else if (diffInWeeks < 4) {
+      return diffInWeeks === 1 ? '1 settimana fa' : `${diffInWeeks} settimane fa`;
+    } else if (diffInMonths < 12) {
+      return diffInMonths === 1 ? '1 mese fa' : `${diffInMonths} mesi fa`;
     } else {
-      const diffInDays = Math.floor(diffInHours / 24);
-      return `${diffInDays} giorn${diffInDays === 1 ? 'o' : 'i'} fa`;
+      const years = Math.floor(diffInMonths / 12);
+      return years === 1 ? '1 anno fa' : `${years} anni fa`;
     }
   };
 
@@ -194,62 +217,28 @@ const JobList = () => {
                 Cancella tutti i filtri
               </button>
             </div>
-          ) : (
-            <div className="jobs-grid">
+          ) : (            <div className="jobs-grid">
               {filteredJobs.map((job) => (
-                <div key={job.id} className="job-card">
-                  <div className="job-card-header">
-                    <div className="job-title-section">
-                      <h3 className="job-title">{job.title}</h3>
-                      <div className="company-info">
-                        <Building size={16} />
-                        <span className="company-name">{job.company_name}</span>
-                      </div>
+                <Link key={job.id} to={`/jobs/${job.id}`} className="job-card-link">
+                  <div className="job-card">
+                    <div className="job-header">
+                      <h3>{job.title}</h3>
+                      <span className="job-type">{getJobTypeLabel(job.job_type)}</span>
                     </div>
-                    <div className="job-actions">
-                      <Link to={`/jobs/${job.id}`} className="view-details-btn">
-                        <ChevronRight size={20} />
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div className="job-meta">
-                    <div className="meta-item">
+                    <div className="job-company">{job.company_name}</div>
+                    <div className="job-location">
                       <MapPin size={16} />
-                      <span>{job.location}</span>
+                      {job.location}
                     </div>
-                    <div className="meta-item">
-                      <Clock size={16} />
-                      <span>{getJobTypeLabel(job.job_type)}</span>
-                    </div>
-                    <div className="meta-item">
-                      <DollarSign size={16} />
-                      <span>{formatSalary(job.salary_min, job.salary_max)}</span>
-                    </div>
-                  </div>
-
-                  <div className="job-description">
-                    <p>{job.description}</p>
-                  </div>
-
-                  <div className="job-card-footer">
-                    <div className="job-tags">
-                      {job.requirements && job.requirements.split(',').slice(0, 3).map((req, index) => (
-                        <span key={index} className="job-tag">{req.trim()}</span>
-                      ))}
-                    </div>
-                    <div className="posted-time">
-                      <Clock size={14} />
-                      <span>{getTimeAgo(job.created_at)}</span>
+                    <div className="job-salary">{formatSalary(job.salary_min, job.salary_max)}</div>
+                    <div className="job-footer">
+                      <span className="job-posted">{getTimeAgo(job.created_at, job.id)}</span>
+                      <span className="apply-btn">
+                        Visualizza Dettagli
+                      </span>
                     </div>
                   </div>
-
-                  <div className="job-card-actions">
-                    <Link to={`/jobs/${job.id}`} className="btn btn-primary">
-                      Vedi Dettagli
-                    </Link>
-                  </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

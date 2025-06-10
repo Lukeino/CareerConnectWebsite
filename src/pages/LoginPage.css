@@ -83,7 +83,7 @@
 
 .login-input-group input {
   width: 100%;
-  padding: 16px 16px 16px 36px !important;
+  padding: 16px 50px 16px 36px !important;
   border: 1px solid #e6e6e6;
   border-radius: 8px;
   font-size: 16px;
@@ -91,6 +91,27 @@
   transition: all 0.2s ease;
   background: white;
   box-sizing: border-box;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: #0072b1;
 }
 
 .login-input-group input:focus {

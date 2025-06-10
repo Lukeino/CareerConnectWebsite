@@ -6,12 +6,10 @@ import {
   ArrowLeft, 
   Building, 
   MapPin, 
-  DollarSign, 
   Clock, 
   FileText, 
   Tag, 
   Gift,
-  Save,
   Eye
 } from 'lucide-react';
 import './CreateJobPage.css';
@@ -124,11 +122,10 @@ const CreateJobPage = () => {
         console.error('Response text:', responseText);
         throw new Error('Invalid response format from server');
       }
-      
-      if (result.success) {
+        if (result.success) {
         console.log('Job created successfully:', result.job);
-        // Redirect to job details page
-        navigate(`/jobs/${result.job.id}`);
+        // Redirect to My Jobs page
+        navigate('/my-jobs');
       } else {
         setErrors({ submit: result.error || 'Errore nella creazione dell\'annuncio' });
       }
@@ -137,13 +134,7 @@ const CreateJobPage = () => {
       setErrors({ submit: 'Errore di connessione. Riprova più tardi.' });
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleSaveDraft = async () => {
-    // TODO: Implement save as draft functionality
-    alert('Funzionalità "Salva bozza" in arrivo!');
-  };
+    }  };
 
   if (!isAuthenticated || !user || user.user_type !== 'recruiter') {
     return null; // Component will redirect
@@ -151,12 +142,11 @@ const CreateJobPage = () => {
 
   return (
     <div className="create-job-page">
-      <div className="create-job-container">
-        {/* Header */}
+      <div className="create-job-container">        {/* Header */}
         <div className="page-header">
-          <button className="back-btn" onClick={() => navigate('/jobs')}>
+          <button className="back-btn" onClick={() => navigate(-1)}>
             <ArrowLeft size={20} />
-            Torna ai lavori
+            Annulla
           </button>
           <h1>Crea Nuova Offerta di Lavoro</h1>
           <p className="page-subtitle">
@@ -242,12 +232,9 @@ const CreateJobPage = () => {
                   </select>
                 </div>
               </div>
-            </div>
-
-            {/* Salary Information */}
+            </div>            {/* Salary Information */}
             <div className="form-section">
               <h2>
-                <DollarSign size={20} />
                 Informazioni Retributive
               </h2>
               
@@ -337,18 +324,7 @@ const CreateJobPage = () => {
                 {errors.submit}
               </div>
             )}
-            
-            <div className="action-buttons">
-              <button
-                type="button"
-                onClick={handleSaveDraft}
-                className="btn btn-outline"
-                disabled={loading}
-              >
-                <Save size={16} />
-                Salva Bozza
-              </button>
-              
+              <div className="action-buttons">
               <button
                 type="submit"
                 className="btn btn-primary"

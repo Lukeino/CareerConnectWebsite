@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
-import { User, Mail, Lock, Phone, Building, UserCheck, Briefcase } from 'lucide-react';
+import { User, Mail, Lock, Phone, Building, UserCheck, Briefcase, Eye, EyeOff } from 'lucide-react';
 import './RegisterPage.css';
 
 const RegisterPage = () => {
@@ -21,6 +21,8 @@ const RegisterPage = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   const { register } = useAuth();
   const { t } = useLanguage();
@@ -105,15 +107,12 @@ const RegisterPage = () => {
       setLoading(false);
     }
   };
-
   return (
     <div className="register-page">
-      <div className="register-container">        <div className="register-header">
-          <h1>{t('auth.registerTitle')}</h1>
-          <p>CareerConnect</p>
-        </div>
-
-        {/* User Type Selection */}
+      <div className="page-header">
+        <h1>Entra e connettiti con il mondo professionale.</h1>
+      </div>
+      <div className="register-container">        {/* User Type Selection */}
         <div className="user-type-selection">          <label className={`user-type-option ${formData.userType === 'candidate' ? 'selected' : ''}`} data-type="candidate">
             <input
               type="radio"
@@ -122,9 +121,10 @@ const RegisterPage = () => {
               checked={formData.userType === 'candidate'}
               onChange={handleInputChange}
             />            <div className="user-type-card">
-              <User size={32} />
-              <h3>{t('auth.candidate')}</h3>
-              <p>{t('homepage.findDreamJobDesc')}</p>
+              <User size={20} />
+              <div className="user-type-card-content">
+                <h3>{t('auth.candidate')}</h3>
+              </div>
             </div>
           </label>
           
@@ -135,11 +135,11 @@ const RegisterPage = () => {
               value="recruiter"
               checked={formData.userType === 'recruiter'}
               onChange={handleInputChange}
-            />
-            <div className="user-type-card">
-              <Briefcase size={32} />
-              <h3>{t('auth.recruiter')}</h3>
-              <p>{t('homepage.findTalentDesc')}</p>
+            />            <div className="user-type-card">
+              <Briefcase size={20} />
+              <div className="user-type-card-content">
+                <h3>{t('auth.recruiter')}</h3>
+              </div>
             </div>
           </label>
         </div>
@@ -202,7 +202,7 @@ const RegisterPage = () => {
               <div className="register-input-group">
                 <Lock className="register-input-icon" size={18} />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   value={formData.password}
@@ -210,6 +210,13 @@ const RegisterPage = () => {
                   className={errors.password ? 'error' : ''}
                   placeholder={t('auth.enterPassword')}
                 />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
               {errors.password && <span className="error-message">{errors.password}</span>}
             </div>
@@ -219,7 +226,7 @@ const RegisterPage = () => {
               <div className="register-input-group">
                 <Lock className="register-input-icon" size={18} />
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   id="confirmPassword"
                   name="confirmPassword"
                   value={formData.confirmPassword}
@@ -227,10 +234,17 @@ const RegisterPage = () => {
                   className={errors.confirmPassword ? 'error' : ''}
                   placeholder={t('auth.confirmPasswordPlaceholder')}
                 />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
               {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
             </div>
-          </div>          <div className="form-group">
+          </div><div className="form-group">
             <label htmlFor="phone">{t('auth.phoneOptional')}</label>
             <div className="register-input-group">
               <Phone className="register-input-icon" size={18} />

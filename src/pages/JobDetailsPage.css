@@ -70,8 +70,11 @@
   align-items: center;
   gap: 8px;
   color: #0072b1;
-  text-decoration: none;
+  background: none;
+  border: none;
   font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
   transition: color 0.2s ease;
 }
 
@@ -134,21 +137,30 @@
 }
 
 .job-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 36px !important;
 }
 
 .meta-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #666;
-  font-size: 14px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  color: #444 !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
 }
 
 .meta-item svg {
-  color: #0072b1;
+  color: #0072b1 !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.meta-item span {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #444 !important;
 }
 
 .salary-section {
@@ -184,6 +196,19 @@
 .apply-button:hover {
   background: #005a8b;
   transform: translateY(-1px);
+}
+
+.apply-button.applied,
+.apply-button:disabled {
+  background: #10b981;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.apply-button.applied:hover,
+.apply-button:disabled:hover {
+  background: #10b981;
+  transform: none;
 }
 
 /* Main Content */
@@ -339,6 +364,17 @@
 
 .apply-button-large:hover {
   background: #005a8b;
+}
+
+.apply-button-large.applied,
+.apply-button-large:disabled {
+  background: #10b981;
+  cursor: not-allowed;
+}
+
+.apply-button-large.applied:hover,
+.apply-button-large:disabled:hover {
+  background: #10b981;
 }
 
 .apply-note {

@@ -1,18 +1,16 @@
-const translations = {
-  it: {
-    header: {
+const translations = {  it: {    header: {
       home: "Home",
-      jobs: "Lavori",
+      jobs: "Lista Offerte",
       companies: "Aziende",
       login: "Accedi",
       signup: "Registrati",
       logout: "Esci",
       profile: "Profilo",
-      createJob: "Crea Offerta"
-    },
-    homepage: {
-      title: "Trova il Lavoro dei Tuoi Sogni",
-      subtitle: "Connetti talenti e opportunità. Scopri migliaia di posizioni lavorative o trova il candidato perfetto per la tua azienda.",
+      createJob: "Crea Offerta",
+      myJobs: "I Miei Annunci"
+    },    homepage: {
+      title: "Connettiti e Inizia Il Tuo Percorso Professionale",
+      subtitle: "Scopri migliaia di posizioni lavorative in base alle tue preferenze o trova il candidato perfetto per la tua azienda.",
       searchPlaceholder: "Cerca lavori, aziende, posizioni...",
       searchButton: "Cerca",
       featuredJobs: "Lavori in Evidenza",
@@ -28,14 +26,13 @@ const translations = {
       jobSeekers: "Candidati",
       companies: "Aziende",
       successRate: "Tasso di Successo",
-      viewDetails: "Vedi Dettagli",
-      howItWorks: "Come Funziona CareerConnect",
+      viewDetails: "Vedi Dettagli",      howItWorks: "Inizia il Tuo Percorso",
       createProfile: "Crea il Tuo Profilo",
-      createProfileDesc: "Registrati come candidato o recruiter e costruisci il tuo profilo professionale.",
-      searchConnect: "Cerca e Connetti",
-      searchConnectDesc: "Trova opportunità lavorative rilevanti o candidati di talento che corrispondono ai tuoi criteri.",
-      applySucceed: "Candidati e Ottieni Successo",
-      applySucceedDesc: "Invia candidature o offerte di lavoro e inizia la tua carriera ideale."
+      createProfileDesc: "Registrati come Candidato o Recruiter e costruisci il tuo profilo professionale.",
+      searchConnect: "Fatti Conoscere",
+      searchConnectDesc: "Compila il tuo profilo, carica il tuo CV o presenta la tua Azienda per iniziare il percorso professionale.",
+      applySucceed: "Cerca e Connetti",
+      applySucceedDesc: "Trova opportunità lavorative o candidati di talento che corrispondono ai tuoi criteri."
     },
     auth: {
       loginTitle: "Accedi al Tuo Account",
@@ -151,21 +148,19 @@ const translations = {
       applyNote: "Assicurati che il tuo profilo sia completo prima di candidarti.",
       keyResponsibilities: "Responsabilità Principali:"
     }
-  },
-  en: {
+  },  en: {
     header: {
       home: "Home",
-      jobs: "Jobs",
+      jobs: "Job Listings",
       companies: "Companies",
       login: "Login",
       signup: "Sign Up",
       logout: "Logout",
       profile: "Profile",
       createJob: "Create Job"
-    },
-    homepage: {
-      title: "Find Your Dream Job",
-      subtitle: "Connect talent with opportunity. Discover thousands of job positions or find the perfect candidate for your company.",
+    },    homepage: {
+      title: "Connect and Start Your Professional Journey",
+      subtitle: "Discover thousands of job positions or find the perfect candidate for your company.",
       searchPlaceholder: "Search jobs, companies, positions...",
       searchButton: "Search",
       featuredJobs: "Featured Jobs",

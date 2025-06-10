@@ -46,3 +46,39 @@
   color: #666;
   background: #f8f9fa;
 }
+
+/* Global fix for statistics icons */
+.stat-icon svg {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+}
+
+/* Ensure all SVG icons in stats sections are proper size */
+.stats svg,
+.stats-section svg,
+.statistics svg {
+  width: 48px !important;
+  height: 48px !important;
+}
+
+/* Global fix for statistics icons - override any other CSS */
+.stats .stat-icon svg,
+.homepage .stats .stat-icon svg,
+[class*="stats"] [class*="stat-icon"] svg,
+[class*="stat"] [class*="icon"] svg {
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  min-height: 64px !important;
+  max-width: none !important;
+  max-height: none !important;
+  font-size: 64px !important;
+}
+
+/* Ultimate override for statistics section icons */
+body .homepage .stats .stat-icon svg {
+  width: 64px !important;
+  height: 64px !important;
+}
