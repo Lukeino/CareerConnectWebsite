@@ -204,6 +204,19 @@ const AdminDashboard = () => {
     }
   };
 
+  const getGreetingMessage = () => {
+    const now = new Date();
+    const hour = now.getHours();
+    
+    if (hour >= 5 && hour < 12) {
+      return 'Buongiorno';
+    } else if (hour >= 12 && hour < 18) {
+      return 'Buon pomeriggio';
+    } else {
+      return 'Buonasera';
+    }
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('it-IT', {
@@ -271,11 +284,9 @@ const AdminDashboard = () => {
             <h3>{users.filter(u => u.user_type === 'candidate').length}</h3>
             <p>Candidati</p>
           </div>
-        </div>
-
-        <div className="stat-card warning">
+        </div>        <div className="stat-card warning">
           <div className="stat-icon">
-            <UserMinus size={24} />
+            <UserCheck size={24} />
           </div>
           <div className="stat-content">
             <h3>{users.filter(u => u.user_type === 'recruiter').length}</h3>
@@ -340,14 +351,7 @@ const AdminDashboard = () => {
           <div className="analytics-header">
             <BarChart3 size={20} />
             <h2>Panoramica Sistema</h2>
-          </div>
-          <div className="analytics-content">
-            <div className="analytics-item">
-              <span className="analytics-label">Tasso di conversione candidature</span>
-              <span className="analytics-value">
-                {jobs.length > 0 ? Math.round((stats?.applications || 0) / jobs.length * 100) / 100 : 0}%
-              </span>
-            </div>
+          </div>          <div className="analytics-content">
             <div className="analytics-item">
               <span className="analytics-label">Media annunci per recruiter</span>
               <span className="analytics-value">
@@ -539,36 +543,19 @@ const AdminDashboard = () => {
             <span className="data-count">{companies.length}</span>
           </h2>
         </div>
-        <div className="table-container">
-          <table className="admin-table">
-            <thead>
+        <div className="table-container">          <table className="admin-table">            <thead>
               <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Descrizione</th>
-                <th>Sito Web</th>
                 <th>Posizione</th>
                 <th>Annunci Attivi</th>
                 <th>Creata</th>
               </tr>
             </thead>
             <tbody>
-              {companies.map(company => (
-                <tr key={company.id}>
+              {companies.map(company => (                <tr key={company.id}>
                   <td>{company.id}</td>
                   <td>{company.name}</td>
-                  <td>
-                    <div style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {company.description || 'Nessuna descrizione'}
-                    </div>
-                  </td>
-                  <td>
-                    {company.website ? (
-                      <a href={company.website} target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa' }}>
-                        Visita sito
-                      </a>
-                    ) : 'N/A'}
-                  </td>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <MapPin size={14} />
@@ -592,9 +579,8 @@ const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
       {/* Logout Button */}
-      <div className="admin-logout-section">        <div className="logout-info">
-          <span className="admin-welcome">
-            Benvenuto, {user?.first_name ? `${user.first_name} ${user.last_name || ''}` : user?.name || 'Amministratore'}
+      <div className="admin-logout-section">        <div className="logout-info">          <span className="admin-welcome">
+            {getGreetingMessage()}, {user?.first_name ? `${user.first_name} ${user.last_name || ''}` : user?.name || 'Amministratore'}
           </span>
           <div className="admin-status">
             <CheckCircle size={16} />

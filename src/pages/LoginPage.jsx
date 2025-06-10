@@ -121,13 +121,7 @@ const LoginPage = () => {
               </button>
             </div>
             {errors.password && <span className="error-message">{errors.password}</span>}
-          </div>
-
-          <div className="form-options">
-            <label className="remember-me">
-              <input type="checkbox" />
-              <span>{t('common.rememberMe')}</span>
-            </label>
+          </div>          <div className="form-options">
             <Link to="/forgot-password" className="forgot-link">
               {t('auth.forgotPassword')}
             </Link>
