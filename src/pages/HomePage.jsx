@@ -193,63 +193,7 @@ const HomePage = () => {
     const params = new URLSearchParams();
     if (searchTerm) params.set('q', searchTerm);
     if (location) params.set('location', location);
-    navigate(`/search?${params.toString()}`);
-  };
-
-  // DEBUG FUNCTION - Clear all database records
-  const handleDebugClearDatabase = async () => {
-    if (isAuthenticated) {
-      alert('Debug function not available when logged in');
-      return;
-    }
-
-    const confirmDelete = window.confirm(
-      '⚠️ WARNING: This will DELETE ALL RECORDS from the database!\n\n' +
-      'This includes:\n' +
-      '• All user accounts\n' +
-      '• All companies\n' +
-      '• All job postings\n\n' +
-      'This action CANNOT be undone!\n\nAre you absolutely sure?'
-    );
-
-    if (!confirmDelete) return;
-
-    const secondConfirm = window.confirm(
-      '🔥 FINAL WARNING 🔥\n\n' +
-      'You are about to permanently delete ALL DATA from the database.\n\n' +
-      'Type "YES" in the next prompt to confirm.'
-    );
-
-    if (!secondConfirm) return;
-
-    const finalConfirm = prompt('Type "YES" to confirm deletion of all database records:');
-    
-    if (finalConfirm !== 'YES') {
-      alert('Database clearing cancelled.');
-      return;
-    }
-
-    try {
-      const response = await fetch('http://localhost:3001/api/debug/clear-database', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        alert('✅ Database cleared successfully! All records have been deleted.');
-        // Refresh the page to reflect changes
-        window.location.reload();
-      } else {
-        alert('❌ Error clearing database: ' + result.error);
-      }
-    } catch (error) {
-      console.error('Debug clear database error:', error);
-      alert('❌ Network error while clearing database: ' + error.message);
-    }
+  navigate(`/search?${params.toString()}`);
   };
 
   return (
@@ -383,41 +327,7 @@ const HomePage = () => {
               <h3>{t('homepage.applySucceed')}</h3>
               <p>{t('homepage.applySucceedDesc')}</p>
             </div>
-          </div>
-        </div>      </section>
-
-      {/* DEBUG BUTTON - Only visible when NOT authenticated */}
-      {!isAuthenticated && (
-        <div 
-          style={{
-            position: 'fixed',
-            bottom: '10px',
-            right: '10px',
-            zIndex: 9999
-          }}
-        >
-          <button
-            onClick={handleDebugClearDatabase}
-            style={{
-              width: '20px',
-              height: '20px',
-              fontSize: '10px',
-              backgroundColor: '#ff4444',
-              color: 'white',
-              border: 'none',
-              borderRadius: '50%',
-              cursor: 'pointer',
-              opacity: 0.3,
-              transition: 'opacity 0.3s ease'
-            }}
-            onMouseEnter={(e) => e.target.style.opacity = '1'}
-            onMouseLeave={(e) => e.target.style.opacity = '0.3'}
-            title="DEBUG: Clear Database"
-          >
-            🗑️
-          </button>
-        </div>
-      )}
+          </div>        </div>      </section>
     </div>
   );
 };

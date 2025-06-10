@@ -64,65 +64,22 @@ body {
   min-height: 100vh;
 }
 
-/* Link styles */
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color 0.2s ease;
+/* Disable mouse wheel on number inputs to prevent accidental value changes */
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
 }
 
-a:hover {
-  color: var(--primary-dark);
-}
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
   margin: 0;
-  font-weight: 600;
-  line-height: 1.2;
-  color: var(--text-primary);
 }
 
-h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-}
-
-h2 {
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.5rem;
-}
-
-h4 {
-  font-size: 1.25rem;
-}
-
-h5 {
-  font-size: 1.125rem;
-}
-
-h6 {
-  font-size: 1rem;
-}
-
-p {
-  margin: 0 0 1rem 0;
-  line-height: 1.6;
-}
-
-/* Button styles */
-button {
-  font-family: inherit;
-  font-size: inherit;
-}
-
-/* Form elements */
-input, textarea, select {
-  font-family: inherit;
-  font-size: inherit;
+/* Prevent mouse wheel from changing number input values */
+input[type="number"]:focus {
+  pointer-events: auto;
 }
 
 /* Focus styles for accessibility */

@@ -200,7 +200,58 @@ const AdminDashboard = () => {
       } catch (error) {
         console.error('Error blocking/unblocking user:', error);
         alert(`Errore di connessione: ${error.message}`);
+      }    }
+  };
+
+  // DEBUG FUNCTION - Clear all database records
+  const handleDebugClearDatabase = async () => {
+    const confirmDelete = window.confirm(
+      '⚠️ ADMIN WARNING: This will DELETE ALL RECORDS from the database!\n\n' +
+      'This includes:\n' +
+      '• All user accounts (except admin)\n' +
+      '• All companies\n' +
+      '• All job postings\n' +
+      '• All applications\n\n' +
+      'This action CANNOT be undone!\n\nAre you absolutely sure?'
+    );
+
+    if (!confirmDelete) return;
+
+    const secondConfirm = window.confirm(
+      '🔥 FINAL WARNING 🔥\n\n' +
+      'You are about to permanently delete ALL DATA from the database.\n\n' +
+      'Type "YES" in the next prompt to confirm.'
+    );
+
+    if (!secondConfirm) return;
+
+    const finalConfirm = prompt('Type "YES" to confirm deletion of all database records:');
+    
+    if (finalConfirm !== 'YES') {
+      alert('Database clearing cancelled.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3001/api/debug/clear-database', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert('✅ Database cleared successfully! All records have been deleted.');
+        // Refresh the data
+        await fetchAllData();
+      } else {
+        alert('❌ Error clearing database: ' + result.error);
       }
+    } catch (error) {
+      console.error('Debug clear database error:', error);
+      alert('❌ Network error while clearing database: ' + error.message);
     }
   };
 
@@ -585,16 +636,24 @@ const AdminDashboard = () => {
           <div className="admin-status">
             <CheckCircle size={16} />
             Sistema Operativo
-          </div>
+          </div>        </div>
+        <div className="admin-actions">
+          <button 
+            className="debug-button"
+            onClick={handleDebugClearDatabase}
+            title="DEBUG: Cancella Database"
+          >
+            🗑️
+          </button>
+          <button 
+            className="logout-button"
+            onClick={handleLogout}
+            title="Disconnetti"
+          >
+            <LogOut size={16} />
+            Disconnetti
+          </button>
         </div>
-        <button 
-          className="logout-button"
-          onClick={handleLogout}
-          title="Disconnetti"
-        >
-          <LogOut size={16} />
-          Disconnetti
-        </button>
       </div>
 
       {/* Navigation Tabs */}

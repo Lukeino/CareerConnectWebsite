@@ -86,17 +86,37 @@ export const AuthProvider = ({ children }) => {
       return { success: false, error: 'Connection error' };
     }
   };
-
   const logout = () => {
     console.log('👋 Logging out user');
     setUser(null);
     localStorage.removeItem('careerconnect_user');
   };
+
+  const refreshUser = async () => {
+    if (!user || !user.id) return;
+    
+    try {
+      console.log('🔄 Refreshing user data for ID:', user.id);
+      const response = await fetch(`${API_BASE_URL}/user/${user.id}`);
+      
+      if (response.ok) {
+        const userData = await response.json();
+        const updatedUser = { ...user, ...userData };
+        setUser(updatedUser);
+        localStorage.setItem('careerconnect_user', JSON.stringify(updatedUser));
+        console.log('✅ User data refreshed:', updatedUser);
+      }
+    } catch (error) {
+      console.error('❌ Error refreshing user data:', error);
+    }
+  };
+  
   const value = {
     user,
     login,
     register,
     logout,
+    refreshUser,
     loading,
     isAuthenticated: !!user,
     isRecruiter: user?.user_type === 'recruiter',

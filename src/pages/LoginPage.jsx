@@ -37,18 +37,17 @@ const LoginPage = () => {
       }));
     }
   };
-
   const validateForm = () => {
     const newErrors = {};
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = 'Email è richiesta';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = 'Email non valida';
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = 'Password è richiesta';
     }
 
     setErrors(newErrors);

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useDisableNumberInputWheel } from '../hooks/useDisableNumberInputWheel';
 import { 
   ArrowLeft, 
   Building, 
@@ -18,8 +19,7 @@ const CreateJobPage = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
   const { t } = useLanguage();
-  
-  const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({
     title: '',
     description: '',
     location: '',
@@ -27,12 +27,15 @@ const CreateJobPage = () => {
     salary_min: '',
     salary_max: '',
     requirements: '',
-    benefits: ''
+    benefits: '',
+    company_description: ''
   });
-  
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
+  // Use the custom hook to disable mouse wheel on number inputs
+  useDisableNumberInputWheel();
+  
   // Redirect if not a recruiter
   React.useEffect(() => {
     if (!isAuthenticated || !user || user.user_type !== 'recruiter') {
@@ -229,10 +232,36 @@ const CreateJobPage = () => {
                     <option value="part-time">Tempo Parziale</option>
                     <option value="contract">Contratto</option>
                     <option value="internship">Stage</option>
-                  </select>
-                </div>
+                  </select>                </div>
               </div>
-            </div>            {/* Salary Information */}
+            </div>
+
+            {/* Company Information */}
+            <div className="form-section">
+              <h2>
+                <Building size={20} />
+                Informazioni sull'Azienda
+              </h2>
+              
+              <div className="form-group">
+                <label htmlFor="company_description">
+                  Descrizione dell'Azienda
+                </label>
+                <textarea
+                  id="company_description"
+                  name="company_description"
+                  value={formData.company_description}
+                  onChange={handleInputChange}
+                  placeholder="Descrivi la tua azienda, la missione, i valori e l'ambiente di lavoro..."
+                  rows={4}
+                />
+                <small className="form-hint">
+                  Aiuta i candidati a conoscere meglio la tua azienda (cultura, valori, storia, ecc.)
+                </small>
+              </div>
+            </div>
+
+            {/* Salary Information */}
             <div className="form-section">
               <h2>
                 Informazioni Retributive

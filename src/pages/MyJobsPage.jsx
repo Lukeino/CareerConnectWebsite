@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Trash2, Eye, Calendar, MapPin, DollarSign, Users, Briefcase, Clock, Building, ChevronRight, Mail, Phone } from 'lucide-react';
+import { Plus, Trash2, Eye, Calendar, MapPin, DollarSign, Users, Briefcase, Clock, Building, ChevronRight, Mail, Phone, FileText } from 'lucide-react';
 import './MyJobsPage.css';
 
 const MyJobsPage = () => {
@@ -56,9 +56,9 @@ const MyJobsPage = () => {
         }
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || `Errore del server: ${response.status}`);
-      }
-        const data = await response.json();
+      }        const data = await response.json();
         if (Array.isArray(data)) {
+        console.log('🔍 Debug - Jobs received:', data); // Debug line
         setJobs(data);
         
         // Only update selectedJob if needed to avoid infinite loops
@@ -252,7 +252,6 @@ const MyJobsPage = () => {
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('it-IT');
   };
-
   const formatTimeAgo = (dateString) => {
     const now = new Date();
     const jobDate = new Date(dateString);
@@ -263,6 +262,14 @@ const MyJobsPage = () => {
     if (diffInDays < 7) return `${diffInDays} giorni fa`;
     if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} settimane fa`;
     return `${Math.floor(diffInDays / 30)} mesi fa`;
+  };
+
+  const formatSalary = (salaryMin, salaryMax) => {
+    if (!salaryMin && !salaryMax) return 'Stipendio da concordare';
+    if (salaryMin && salaryMax) return `€${salaryMin.toLocaleString()} - €${salaryMax.toLocaleString()}`;
+    if (salaryMin) return `Da €${salaryMin.toLocaleString()}`;
+    if (salaryMax) return `Fino a €${salaryMax.toLocaleString()}`;
+    return 'Stipendio da concordare';
   };
 
   const handleJobSelect = (job) => {
@@ -335,7 +342,7 @@ const MyJobsPage = () => {
                       <div className="job-meta-first-line">
                         <span className="job-location">
                           <MapPin size={12} />
-                          {job.location}
+                          {job.location || '-'}
                         </span>
                         <span className="job-time">
                           <Clock size={12} />
@@ -413,13 +420,12 @@ const MyJobsPage = () => {
                     <span>{selectedJob.applications_count || 0} ricevute</span>
                   </div>
                 </div>
-                
-                {selectedJob.salary_range && (
+                  {(selectedJob.salary_min || selectedJob.salary_max) && (
                   <div className="info-item">
                     <DollarSign size={16} />
                     <div>
                       <label>Stipendio</label>
-                      <span>{selectedJob.salary_range}</span>
+                      <span>{formatSalary(selectedJob.salary_min, selectedJob.salary_max)}</span>
                     </div>
                   </div>
                 )}
@@ -500,8 +506,7 @@ const MyJobsPage = () => {
                               className="application-select-checkbox"
                             />
                           </div>                          <div className="candidate-info-compact">
-                            <div className="candidate-main-info">
-                              <div className="candidate-details">
+                            <div className="candidate-main-info">                              <div className="candidate-details">
                                 <h4 className="candidate-name">{application.candidate_name}</h4>
                                 <div className="candidate-contact">
                                   <Mail size={14} />
@@ -511,6 +516,17 @@ const MyJobsPage = () => {
                                   <div className="candidate-contact">
                                     <Phone size={14} />
                                     <span className="candidate-phone">{application.phone}</span>
+                                  </div>
+                                )}
+                                {application.cv_filename && (
+                                  <div className="candidate-contact">
+                                    <FileText size={14} />
+                                    <button 
+                                      onClick={() => window.open(`http://localhost:3001/uploads/${application.cv_filename}`, '_blank')}
+                                      className="cv-link-btn"
+                                    >
+                                      Visualizza CV
+                                    </button>
                                   </div>
                                 )}
                               </div>

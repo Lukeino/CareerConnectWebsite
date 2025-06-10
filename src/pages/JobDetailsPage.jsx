@@ -276,10 +276,9 @@ const JobDetailsPage = () => {
           </div>          {/* Sidebar */}
           <div className="job-sidebar">
             <div className="company-card">
-              <h3>{t('jobDetails.companyInfo')}</h3>
-              <div className="company-details">
+              <h3>{t('jobDetails.companyInfo')}</h3>              <div className="company-details">
                 <h4>{job.company_name}</h4>
-                <p>Informazioni azienda non disponibili</p>
+                <p>{job.company_description || 'Informazioni azienda non disponibili'}</p>
                 <div className="company-stats">
                   <div className="stat">
                     <span className="label">{t('jobDetails.location')}:</span>

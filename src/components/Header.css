@@ -419,6 +419,13 @@
   color: #0072b1;
 }
 
+.cv-indicator {
+  color: #10b981;
+  font-weight: bold;
+  margin-left: 6px;
+  font-size: 1.2em;
+}
+
 .logout-item:hover {
   background: #fef2f2;
   color: #dc2626;
@@ -495,6 +502,23 @@
 .admin-logout:hover {
   background: rgba(220, 38, 38, 0.2);
   color: #dc2626;
+}
+
+/* Header divider */
+.header-divider {
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(to bottom, transparent 0%, #e6e6e6 20%, #e6e6e6 80%, transparent 100%);
+  margin: 0 24px;
+  flex-shrink: 0;
+}
+
+.header-container.has-nav-or-auth .header-divider {
+  display: block;
+}
+
+.header-container:not(.has-nav-or-auth) .header-divider {
+  display: none;
 }
 
 /* Media queries */

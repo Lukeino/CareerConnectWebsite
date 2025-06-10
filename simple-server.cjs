@@ -3,6 +3,8 @@ const cors = require('cors');
 const Database = require('better-sqlite3');
 const bcrypt = require('bcryptjs');
 const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
 
 const app = express();
 const PORT = 3001;
@@ -31,6 +33,200 @@ db.exec(`
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Configure multer for CV uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = path.join(__dirname, 'uploads');
+    // Create uploads directory if it doesn't exist
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    // Generate unique filename: userId_timestamp_originalname
+    const userId = req.body.userId;
+    const timestamp = Date.now();
+    const ext = path.extname(file.originalname);
+    const filename = `cv_${userId}_${timestamp}${ext}`;
+    cb(null, filename);
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: function (req, file, cb) {
+    // Only allow PDF files
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF files are allowed!'), false);
+    }
+  }
+});
+
+// Serve uploaded files statically
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// === CV UPLOAD ENDPOINT ===
+app.post('/api/upload-cv', upload.single('cv'), async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const file = req.file;
+
+    console.log('CV Upload request:', { userId, file: file ? file.filename : 'no file' });
+
+    if (!file) {
+      return res.status(400).json({ success: false, error: 'No file uploaded' });
+    }
+
+    if (!userId) {
+      return res.status(400).json({ success: false, error: 'User ID is required' });
+    }
+
+    // Check if user exists and is a candidate
+    const userStmt = db.prepare('SELECT id, user_type, cv_filename FROM users WHERE id = ?');
+    const user = userStmt.get(userId);
+
+    if (!user) {
+      // Delete uploaded file if user doesn't exist
+      fs.unlinkSync(file.path);
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    if (user.user_type !== 'candidate') {
+      // Delete uploaded file if user is not a candidate
+      fs.unlinkSync(file.path);
+      return res.status(403).json({ success: false, error: 'Only candidates can upload CVs' });
+    }
+
+    // Delete old CV file if exists
+    if (user.cv_filename) {
+      const oldFilePath = path.join(__dirname, 'uploads', user.cv_filename);
+      if (fs.existsSync(oldFilePath)) {
+        fs.unlinkSync(oldFilePath);
+        console.log('Old CV file deleted:', user.cv_filename);
+      }
+    }
+
+    // Update user record with new CV filename
+    const updateStmt = db.prepare('UPDATE users SET cv_filename = ? WHERE id = ?');
+    const result = updateStmt.run(file.filename, userId);
+
+    if (result.changes > 0) {
+      console.log('CV uploaded successfully:', file.filename);
+      res.json({
+        success: true,
+        message: 'CV uploaded successfully',
+        filename: file.filename,
+        downloadUrl: `/uploads/${file.filename}`
+      });
+    } else {
+      // Delete uploaded file if database update failed
+      fs.unlinkSync(file.path);
+      res.status(500).json({ success: false, error: 'Failed to update user record' });
+    }
+
+  } catch (error) {
+    console.error('Error uploading CV:', error);
+    
+    // Delete uploaded file if there was an error
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ success: false, error: 'File too large. Maximum size is 5MB.' });
+    }
+
+    if (error.message === 'Only PDF files are allowed!') {
+      return res.status(400).json({ success: false, error: 'Only PDF files are allowed.' });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to upload CV',
+      details: error.message
+    });  }
+});
+
+// Get user CV info
+app.get('/api/user/:userId/cv', (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    const stmt = db.prepare('SELECT cv_filename FROM users WHERE id = ? AND user_type = ?');
+    const user = stmt.get(userId, 'candidate');
+    
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    
+    res.json({
+      success: true,
+      hasCV: !!user.cv_filename,
+      filename: user.cv_filename,
+      downloadUrl: user.cv_filename ? `/uploads/${user.cv_filename}` : null
+    });
+    
+  } catch (error) {
+    console.error('Error getting user CV info:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get CV info',
+      details: error.message
+    });  }
+});
+
+// Delete user CV
+app.delete('/api/user/:userId/cv', (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    const stmt = db.prepare('SELECT cv_filename FROM users WHERE id = ? AND user_type = ?');
+    const user = stmt.get(userId, 'candidate');
+    
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    
+    if (!user.cv_filename) {
+      return res.status(400).json({ success: false, error: 'No CV to delete' });
+    }
+    
+    // Delete file from filesystem
+    const filePath = path.join(__dirname, 'uploads', user.cv_filename);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+      console.log('CV file deleted:', user.cv_filename);
+    }
+    
+    // Update database
+    const updateStmt = db.prepare('UPDATE users SET cv_filename = NULL WHERE id = ?');
+    const result = updateStmt.run(userId);
+    
+    if (result.changes > 0) {
+      res.json({
+        success: true,
+        message: 'CV deleted successfully'
+      });
+    } else {
+      res.status(500).json({ success: false, error: 'Failed to update user record' });
+    }
+    
+  } catch (error) {
+    console.error('Error deleting CV:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to delete CV',
+      details: error.message
+    });
+  }
+});
 
 // Auth routes
 app.post('/api/auth/register', async (req, res) => {
@@ -144,6 +340,24 @@ app.get('/api/users', (req, res) => {
   }
 });
 
+// Get single user by ID
+app.get('/api/user/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const stmt = db.prepare('SELECT id, email, user_type, first_name, last_name, company, phone, cv_filename, created_at FROM users WHERE id = ?');
+    const user = stmt.get(userId);
+    
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // Jobs routes
 app.get('/api/jobs', (req, res) => {
   try {
@@ -193,13 +407,21 @@ app.get('/api/jobs/:id', (req, res) => {
 app.get('/api/jobs/recruiter/:recruiterId', (req, res) => {
   try {
     const { recruiterId } = req.params;
-    console.log(`Fetching jobs for recruiter ID: ${recruiterId}`);
-      const stmt = db.prepare(`
+    console.log(`Fetching jobs for recruiter ID: ${recruiterId}`);    const stmt = db.prepare(`
       SELECT 
         j.*,
         u.company as company_name,
         u.first_name || ' ' || u.last_name as recruiter_name,
-        COALESCE(COUNT(a.id), 0) as applications_count
+        COALESCE(COUNT(a.id), 0) as applications_count,
+        CASE 
+          WHEN j.salary_min IS NOT NULL AND j.salary_max IS NOT NULL THEN 
+            '€' || j.salary_min || ' - €' || j.salary_max
+          WHEN j.salary_min IS NOT NULL THEN 
+            'Da €' || j.salary_min
+          WHEN j.salary_max IS NOT NULL THEN 
+            'Fino a €' || j.salary_max
+          ELSE 'Stipendio da concordare'
+        END as salary_range
       FROM jobs j
       LEFT JOIN users u ON j.recruiter_id = u.id
       LEFT JOIN applications a ON j.id = a.job_id
@@ -263,8 +485,7 @@ app.post('/api/jobs', async (req, res) => {
     console.log('=== JOB CREATION REQUEST ===');
     console.log('Request body:', JSON.stringify(req.body, null, 2));
     console.log('Content-Type:', req.headers['content-type']);
-    
-    const { 
+      const { 
       title, 
       description, 
       location, 
@@ -273,6 +494,7 @@ app.post('/api/jobs', async (req, res) => {
       salary_max, 
       requirements, 
       benefits, 
+      company_description,
       recruiter_id 
     } = req.body;
 
@@ -305,16 +527,13 @@ app.post('/api/jobs', async (req, res) => {
     if (recruiter.company) {
       const companyStmt = db.prepare('SELECT id FROM companies WHERE name = ?');
       const company = companyStmt.get(recruiter.company);
-      company_id = company ? company.id : null;
-    }    // Insert job with local timestamp
+      company_id = company ? company.id : null;    }    // Insert job with local timestamp
     const insertJobStmt = db.prepare(`
       INSERT INTO jobs (
         title, description, company_id, recruiter_id, location, 
-        job_type, salary_min, salary_max, requirements, benefits, status, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now', 'localtime'))
-    `);
-
-    const result = insertJobStmt.run(
+        job_type, salary_min, salary_max, requirements, benefits, company_description, status, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now', 'localtime'))
+    `);    const result = insertJobStmt.run(
       title,
       description,
       company_id,
@@ -325,6 +544,7 @@ app.post('/api/jobs', async (req, res) => {
       salary_max || null,
       requirements || null,
       benefits || null,
+      company_description || null,
       'active'
     );
 
@@ -569,15 +789,15 @@ app.get('/api/jobs/:jobId/applications', async (req, res) => {
   try {
     const { jobId } = req.params;
     console.log('Getting applications for job:', jobId);
-    
-    const stmt = db.prepare(`
+      const stmt = db.prepare(`
       SELECT 
         a.id,
         a.candidate_name,
         a.candidate_email,
         a.applied_at,
         a.status,
-        u.phone
+        u.phone,
+        u.cv_filename
       FROM applications a
       LEFT JOIN users u ON a.candidate_id = u.id
       WHERE a.job_id = ?
