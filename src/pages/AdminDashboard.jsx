@@ -19,7 +19,10 @@ import {
   MapPin,
   Mail,
   Phone,
-  LogOut
+  LogOut,
+  Ban,
+  UserX,
+  Shield
 } from 'lucide-react';
 import './AdminDashboard.css';
 
@@ -136,24 +139,67 @@ const AdminDashboard = () => {
       console.error('Error fetching companies:', error);
     }
   };
-
   const deleteJob = async (jobId) => {
     if (window.confirm('Sei sicuro di voler eliminare questo annuncio di lavoro?')) {
       try {
+        console.log('Deleting job with ID:', jobId);
         const response = await fetch(`http://localhost:3001/api/jobs/${jobId}`, {
           method: 'DELETE'
         });
         
+        console.log('Delete response status:', response.status);
+        
         if (response.ok) {
+          const result = await response.json();
+          console.log('Delete response data:', result);
+          
+          // Refresh the data
           await fetchJobs();
           await fetchStats();
           alert('Annuncio eliminato con successo!');
         } else {
-          alert('Errore nell\'eliminazione dell\'annuncio');
+          const errorData = await response.json().catch(() => ({}));
+          console.error('Delete error:', errorData);
+          alert(`Errore nell'eliminazione dell'annuncio: ${errorData.error || 'Errore sconosciuto'}`);
         }
       } catch (error) {
         console.error('Error deleting job:', error);
-        alert('Errore di connessione');
+        alert(`Errore di connessione: ${error.message}`);
+      }
+    }
+  };
+
+  // Block/Unblock user function
+  const toggleUserBlock = async (userId, isCurrentlyBlocked) => {
+    const action = isCurrentlyBlocked ? 'sbloccare' : 'bloccare';
+    const confirmMessage = `Sei sicuro di voler ${action} questo utente?`;
+    
+    if (window.confirm(confirmMessage)) {
+      try {
+        console.log(`${action} user ID:`, userId);
+        const response = await fetch(`http://localhost:3001/api/admin/users/${userId}/block`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ isBlocked: !isCurrentlyBlocked })
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Block/Unblock response:', result);
+          
+          // Refresh users data
+          await fetchUsers();
+          alert(`Utente ${isCurrentlyBlocked ? 'sbloccato' : 'bloccato'} con successo!`);
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          console.error('Block/Unblock error:', errorData);
+          alert(`Errore: ${errorData.error || 'Operazione fallita'}`);
+        }
+      } catch (error) {
+        console.error('Error blocking/unblocking user:', error);
+        alert(`Errore di connessione: ${error.message}`);
       }
     }
   };
@@ -344,6 +390,8 @@ const AdminDashboard = () => {
                 <th>Azienda</th>
                 <th>Telefono</th>
                 <th>Registrato</th>
+                <th>Stato</th>
+                <th>Azioni</th>
               </tr>
             </thead>
             <tbody>
@@ -371,8 +419,25 @@ const AdminDashboard = () => {
                         {user.phone}
                       </div>
                     ) : 'N/A'}
+                  </td>                  <td>{formatDate(user.created_at)}</td>
+                  <td>
+                    <span className={`status-badge ${user.is_blocked ? 'blocked' : 'active'}`}>
+                      {user.is_blocked ? 'Bloccato' : 'Attivo'}
+                    </span>
                   </td>
-                  <td>{formatDate(user.created_at)}</td>
+                  <td>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      {user.user_type !== 'admin' && (
+                        <button
+                          onClick={() => toggleUserBlock(user.id, user.is_blocked)}
+                          className={`action-btn ${user.is_blocked ? 'unblock-btn' : 'block-btn'}`}
+                          title={user.is_blocked ? 'Sblocca utente' : 'Blocca utente'}
+                        >
+                          {user.is_blocked ? <Shield size={14} /> : <Ban size={14} />}
+                        </button>
+                      )}
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

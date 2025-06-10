@@ -151,15 +151,14 @@ const AdminLogin = () => {
               <div className="admin-form-group">
                 <label htmlFor="email">Email Amministratore</label>
                 <div className="admin-input-group">
-                  <Mail className="admin-input-icon" size={18} />
-                  <input
+                  <Mail className="admin-input-icon" size={18} />                  <input
                     type="email"
                     id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     className={errors.email ? 'error' : ''}
-                    placeholder="admin@careerconnect.com"
+                    placeholder="Inserisci email amministratore"
                     autoComplete="email"
                   />
                 </div>
@@ -169,15 +168,14 @@ const AdminLogin = () => {
               <div className="admin-form-group">
                 <label htmlFor="password">Password</label>
                 <div className="admin-input-group">
-                  <Lock className="admin-input-icon" size={18} />
-                  <input
+                  <Lock className="admin-input-icon" size={18} />                  <input
                     type={showPassword ? 'text' : 'password'}
                     id="password"
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
                     className={errors.password ? 'error' : ''}
-                    placeholder="••••••••••••••••"
+                    placeholder="Inserisci password"
                     autoComplete="current-password"
                   />
                   <button

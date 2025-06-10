@@ -16,6 +16,7 @@ import CreateJobPage from './pages/CreateJobPage';
 import MyJobsPage from './pages/MyJobsPage';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
+import PrivacyPage from './pages/PrivacyPage';
 import './App.css';
 
 // Protected Route component
@@ -153,6 +154,10 @@ const AppContent = () => {
               <CompaniesList />
             </ProtectedRoute>
           } />
+          
+          {/* Privacy Policy - Public route */}
+          <Route path="/privacy" element={<PrivacyPage />} />
+          
           <Route path="/profile" element={
             <ProtectedRoute>
               <PlaceholderPage messageKey="pages.profileComingSoon" />

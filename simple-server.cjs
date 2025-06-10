@@ -108,6 +108,15 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(401).json({ success: false, error: 'User not found' });
     }
     
+    // Check if user is blocked
+    if (user.is_blocked) {
+      console.log('❌ Login denied - user is blocked:', user.email);
+      return res.status(403).json({ 
+        success: false, 
+        error: 'Il tuo account è stato sospeso. Contatta l\'amministratore per ulteriori informazioni.' 
+      });
+    }
+    
     const isValidPassword = await bcrypt.compare(password, user.password);
     
     if (!isValidPassword) {
@@ -208,32 +217,42 @@ app.get('/api/jobs/recruiter/:recruiterId', (req, res) => {
   }
 });
 
-// Delete job (for recruiters)
+// Delete job (for recruiters and admin)
 app.delete('/api/jobs/:id', (req, res) => {
   try {
     const { id } = req.params;
     console.log(`Deleting job ID: ${id}`);
     
-    // First check if job exists and get recruiter info
-    const checkStmt = db.prepare('SELECT recruiter_id FROM jobs WHERE id = ?');
+    // First check if job exists
+    const checkStmt = db.prepare('SELECT id, title, recruiter_id FROM jobs WHERE id = ?');
     const job = checkStmt.get(id);
     
     if (!job) {
+      console.log(`Job ${id} not found`);
       return res.status(404).json({ success: false, error: 'Job not found' });
     }
     
-    // Delete the job
-    const deleteStmt = db.prepare('DELETE FROM jobs WHERE id = ?');
-    const result = deleteStmt.run(id);
+    console.log(`Found job: ${job.title} (ID: ${job.id})`);
+    
+    // Delete related applications first (to avoid foreign key constraints)
+    const deleteApplicationsStmt = db.prepare('DELETE FROM applications WHERE job_id = ?');
+    const applicationsResult = deleteApplicationsStmt.run(id);
+    console.log(`Deleted ${applicationsResult.changes} applications for job ${id}`);
+    
+    // Now delete the job
+    const deleteJobStmt = db.prepare('DELETE FROM jobs WHERE id = ?');
+    const result = deleteJobStmt.run(id);
     
     if (result.changes > 0) {
       console.log(`Job ${id} deleted successfully`);
       res.json({ success: true, message: 'Job deleted successfully' });
     } else {
-      res.status(404).json({ success: false, error: 'Job not found' });
+      console.log(`Failed to delete job ${id}`);
+      res.status(500).json({ success: false, error: 'Failed to delete job' });
     }
   } catch (error) {
     console.error('Error deleting job:', error.message);
+    console.error('Stack trace:', error.stack);
     res.status(500).json({ success: false, error: error.message });
   }
 });
@@ -713,17 +732,59 @@ app.get('/api/admin/stats', async (req, res) => {
   }
 });
 
-// Serve i file statici dal build React
-app.use(express.static(path.join(__dirname, 'dist')));
+// === ADMIN USER MANAGEMENT ===
 
-// Per tutte le richieste non gestite dalle API, restituisci index.html (React Router friendly)
-app.get(/^(?!\/api).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// Block/Unblock user (Admin only)
+app.patch('/api/admin/users/:id/block', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { isBlocked } = req.body;
+    
+    console.log(`${isBlocked ? 'Blocking' : 'Unblocking'} user ID: ${id}`);
+    
+    // Check if user exists
+    const checkStmt = db.prepare('SELECT id, email, user_type, first_name, last_name FROM users WHERE id = ?');
+    const user = checkStmt.get(id);
+    
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    
+    // Don't allow blocking admin users
+    if (user.user_type === 'admin') {
+      return res.status(403).json({ 
+        success: false, 
+        error: 'Cannot block admin users' 
+      });
+    }
+      // Update user blocked status
+    const updateStmt = db.prepare('UPDATE users SET is_blocked = ? WHERE id = ?');
+    const result = updateStmt.run(isBlocked ? 1 : 0, id);
+    
+    if (result.changes > 0) {
+      console.log(`✅ User ${user.email} ${isBlocked ? 'blocked' : 'unblocked'} successfully`);
+      res.json({ 
+        success: true, 
+        message: `User ${isBlocked ? 'blocked' : 'unblocked'} successfully`,
+        user: { ...user, is_blocked: isBlocked }
+      });
+    } else {
+      res.status(500).json({ success: false, error: 'Failed to update user status' });
+    }
+    
+  } catch (error) {
+    console.error('Error blocking/unblocking user:', error);    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to update user status',
+      details: error.message 
+    });
+  }
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
-  console.log(`📁 Database location: ${dbPath}`);
-  console.log('✅ Ready to accept connections');
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📊 Admin dashboard: http://localhost:${PORT}/admin`);
+  console.log(`🔗 API available at: http://localhost:${PORT}/api`);
 });
 
