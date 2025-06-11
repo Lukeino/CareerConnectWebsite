@@ -1,71 +1,97 @@
-/* CompaniesList.css - LinkedIn Style */
+/* ==============================================
+   PAGINA LISTA AZIENDE
+   
+   Interfaccia stile LinkedIn per visualizzazione aziende con:
+   - Design professionale con card layout
+   - Sistema di ricerca e filtri avanzati
+   - Griglia responsive per diversi screen sizes
+   - Sidebar informativa con statistiche settori
+   ============================================== */
 
+/* CONTENITORE PRINCIPALE PAGINA */
 .companies-list-page {
-  min-height: 100vh;
-  background: #f3f2ef;
-  padding: 80px 0 40px;
+  min-height: 100vh;                  /* Altezza completa viewport */
+  background: #f3f2ef;                /* Sfondo grigio chiaro LinkedIn-style */
+  padding: 80px 0 40px;               /* Padding top per header fisso */
 }
 
+/* CONTENITORE CENTRATO MASSIMA LARGHEZZA */
 .companies-container {
-  max-width: 1128px;
-  margin: 0 auto;
-  padding: 0 24px;
+  max-width: 1128px;                  /* Larghezza massima LinkedIn standard */
+  margin: 0 auto;                     /* Centratura orizzontale */
+  padding: 0 24px;                    /* Padding laterale per margini */
 }
 
-/* Loading States */
+/* ==============================================
+   STATI DI CARICAMENTO
+   ============================================== */
+
+/* CONTENITORE LOADING CENTRATO */
 .loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 60vh;
-  color: #666;
+  min-height: 60vh;                   /* Altezza minima per centratura */
+  color: #666;                        /* Testo grigio medio */
 }
 
+/* SPINNER ANIMATO CARICAMENTO */
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #0072b1;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+  border: 3px solid #f3f3f3;          /* Bordo grigio chiaro */
+  border-top: 3px solid #0072b1;      /* Bordo top blu LinkedIn */
+  border-radius: 50%;                 /* Forma circolare */
+  animation: spin 1s linear infinite; /* Rotazione continua */
   margin-bottom: 20px;
 }
 
+/* ANIMAZIONE ROTAZIONE SPINNER */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Header Section */
+/* ==============================================
+   SEZIONE HEADER PAGINA
+   ============================================== */
+
+/* HEADER PRINCIPALE CON TITOLO E DESCRIZIONE */
 .page-header {
   text-align: left;
   margin-bottom: 32px;
   color: #000;
-  background: white;
+  background: white;                  /* Sfondo bianco per contrasto */
   padding: 32px;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  border: 1px solid #e6e6e6;
+  border-radius: 8px;                 /* Bordi arrotondati */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); /* Ombra sottile */
+  border: 1px solid #e6e6e6;          /* Bordo grigio chiaro */
 }
 
+/* TITOLO PRINCIPALE H1 */
 .page-header h1 {
-  font-size: 2.5rem;
-  font-weight: 600;
+  font-size: 2.5rem;                  /* Dimensione grande per impatto */
+  font-weight: 600;                   /* Peso medium-bold */
   margin-bottom: 8px;
-  color: #000;
-  line-height: 1.2;
+  color: #000;                        /* Nero per massimo contrasto */
+  line-height: 1.2;                   /* Interlinea compatta */
 }
 
+/* SOTTOTITOLO DESCRITTIVO */
 .page-subtitle {
-  font-size: 1.125rem;
-  color: #666;
+  font-size: 1.125rem;                /* Leggermente più grande del testo normale */
+  color: #666;                        /* Grigio per gerarchia visiva */
   margin-bottom: 0;
-  font-weight: 400;
-  line-height: 1.4;
+  font-weight: 400;                   /* Peso normale */
+  line-height: 1.4;                   /* Interlinea leggibile */
 }
 
-/* Search and Filter Section */
+/* ==============================================
+   SEZIONE RICERCA E FILTRI
+   ============================================== */
+
+/* CONTENITORE PRINCIPALE RICERCA */
 .search-filter-section {
   background: white;
   border-radius: 8px;
@@ -75,19 +101,22 @@
   border: 1px solid #e6e6e6;
 }
 
+/* RIGA RICERCA PRINCIPALE */
 .search-row {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 16px;                          /* Spaziatura tra elementi */
 }
 
+/* GRIGLIA CONTROLLI RICERCA */
 .search-group {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr auto;
+  grid-template-columns: 2fr 1.5fr 1.5fr auto; /* Proporzioni responsive */
   gap: 16px;
   align-items: center;
 }
 
+/* WRAPPER INPUT CON ICONE */
 .search-input-wrapper,
 .location-input-wrapper {
   position: relative;
@@ -95,45 +124,51 @@
   align-items: center;
 }
 
+/* ICONE INPUT POSIZIONATE ASSOLUTE */
 .search-input-wrapper svg,
 .location-input-wrapper svg {
   position: absolute;
-  left: 12px;
-  color: #666;
-  z-index: 2;
+  left: 12px;                         /* Posizionamento da sinistra */
+  color: #666;                        /* Grigio per icone */
+  z-index: 2;                         /* Sopra l'input */
 }
 
+/* STILI INPUT RICERCA E LOCATION */
 .search-input,
 .location-input {
   width: 100%;
-  padding: 12px 12px 12px 40px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  background: #f3f2ef;
+  padding: 12px 12px 12px 40px;       /* Padding left per icona */
+  border: 1px solid #ccc;             /* Bordo grigio neutro */
+  border-radius: 20px;                /* Bordi molto arrotondati stile LinkedIn */
+  background: #f3f2ef;                /* Sfondo grigio chiaro */
   color: #000;
   font-size: 14px;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease;          /* Transizione fluida per interazioni */
 }
 
+/* PLACEHOLDER INPUT */
 .search-input::placeholder,
 .location-input::placeholder {
-  color: #666;
+  color: #666;                        /* Grigio medio per placeholder */
 }
 
+/* STATO FOCUS INPUT */
 .search-input:focus,
 .location-input:focus {
-  outline: none;
-  border-color: #0072b1;
-  background: white;
-  box-shadow: 0 0 0 2px rgba(0, 114, 177, 0.2);
+  outline: none;                      /* Rimuove outline default */
+  border-color: #0072b1;              /* Bordo blu LinkedIn */
+  background: white;                  /* Sfondo bianco al focus */
+  box-shadow: 0 0 0 2px rgba(0, 114, 177, 0.2); /* Ring blu trasparente */
 }
 
+/* WRAPPER SELECT ORDINAMENTO */
 .sort-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
+/* ICONA SELECT */
 .sort-wrapper svg {
   position: absolute;
   left: 12px;
@@ -141,18 +176,20 @@
   z-index: 2;
 }
 
+/* SELECT ORDINAMENTO */
 .sort-select {
   width: 100%;
-  padding: 12px 12px 12px 40px;
+  padding: 12px 12px 12px 40px;       /* Consistente con input */
   border: 1px solid #ccc;
   border-radius: 20px;
   background: #f3f2ef;
   color: #000;
   font-size: 14px;
-  cursor: pointer;
+  cursor: pointer;                    /* Indica interattività */
   transition: all 0.2s ease;
 }
 
+/* FOCUS SELECT */
 .sort-select:focus {
   outline: none;
   border-color: #0072b1;
@@ -160,47 +197,57 @@
   box-shadow: 0 0 0 2px rgba(0, 114, 177, 0.2);
 }
 
+/* OPZIONI SELECT */
 .sort-select option {
-  background: white;
+  background: white;                  /* Sfondo bianco per opzioni */
   color: #000;
 }
 
+/* BOTTONE CANCELLA FILTRI */
 .clear-filters-btn {
   padding: 12px 20px;
-  background: white;
-  border: 1px solid #0072b1;
-  color: #0072b1;
+  background: white;                  /* Sfondo bianco */
+  border: 1px solid #0072b1;          /* Bordo blu */
+  color: #0072b1;                     /* Testo blu */
   border-radius: 20px;
   cursor: pointer;
   font-weight: 600;
   font-size: 14px;
   transition: all 0.2s ease;
-  white-space: nowrap;
+  white-space: nowrap;                /* Evita wrap del testo */
 }
 
+/* HOVER BOTTONE CANCELLA */
 .clear-filters-btn:hover {
-  background: #0072b1;
+  background: #0072b1;                /* Inversione colori al hover */
   color: white;
 }
 
-/* Results Section */
+/* ==============================================
+   LAYOUT CONTENUTO PRINCIPALE
+   ============================================== */
+
+/* LAYOUT GRIGLIA PRINCIPALE CON SIDEBAR */
 .content-layout {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr 300px;   /* Contenuto principale + sidebar fissa */
   gap: 24px;
   margin-bottom: 32px;
 }
 
+/* CONTENUTO PRINCIPALE */
 .main-content {
-  min-width: 0; /* Prevents grid item from overflowing */
+  min-width: 0;                       /* Previene overflow in griglia */
 }
 
+/* SIDEBAR DESTRA */
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 16px;                          /* Spaziatura tra card sidebar */
 }
 
+/* CARD SIDEBAR */
 .sidebar-card {
   background: white;
   border-radius: 8px;
@@ -209,6 +256,7 @@
   border: 1px solid #e6e6e6;
 }
 
+/* TITOLO CARD SIDEBAR */
 .sidebar-card h3 {
   font-size: 1rem;
   font-weight: 600;
@@ -216,12 +264,14 @@
   margin-bottom: 16px;
 }
 
+/* LISTA SETTORI INDUSTRIALI */
 .industry-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
+/* SINGOLO ITEM SETTORE */
 .industry-item {
   display: flex;
   justify-content: space-between;
@@ -231,15 +281,17 @@
   font-size: 0.875rem;
 }
 
+/* CONTATORE AZIENDE PER SETTORE */
 .industry-count {
-  background: #f3f2ef;
-  color: #0072b1;
+  background: #f3f2ef;               /* Sfondo grigio chiaro */
+  color: #0072b1;                    /* Testo blu */
   padding: 2px 8px;
-  border-radius: 12px;
+  border-radius: 12px;               /* Forma pillola */
   font-size: 0.75rem;
   font-weight: 600;
 }
 
+/* TESTO GENERICO SIDEBAR */
 .sidebar-text {
   color: #666;
   font-size: 0.875rem;
@@ -247,13 +299,18 @@
   margin: 0;
 }
 
+/* ==============================================
+   SEZIONE RISULTATI
+   ============================================== */
+
 .results-section {
   margin-bottom: 32px;
 }
 
+/* STATO NESSUN RISULTATO */
 .no-results {
   text-align: center;
-  padding: 64px 24px;
+  padding: 64px 24px;                 /* Padding generoso per centratura */
   color: #666;
   background: white;
   border-radius: 8px;
@@ -261,12 +318,14 @@
   border: 1px solid #e6e6e6;
 }
 
+/* ICONA NESSUN RISULTATO */
 .no-results-icon {
   margin-bottom: 24px;
-  opacity: 0.5;
+  opacity: 0.5;                       /* Opacità ridotta per sottotono */
   color: #0072b1;
 }
 
+/* TITOLO NESSUN RISULTATO */
 .no-results h3 {
   font-size: 1.5rem;
   margin-bottom: 12px;
@@ -274,34 +333,42 @@
   color: #000;
 }
 
+/* DESCRIZIONE NESSUN RISULTATO */
 .no-results p {
   font-size: 1rem;
   margin-bottom: 24px;
   opacity: 0.8;
 }
 
-/* Companies Grid */
+/* ==============================================
+   GRIGLIA AZIENDE
+   ============================================== */
+
+/* GRIGLIA RESPONSIVE CARD AZIENDE */
 .companies-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Auto-fit responsive */
+  gap: 24px;                          /* Spaziatura uniforme */
 }
 
+/* CARD SINGOLA AZIENDA */
 .company-card {
   background: white;
   border-radius: 8px;
   padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); /* Ombra sottile */
+  transition: all 0.2s ease;          /* Transizione per hover */
   border: 1px solid #e6e6e6;
   position: relative;
 }
 
+/* HOVER CARD AZIENDA */
 .company-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-color: #0072b1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Ombra più prominente */
+  border-color: #0072b1;              /* Bordo blu LinkedIn */
 }
 
+/* HEADER CARD CON LOGO E INFO */
 .company-card-header {
   display: flex;
   align-items: flex-start;
@@ -309,22 +376,25 @@
   margin-bottom: 16px;
 }
 
+/* LOGO AZIENDA PLACEHOLDER */
 .company-logo {
   width: 56px;
   height: 56px;
-  background: linear-gradient(135deg, #0072b1, #005a8b);
+  background: linear-gradient(135deg, #0072b1, #005a8b); /* Gradiente blu */
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  flex-shrink: 0;
+  flex-shrink: 0;                     /* Non si restringe in flex */
 }
 
+/* SEZIONE TITOLO AZIENDA */
 .company-title-section {
-  flex: 1;
+  flex: 1;                            /* Occupa spazio rimanente */
 }
 
+/* NOME AZIENDA */
 .company-name {
   font-size: 1.25rem;
   font-weight: 600;
@@ -333,6 +403,7 @@
   line-height: 1.3;
 }
 
+/* METADATI AZIENDA */
 .company-meta {
   display: flex;
   align-items: center;
@@ -341,6 +412,7 @@
   color: #666;
 }
 
+/* BADGE DIMENSIONE AZIENDA */
 .company-size {
   background: #0072b1;
   color: white;
@@ -350,26 +422,30 @@
   font-weight: 500;
 }
 
+/* SEPARATORE METADATI */
 .separator {
-  color: #ccc;
+  color: #ccc;                        /* Grigio chiaro per separatori */
 }
 
+/* CONTATORE OFFERTE LAVORO */
 .job-count {
   font-weight: 500;
-  color: #0072b1;
+  color: #0072b1;                     /* Blu per enfasi */
 }
 
+/* AZIONI RAPIDE CARD */
 .company-actions {
   display: flex;
   gap: 8px;
 }
 
+/* BOTTONE AZIONE GENERICO */
 .action-btn {
   width: 32px;
   height: 32px;
   background: #f3f2ef;
   color: #666;
-  border-radius: 50%;
+  border-radius: 50%;                 /* Forma circolare */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -379,28 +455,32 @@
   cursor: pointer;
 }
 
+/* HOVER AZIONE GENERICO */
 .action-btn:hover {
   background: #e6e6e6;
 }
 
+/* HOVER BOTTONE SALVA */
 .save-btn:hover {
   background: #0072b1;
   color: white;
   border-color: #0072b1;
 }
 
+/* HOVER BOTTONE VISUALIZZA */
 .view-btn:hover {
   background: #0072b1;
   color: white;
   border-color: #0072b1;
 }
 
+/* BOTTONE VISUALIZZA AZIENDA */
 .view-company-btn {
   width: 32px;
   height: 32px;
   background: #f3f2ef;
   color: #666;
-  border-radius: 4px;
+  border-radius: 4px;                 /* Rettangolare vs circolare */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -409,22 +489,26 @@
   border: 1px solid #e6e6e6;
 }
 
+/* HOVER VISUALIZZA AZIENDA */
 .view-company-btn:hover {
   background: #0072b1;
   color: white;
   border-color: #0072b1;
 }
 
+/* DESCRIZIONE AZIENDA */
 .company-description {
   margin-bottom: 20px;
 }
 
+/* PARAGRAFO DESCRIZIONE */
 .company-description p {
   color: #666;
-  line-height: 1.5;
+  line-height: 1.5;                   /* Interlinea leggibile */
   font-size: 0.875rem;
 }
 
+/* INFORMAZIONI AZIENDA */
 .company-info {
   display: flex;
   flex-direction: column;
@@ -432,6 +516,7 @@
   margin-bottom: 20px;
 }
 
+/* SINGOLO ITEM INFORMAZIONE */
 .info-item {
   display: flex;
   align-items: center;
@@ -440,11 +525,13 @@
   color: #666;
 }
 
+/* ICONE INFORMAZIONI */
 .info-item svg {
-  color: #0072b1;
-  flex-shrink: 0;
+  color: #0072b1;                     /* Blu per icone */
+  flex-shrink: 0;                     /* Non si restringono */
 }
 
+/* LINK SITO WEB */
 .website-link {
   color: #0072b1;
   text-decoration: none;
@@ -455,24 +542,28 @@
   transition: color 0.2s ease;
 }
 
+/* HOVER LINK SITO */
 .website-link:hover {
-  color: #005a8b;
+  color: #005a8b;                     /* Blu più scuro */
   text-decoration: underline;
 }
 
+/* FOOTER CARD AZIENDA */
 .company-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 16px;
-  border-top: 1px solid #e6e6e6;
+  border-top: 1px solid #e6e6e6;      /* Separatore superiore */
 }
 
+/* STATISTICHE AZIENDA */
 .company-stats {
   display: flex;
   gap: 16px;
 }
 
+/* SINGOLA STATISTICA */
 .company-stats .stat {
   display: flex;
   align-items: center;
@@ -482,14 +573,20 @@
   font-weight: 500;
 }
 
+/* AZIONI CARD FOOTER */
 .company-card-actions {
   display: flex;
   gap: 8px;
 }
 
+/* ==============================================
+   SISTEMA BOTTONI
+   ============================================== */
+
+/* BOTTONE BASE */
 .btn {
   padding: 8px 16px;
-  border-radius: 20px;
+  border-radius: 20px;                /* Bordi arrotondati stile LinkedIn */
   text-decoration: none;
   font-weight: 500;
   font-size: 0.875rem;
@@ -503,30 +600,38 @@
   line-height: 1.4;
 }
 
+/* BOTTONE OUTLINE */
 .btn-outline {
   background: transparent;
   border: 1px solid #0072b1;
   color: #0072b1;
 }
 
+/* HOVER OUTLINE */
 .btn-outline:hover {
-  background: rgba(0, 114, 177, 0.1);
+  background: rgba(0, 114, 177, 0.1);  /* Sfondo blu trasparente */
   border-color: #005a8b;
   color: #005a8b;
 }
 
+/* BOTTONE PRIMARIO */
 .btn-primary {
   background: #0072b1;
   color: white;
   border: 1px solid #0072b1;
 }
 
+/* HOVER PRIMARIO */
 .btn-primary:hover {
-  background: #005a8b;
+  background: #005a8b;                /* Blu più scuro */
   border-color: #005a8b;
 }
 
-/* Stats Section */
+/* ==============================================
+   SEZIONE STATISTICHE
+   ============================================== */
+
+/* CONTENITORE STATISTICHE GLOBALI */
 .companies-stats {
   background: white;
   border-radius: 8px;
@@ -535,102 +640,124 @@
   border: 1px solid #e6e6e6;
 }
 
+/* GRIGLIA STATISTICHE */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Auto-fit responsive */
   gap: 32px;
 }
 
+/* CARD STATISTICA SINGOLA */
 .stat-card {
   text-align: center;
   color: #000;
 }
 
+/* NUMERO STATISTICA */
 .stat-number {
-  font-size: 2.5rem;
+  font-size: 2.5rem;                  /* Dimensione prominente */
   font-weight: 600;
   margin-bottom: 8px;
-  color: #0072b1;
+  color: #0072b1;                     /* Blu per numeri */
 }
 
+/* ETICHETTA STATISTICA */
 .stat-label {
   font-size: 1rem;
   color: #666;
   font-weight: 500;
 }
 
-/* Responsive Design */
+/* ==============================================
+   RESPONSIVE DESIGN
+   
+   Adattamenti per diversi breakpoint
+   ============================================== */
+
+/* DESKTOP GRANDE */
 @media (max-width: 1200px) {
   .companies-grid {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Card più strette */
   }
   
   .content-layout {
-    grid-template-columns: 1fr 280px;
+    grid-template-columns: 1fr 280px;  /* Sidebar più stretta */
   }
 }
 
+/* TABLET */
 @media (max-width: 768px) {
   .companies-container {
-    padding: 0 16px;
+    padding: 0 16px;                   /* Padding ridotto */
   }
 
+  /* LAYOUT SINGOLA COLONNA */
   .content-layout {
     grid-template-columns: 1fr;
     gap: 16px;
   }
 
+  /* SIDEBAR SOPRA CONTENUTO PRINCIPALE */
   .sidebar {
-    order: -1; /* Move sidebar above main content on mobile */
+    order: -1;
   }
 
+  /* HEADER COMPATTO */
   .page-header {
     padding: 24px;
   }
 
   .page-header h1 {
-    font-size: 2rem;
+    font-size: 2rem;                   /* Titolo più piccolo */
   }
 
   .page-subtitle {
     font-size: 1rem;
   }
 
+  /* RICERCA VERTICALE */
   .search-group {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr;       /* Una colonna sola */
     gap: 12px;
   }
 
+  /* GRIGLIA SINGOLA COLONNA */
   .companies-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
 
+  /* CARD COMPATTE */
   .company-card {
     padding: 20px;
   }
 
+  /* HEADER CARD VERTICALE */
   .company-card-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
 
+  /* AZIONI ALLINEATE DESTRA */
   .company-actions {
     align-self: flex-end;
   }
 
+  /* FOOTER VERTICALE */
   .company-card-footer {
     flex-direction: column;
     gap: 12px;
     align-items: flex-start;
   }
 
+  /* STATISTICHE VERTICALI */
   .stats-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
 
+  /* SEZIONI COMPATTE */
   .search-filter-section {
     padding: 16px;
   }
@@ -640,20 +767,23 @@
   }
 }
 
+/* MOBILE PICCOLO */
 @media (max-width: 480px) {
   .companies-list-page {
-    padding: 60px 0 20px;
+    padding: 60px 0 20px;              /* Padding ridotto per mobile */
   }
 
   .page-header h1 {
-    font-size: 1.75rem;
+    font-size: 1.75rem;                /* Titolo ancora più piccolo */
   }
 
+  /* AZIONI VERTICALI FULL WIDTH */
   .company-card-actions {
     flex-direction: column;
     width: 100%;
   }
 
+  /* BOTTONI CENTRATI */
   .btn {
     text-align: center;
     justify-content: center;

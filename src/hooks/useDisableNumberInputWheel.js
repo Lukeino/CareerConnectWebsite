@@ -1,23 +1,34 @@
+// ==============================================
+// HOOK PERSONALIZZATO - DISABILITA WHEEL SU INPUT NUMBER
+// 
+// Previene la modifica accidentale dei valori negli input number
+// tramite rotellina del mouse. Migliora l'UX evitando cambi
+// involontari durante lo scroll della pagina.
+// ==============================================
+
 import { useEffect } from 'react';
 
-// Custom hook to disable mouse wheel on number inputs
+// HOOK PERSONALIZZATO PER DISABILITARE WHEEL SU INPUT NUMBER
 export const useDisableNumberInputWheel = () => {
   useEffect(() => {
+    // GESTORE EVENTO WHEEL
     const handleWheel = (e) => {
-      // Check if the target is a number input and is focused
+      // Verifica: elemento target è input number E ha il focus
       if (e.target.type === 'number' && document.activeElement === e.target) {
-        e.preventDefault();
+        e.preventDefault(); // Previene comportamento default (cambio valore)
       }
     };
 
-    // Add event listener to the document
+    // REGISTRAZIONE EVENT LISTENER
+    // passive: false permette preventDefault()
     document.addEventListener('wheel', handleWheel, { passive: false });
 
-    // Cleanup
+    // CLEANUP - Rimozione listener al unmount del componente
     return () => {
       document.removeEventListener('wheel', handleWheel);
     };
-  }, []);
+  }, []); // Dependency array vuota = esegue solo al mount/unmount
 };
 
+// EXPORT DEFAULT PER FLESSIBILITÀ D'IMPORTAZIONE
 export default useDisableNumberInputWheel;

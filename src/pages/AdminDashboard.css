@@ -1,62 +1,77 @@
-/* Admin Dashboard Styles */
+/* ==============================================
+   DASHBOARD AMMINISTRATORE
+   
+   Interfaccia completa per gestione backend con:
+   - Layout dark theme professionale
+   - Gestione utenti, offerte di lavoro e statistiche
+   - Tabelle responsive con azioni CRUD
+   - Animazioni e effetti glassmorphism
+   ============================================== */
+
+/* CONTENITORE PRINCIPALE DASHBOARD */
 .admin-dashboard {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  color: #ffffff;
-  padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;                  /* Altezza completa viewport */
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); /* Gradiente blu scuro */
+  color: #ffffff;                     /* Testo bianco per contrasto */
+  padding: 2rem;                      /* Padding generoso */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font system */
 }
 
-/* Logout Section */
+/* SEZIONE LOGOUT/HEADER ADMIN */
 .admin-logout-section {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between;     /* Distribuzione spazio */
   align-items: center;
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1); /* Sfondo glassmorphism */
   border-radius: 12px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);        /* Effetto blur sfondo */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Bordo sottile */
 }
 
+/* INFORMAZIONI ADMIN (SINISTRA) */
 .logout-info {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 2rem;                          /* Spazio tra elementi */
 }
 
+/* MESSAGGIO BENVENUTO */
 .admin-welcome {
   font-size: 1.2rem;
   font-weight: 600;
   color: #ffffff;
 }
 
+/* BADGE STATUS ADMIN */
 .admin-status {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(34, 197, 94, 0.2);
+  background: rgba(34, 197, 94, 0.2);  /* Verde semi-trasparente */
   padding: 0.5rem 1rem;
   border-radius: 6px;
   border: 1px solid rgba(34, 197, 94, 0.3);
-  color: #10b981;
+  color: #10b981;                     /* Verde brillante */
   font-weight: 500;
 }
 
+/* AZIONI ADMIN (DESTRA) */
 .admin-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
+/* BOTTONE DEBUG */
 .debug-button {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: rgba(255, 152, 0, 0.2);
+  background: rgba(255, 152, 0, 0.2);  /* Arancione semi-trasparente */
   color: #ff9800;
   border: 1px solid rgba(255, 152, 0, 0.3);
   border-radius: 6px;
@@ -66,16 +81,17 @@
 }
 
 .debug-button:hover {
-  background: rgba(255, 152, 0, 0.3);
+  background: rgba(255, 152, 0, 0.3);  /* Intensifica al hover */
   border-color: rgba(255, 152, 0, 0.5);
-  transform: translateY(-1px);
+  transform: translateY(-1px);         /* Leggero sollevamento */
 }
 
+/* BOTTONE LOGOUT */
 .logout-button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.2);  /* Rosso semi-trasparente */
   color: #ef4444;
   border: 1px solid rgba(239, 68, 68, 0.3);
   padding: 0.75rem 1.5rem;
@@ -91,11 +107,12 @@
   transform: translateY(-1px);
 }
 
-/* Remove old header styles */
+/* RIMOZIONE HEADER LEGACY */
 .admin-header {
-  display: none;
+  display: none;                      /* Nasconde header vecchio se presente */
 }
 
+/* CONTENITORE LOADING */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -105,25 +122,28 @@
   gap: 1rem;
 }
 
+/* ICONA LOADING ANIMATA */
 .loading-icon {
-  animation: spin 2s linear infinite;
-  color: #60a5fa;
+  animation: spin 2s linear infinite;  /* Rotazione continua */
+  color: #60a5fa;                     /* Blu chiaro */
 }
 
+/* ANIMAZIONE ROTAZIONE */
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* Navigation Tabs */
+/* NAVIGAZIONE TAB ADMIN */
 .admin-nav {
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  overflow-x: auto;
+  overflow-x: auto;                   /* Scroll orizzontale su mobile */
 }
 
+/* SINGOLA TAB NAVIGAZIONE */
 .nav-tab {
   display: flex;
   align-items: center;
@@ -131,13 +151,13 @@
   padding: 1rem 1.5rem;
   background: transparent;
   border: none;
-  color: #b0c4de;
+  color: #b0c4de;                     /* Grigio chiaro inattivo */
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   border-bottom: 2px solid transparent;
-  white-space: nowrap;
+  white-space: nowrap;                /* Evita wrap su mobile */
 }
 
 .nav-tab:hover {
@@ -145,20 +165,22 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
+/* TAB ATTIVA */
 .nav-tab.active {
   color: #ffffff;
-  border-bottom-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.1);
+  border-bottom-color: #3b82f6;      /* Bordo blu */
+  background: rgba(59, 130, 246, 0.1); /* Sfondo blu trasparente */
 }
 
-/* Statistics Grid */
+/* GRIGLIA STATISTICHE */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive auto-fit */
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
+/* CARD STATISTICA SINGOLA */
 .stat-card {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -166,32 +188,34 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);        /* Glassmorphism */
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px);        /* Sollevamento al hover */
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
+/* VARIANTI COLORE STAT CARDS */
 .stat-card.primary {
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid #3b82f6;    /* Bordo blu primario */
 }
 
 .stat-card.success {
-  border-left: 4px solid #10b981;
+  border-left: 4px solid #10b981;    /* Bordo verde successo */
 }
 
 .stat-card.warning {
-  border-left: 4px solid #f59e0b;
+  border-left: 4px solid #f59e0b;    /* Bordo giallo warning */
 }
 
 .stat-card.info {
-  border-left: 4px solid #06b6d4;
+  border-left: 4px solid #06b6d4;    /* Bordo ciano info */
 }
 
+/* ICONA STATISTICA */
 .stat-icon {
   background: rgba(255, 255, 255, 0.2);
   padding: 0.75rem;
@@ -201,21 +225,22 @@
   justify-content: center;
 }
 
+/* CONTENUTO TESTUALE STATISTICA */
 .stat-content h3 {
   margin: 0;
-  font-size: 2rem;
+  font-size: 2rem;                    /* Numero prominente */
   font-weight: 700;
   color: #ffffff;
 }
 
 .stat-content p {
   margin: 0;
-  color: #b0c4de;
+  color: #b0c4de;                     /* Descrizione più chiara */
   font-size: 0.9rem;
   font-weight: 500;
 }
 
-/* Data Section */
+/* SEZIONE DATI */
 .data-section {
   display: flex;
   flex-direction: column;
@@ -223,6 +248,7 @@
   margin-bottom: 2rem;
 }
 
+/* CARD CONTENITORE DATI */
 .data-card {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -231,6 +257,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* HEADER SEZIONE DATI */
 .data-header {
   display: flex;
   justify-content: space-between;
@@ -250,6 +277,7 @@
   gap: 0.5rem;
 }
 
+/* CONTATORE ELEMENTI */
 .data-count {
   background: rgba(255, 255, 255, 0.2);
   padding: 0.25rem 0.75rem;
@@ -258,16 +286,19 @@
   color: #e2e8f0;
 }
 
+/* CONTENITORE TABELLA */
 .table-container {
-  overflow-x: auto;
+  overflow-x: auto;                   /* Scroll orizzontale per tabelle larghe */
 }
 
+/* TABELLA ADMIN PRINCIPALE */
 .admin-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
 }
 
+/* HEADER TABELLA */
 .admin-table th {
   background: rgba(255, 255, 255, 0.1);
   color: #e2e8f0;
@@ -276,20 +307,23 @@
   text-align: left;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-transform: uppercase;          /* Testo maiuscolo per header */
+  letter-spacing: 0.5px;              /* Spaziatura lettere */
 }
 
+/* CELLE TABELLA */
 .admin-table td {
   padding: 0.75rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
 
+/* HOVER RIGHE TABELLA */
 .admin-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.05); /* Evidenziazione leggera */
 }
 
+/* BADGE TIPO UTENTE */
 .user-type-badge {
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
@@ -298,6 +332,7 @@
   text-transform: uppercase;
 }
 
+/* VARIANTI BADGE UTENTE */
 .user-type-badge.candidate {
   background: rgba(34, 197, 94, 0.2);
   color: #10b981;
@@ -316,15 +351,17 @@
   border: 1px solid rgba(168, 85, 247, 0.3);
 }
 
+/* TITOLO JOB TRUNCATO */
 .job-title {
   font-weight: 500;
   max-width: 200px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis;            /* Tre puntini per testo tagliato */
   white-space: nowrap;
   color: #ffffff;
 }
 
+/* BADGE TIPO LAVORO */
 .job-type-badge {
   background: rgba(59, 130, 246, 0.2);
   color: #3b82f6;
@@ -334,6 +371,7 @@
   border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
+/* BADGE STATUS GENERICO */
 .status-badge {
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
@@ -341,6 +379,7 @@
   font-weight: 500;
 }
 
+/* VARIANTI STATUS */
 .status-badge.active {
   background: rgba(34, 197, 94, 0.2);
   color: #10b981;
@@ -359,11 +398,12 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-/* Analytics Section */
+/* SEZIONE ANALYTICS */
 .analytics-section {
   margin-bottom: 2rem;
 }
 
+/* CARD ANALYTICS */
 .analytics-card {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
@@ -372,6 +412,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* HEADER ANALYTICS */
 .analytics-header {
   display: flex;
   align-items: center;
@@ -388,12 +429,14 @@
   font-weight: 600;
 }
 
+/* CONTENUTO ANALYTICS */
 .analytics-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
 }
 
+/* SINGOLO ITEM ANALYTICS */
 .analytics-item {
   display: flex;
   justify-content: space-between;
@@ -415,12 +458,12 @@
   font-size: 1.1rem;
 }
 
-/* Admin Content */
+/* CONTENUTO ADMIN GENERICO */
 .admin-content {
-  min-height: 400px;
+  min-height: 400px;                  /* Altezza minima per layout consistente */
 }
 
-/* Action Buttons */
+/* BOTTONI AZIONE TABELLE */
 .action-btn {
   display: flex;
   align-items: center;
@@ -433,6 +476,7 @@
   font-size: 0.8rem;
 }
 
+/* BOTTONE VISUALIZZA */
 .action-btn.view-btn {
   background: rgba(59, 130, 246, 0.2);
   color: #3b82f6;
@@ -444,6 +488,7 @@
   transform: translateY(-1px);
 }
 
+/* BOTTONE ELIMINA */
 .action-btn.delete-btn {
   background: rgba(239, 68, 68, 0.2);
   color: #ef4444;
@@ -455,6 +500,7 @@
   transform: translateY(-1px);
 }
 
+/* BOTTONE BLOCCA */
 .action-btn.block-btn {
   background: rgba(249, 115, 22, 0.2);
   color: #f97316;
@@ -466,6 +512,7 @@
   transform: translateY(-1px);
 }
 
+/* BOTTONE SBLOCCA */
 .action-btn.unblock-btn {
   background: rgba(34, 197, 94, 0.2);
   color: #10b981;
@@ -477,6 +524,7 @@
   transform: translateY(-1px);
 }
 
+/* BOTTONE ELIMINA UTENTE */
 .action-btn.delete-user-btn {
   background: rgba(220, 38, 127, 0.2);
   color: #dc2626;
@@ -489,15 +537,19 @@
   box-shadow: 0 4px 12px rgba(220, 38, 127, 0.3);
 }
 
-/* Responsive Design */
+/* ==============================================
+   RESPONSIVE DESIGN
+   
+   Adattamenti per tablet e mobile
+   ============================================== */
 @media (max-width: 768px) {
   .admin-dashboard {
-    padding: 1rem;
+    padding: 1rem;                    /* Padding ridotto su mobile */
   }
   
-  /* Responsive logout section */
+  /* SEZIONE LOGOUT RESPONSIVE */
   .admin-logout-section {
-    flex-direction: column;
+    flex-direction: column;           /* Layout verticale */
     gap: 1rem;
     text-align: center;
   }
@@ -508,7 +560,7 @@
   }
   
   .admin-welcome {
-    font-size: 1rem;
+    font-size: 1rem;                  /* Testo più piccolo */
   }
   
   .admin-header {
@@ -521,6 +573,7 @@
     font-size: 1.5rem;
   }
   
+  /* GRIGLIA SINGOLA COLONNA */
   .stats-grid {
     grid-template-columns: 1fr;
   }
@@ -529,6 +582,7 @@
     grid-template-columns: 1fr;
   }
   
+  /* TABELLA COMPATTA */
   .admin-table {
     font-size: 0.75rem;
   }
@@ -538,7 +592,7 @@
     padding: 0.5rem;
   }
   
-  /* Enhanced responsive design for navigation */
+  /* NAVIGAZIONE MOBILE */
   .admin-nav {
     padding: 0 1rem;
     margin: 0 -1rem 2rem -1rem;
@@ -552,11 +606,11 @@
   }
   
   .action-btn {
-    padding: 0.4rem;
+    padding: 0.4rem;                  /* Bottoni più piccoli */
   }
   
   .admin-table {
-    font-size: 0.7rem;
+    font-size: 0.7rem;                /* Testo tabella ancora più piccolo */
   }
   
   .admin-table th,
@@ -565,7 +619,7 @@
   }
 }
 
-/* Loading enhancements */
+/* MIGLIORAMENTI LOADING */
 .loading-container h2 {
   margin: 1rem 0 0.5rem 0;
   font-size: 1.5rem;

@@ -2,7 +2,7 @@
 # This file should be in the public directory
 
 # Proxy for Backend API
-/api/* http://13.51.194.249:3001/api/:splat 200
+/api/* http://16.170.241.18:3001/api/:splat 200
 
 # Admin routes
 /adminlogin /index.html 200

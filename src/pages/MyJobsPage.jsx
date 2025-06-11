@@ -41,9 +41,8 @@ const MyJobsPage = () => {
 
   // Helper function to get the correct URL for static files
   const getStaticFileUrl = (filename) => {
-    // In production, use relative path that goes through Netlify proxy
-    // In development, use localhost
-    const baseUrl = import.meta.env.PROD ? '' : 'http://localhost:3001';
+    // Utilizza la configurazione API centralizzata per coerenza
+    const baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
     return `${baseUrl}/uploads/${filename}`;
   };
 

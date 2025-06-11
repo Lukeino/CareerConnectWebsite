@@ -1,111 +1,131 @@
+// ==============================================
+// COMPONENTE CV UPLOAD OVERLAY
+// 
+// Modal per il caricamento, visualizzazione e gestione dei CV.
+// Supporta drag & drop, validazione file e azioni CRUD sui CV.
+// ==============================================
+
 import React, { useState, useCallback } from 'react';
 import { X, Upload, FileText, Check, Download, Trash2, Eye } from 'lucide-react';
 import { API_CONFIG } from '../config/api';
 import './CVUploadOverlay.css';
 
 const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, userId }) => {
-  const [isDragOver, setIsDragOver] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  // STATI DEL COMPONENTE
+  const [isDragOver, setIsDragOver] = useState(false);    // Stato drag over per feedback visivo
+  const [isUploading, setIsUploading] = useState(false);  // Stato caricamento in corso
+  const [isDeleting, setIsDeleting] = useState(false);    // Stato eliminazione in corso
+  const [selectedFile, setSelectedFile] = useState(null); // File selezionato per upload
 
-  // Helper function to get the correct URL for static files
+  // FUNZIONE HELPER PER URL FILE STATICI  // Helper per generare URL corretti per file statici
+  // Utilizza la configurazione API centralizzata per coerenza
   const getStaticFileUrl = (filename) => {
-    // In production, use relative path that goes through Netlify proxy
-    // In development, use localhost
-    const baseUrl = import.meta.env.PROD ? '' : 'http://localhost:3001';
+    // Rimuove '/api' dalla base URL e aggiunge '/uploads'
+    const baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
     return `${baseUrl}/uploads/${filename}`;
   };
 
+  // GESTORI DRAG & DROP
+  // useCallback per ottimizzazioni performance - evita re-render inutili
+  
   const handleDragOver = useCallback((e) => {
-    e.preventDefault();
-    setIsDragOver(true);
+    e.preventDefault();           // Previene comportamento default browser
+    setIsDragOver(true);         // Attiva stato drag over per stili CSS
   }, []);
 
   const handleDragLeave = useCallback((e) => {
-    e.preventDefault();
-    setIsDragOver(false);
+    e.preventDefault();          // Previene comportamento default browser
+    setIsDragOver(false);        // Disattiva stato drag over
   }, []);
 
   const handleDrop = useCallback((e) => {
-    e.preventDefault();
-    setIsDragOver(false);
+    e.preventDefault();          // Previene apertura file nel browser
+    setIsDragOver(false);        // Reset stato drag
     
-    const files = e.dataTransfer.files;
+    const files = e.dataTransfer.files;  // Ottiene file trascinati
     if (files.length > 0) {
-      handleFileSelect(files[0]);
+      handleFileSelect(files[0]); // Processa primo file (solo uno supportato)
     }
   }, []);
 
+  // VALIDAZIONE E SELEZIONE FILE
   const handleFileSelect = (file) => {
-    // Verifica che sia un PDF
+    // Verifica tipo file - solo PDF accettati
     if (file.type !== 'application/pdf') {
       alert('Per favore seleziona solo file PDF');
       return;
     }
 
-    // Verifica dimensione (max 5MB)
+    // Verifica dimensione file - massimo 5MB (5 * 1024 * 1024 bytes)
     if (file.size > 5 * 1024 * 1024) {
       alert('Il file deve essere massimo 5MB');
       return;
     }
 
-    setSelectedFile(file);
+    setSelectedFile(file);       // Salva file validato nello stato
   };
 
+  // GESTISCE SELEZIONE FILE DA INPUT
   const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0];  // Ottiene primo file selezionato
     if (file) {
-      handleFileSelect(file);
+      handleFileSelect(file);         // Usa stessa logica validazione
     }
   };
 
+  // CARICAMENTO FILE SUL SERVER
   const handleUpload = async () => {
-    if (!selectedFile) return;
+    if (!selectedFile) return;        // Verifica presenza file
 
-    setIsUploading(true);
+    setIsUploading(true);            // Attiva stato caricamento
     try {
-      await onUpload(selectedFile);
-      setSelectedFile(null);
-      onClose();
+      await onUpload(selectedFile);   // Chiama funzione upload del genitore
+      setSelectedFile(null);          // Reset file selezionato
+      onClose();                      // Chiude modal
     } catch (error) {
       console.error('Errore durante il caricamento:', error);
       alert('Errore durante il caricamento del CV');
     } finally {
-      setIsUploading(false);
+      setIsUploading(false);          // Disattiva stato caricamento sempre
     }
   };
+
+  // CHIUSURA MODAL CON RESET STATI
   const handleClose = () => {
-    setSelectedFile(null);
-    setIsDragOver(false);
-    onClose();
+    setSelectedFile(null);            // Reset file selezionato
+    setIsDragOver(false);            // Reset stato drag
+    onClose();                       // Chiama funzione chiusura del genitore
   };
+
+  // DOWNLOAD CV ESISTENTE
   const handleDownloadCV = async () => {
-    if (!currentCV) return;
-    
-    try {      console.log('📥 Starting CV download for:', currentCV);
+    if (!currentCV) return;          // Verifica presenza CV
+
+    try {
+      console.log('📥 Starting CV download for:', currentCV);
       
-      // Fetch the file as blob
+      // Fetch del file come blob per download
       const response = await fetch(getStaticFileUrl(currentCV));
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      const blob = await response.blob();
+      const blob = await response.blob();  // Converte risposta in blob
       
-      // Create download link
+      // Crea link temporaneo per download
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = currentCV;
-      link.style.display = 'none';
+      link.download = currentCV;           // Nome file per download
+      link.style.display = 'none';        // Link invisibile
       
+      // Trigger download
       document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      link.click();                        // Simula click per avviare download
+      document.body.removeChild(link);     // Rimuove link dal DOM
       
-      // Clean up the object URL
+      // Pulisce URL temporaneo per liberare memoria
       window.URL.revokeObjectURL(url);
       
       console.log('✅ CV download completed');
@@ -114,19 +134,26 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
       alert('Errore durante il download del CV. Prova a visualizzarlo invece.');
     }
   };
+
+  // VISUALIZZAZIONE CV IN NUOVA TAB
   const handleViewCV = () => {
     if (currentCV) {
-      window.open(getStaticFileUrl(currentCV), '_blank');
+      window.open(getStaticFileUrl(currentCV), '_blank');  // Apre in nuova tab
     }
   };
 
+  // ELIMINAZIONE CV DAL SERVER
   const handleDeleteCV = async () => {
-    if (!currentCV) return;
+    if (!currentCV) return;          // Verifica presenza CV
     
+    // Conferma utente prima di eliminazione
     if (!window.confirm('Sei sicuro di voler eliminare il tuo CV? Questa azione non può essere annullata.')) {
       return;
-    }    setIsDeleting(true);
+    }
+
+    setIsDeleting(true);             // Attiva stato eliminazione
     try {
+      // Chiamata API per eliminazione
       const response = await fetch(`${API_CONFIG.BASE_URL}/user/${userId}/cv`, {
         method: 'DELETE'
       });
@@ -135,10 +162,10 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
       
       if (result.success) {
         if (onDeleteCV) {
-          onDeleteCV();
+          onDeleteCV();              // Callback al genitore per aggiornamento UI
         }
         alert('CV eliminato con successo!');
-        onClose();
+        onClose();                   // Chiude modal
       } else {
         throw new Error(result.error || 'Errore durante l\'eliminazione');
       }
@@ -146,15 +173,17 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
       console.error('Errore durante l\'eliminazione del CV:', error);
       alert('Errore durante l\'eliminazione del CV');
     } finally {
-      setIsDeleting(false);
+      setIsDeleting(false);          // Disattiva stato eliminazione sempre
     }
   };
 
+  // RENDER CONDIZIONALE - non renderizza se modal chiuso
   if (!isOpen) return null;
 
   return (
     <div className="cv-upload-overlay">
       <div className="cv-upload-modal">
+        {/* HEADER DEL MODAL */}
         <div className="cv-upload-header">
           <h2>
             <Upload size={24} />
@@ -163,14 +192,21 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
           <button onClick={handleClose} className="close-btn">
             <X size={20} />
           </button>
-        </div>        <div className="cv-upload-content">
+        </div>
+
+        {/* CONTENUTO PRINCIPALE */}
+        <div className="cv-upload-content">
+          {/* SEZIONE CV ESISTENTE - mostrata solo se presente */}
           {currentCV && (
             <div className="current-cv-section">
               <div className="current-cv-info">
                 <FileText size={16} />
                 <span>CV attuale: {currentCV}</span>
               </div>
+              
+              {/* AZIONI SU CV ESISTENTE */}
               <div className="current-cv-actions">
+                {/* Bottone Visualizza */}
                 <button 
                   onClick={handleViewCV}
                   className="cv-action-btn view-cv-btn"
@@ -178,6 +214,8 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
                 >
                   <Eye size={16} />
                 </button>
+                
+                {/* Bottone Download */}
                 <button 
                   onClick={handleDownloadCV}
                   className="cv-action-btn download-cv-btn"
@@ -185,6 +223,8 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
                 >
                   <Download size={16} />
                 </button>
+                
+                {/* Bottone Elimina con stato loading */}
                 <button 
                   onClick={handleDeleteCV}
                   disabled={isDeleting}
@@ -201,6 +241,7 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
             </div>
           )}
 
+          {/* ZONA DRAG & DROP */}
           <div
             className={`drop-zone ${isDragOver ? 'drag-over' : ''} ${selectedFile ? 'has-file' : ''}`}
             onDragOver={handleDragOver}
@@ -208,7 +249,9 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
             onDrop={handleDrop}
             onClick={() => document.getElementById('cv-file-input').click()}
           >
+            {/* CONTENUTO CONDIZIONALE DELLA ZONA DROP */}
             {selectedFile ? (
+              // Visualizzazione file selezionato
               <div className="selected-file">
                 <FileText size={48} />
                 <h3>{selectedFile.name}</h3>
@@ -216,8 +259,8 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
                 <div className="file-actions">
                   <button 
                     onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedFile(null);
+                      e.stopPropagation();    // Previene click sulla zona drop
+                      setSelectedFile(null);  // Rimuove file selezionato
                     }}
                     className="remove-file-btn"
                   >
@@ -226,6 +269,7 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
                 </div>
               </div>
             ) : (
+              // Contenuto default zona drop
               <div className="drop-zone-content">
                 <Upload size={48} />
                 <h3>Trascina il tuo CV qui</h3>
@@ -238,30 +282,37 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
             )}
           </div>
 
+          {/* INPUT FILE NASCOSTO - attivato da click zona drop */}
           <input
             id="cv-file-input"
             type="file"
-            accept=".pdf"
+            accept=".pdf"                    // Accetta solo PDF
             onChange={handleFileInputChange}
-            style={{ display: 'none' }}
+            style={{ display: 'none' }}     // Nascosto, usato programmaticamente
           />
         </div>
 
+        {/* FOOTER CON BOTTONI AZIONE */}
         <div className="cv-upload-footer">
+          {/* Bottone Annulla */}
           <button onClick={handleClose} className="cancel-btn">
             Annulla
           </button>
+          
+          {/* Bottone Carica con stati condizionali */}
           <button 
             onClick={handleUpload} 
-            disabled={!selectedFile || isUploading}
+            disabled={!selectedFile || isUploading}  // Disabilitato se no file o caricamento
             className="upload-btn"
           >
             {isUploading ? (
+              // Stato caricamento
               <>
                 <div className="loading-spinner"></div>
                 Caricamento...
               </>
             ) : (
+              // Stato normale
               <>
                 <Check size={16} />
                 Carica CV

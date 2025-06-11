@@ -1,61 +1,76 @@
+/* ==============================================
+   COMPONENTE HEADER
+   
+   Stili per l'header principale del sito con logo,
+   navigazione, selettore lingua, autenticazione utente
+   e supporto per interfaccia amministratore.
+   ============================================== */
+
+/* CONTENITORE PRINCIPALE HEADER */
 .header {
-  background: #fff;
-  border-bottom: 1px solid #e6e6e6;
-  position: static !important;
+  background: #fff;                    /* Sfondo bianco pulito */
+  border-bottom: 1px solid #e6e6e6;   /* Bordo inferiore sottile */
+  position: static !important;         /* Posizionamento statico (non fisso) */
   top: 0;
   left: 0;
   right: 0;
-  width: 100%;
-  z-index: 100;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  width: 100%;                         /* Larghezza completa */
+  z-index: 100;                        /* Z-index per stare sopra altri elementi */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* Ombra leggera */
 }
 
+/* CONTENITORE INTERNO CENTRATO */
 .header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
+  max-width: 1200px;                   /* Larghezza massima responsive */
+  margin: 0 auto;                      /* Centratura orizzontale */
+  padding: 0 24px;                     /* Padding orizzontale */
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
+  align-items: center;                 /* Allineamento verticale elementi */
+  justify-content: space-between;      /* Distribuzione spazio tra elementi */
+  height: 64px;                        /* Altezza fissa header */
 }
 
+/* LOGO PRINCIPALE */
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  color: #0072b1;
+  gap: 12px;                           /* Spazio tra icona e testo */
+  text-decoration: none;               /* Rimuove sottolineatura link */
+  color: #0072b1;                      /* Colore brand principale */
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 700;                    /* Peso bold */
 }
 
+/* CONTENITORE LOGO CUSTOM */
 .custom-logo {
   display: flex;
   align-items: center;
 }
 
+/* TESTO LOGO STYLIZZATO */
 .logo-text {
   display: flex;
   align-items: center;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', sans-serif;  /* Font moderno */
   font-weight: 800;
   font-size: 28px;
-  letter-spacing: -1px;
+  letter-spacing: -1px;                /* Spaziatura lettere ridotta */
 }
 
+/* PRIMA 'C' DEL LOGO - EFFETTO GRADIENTE */
 .c-first {
   color: #0072b1;
   font-size: 36px;
   font-weight: 900;
   background: linear-gradient(135deg, #0072b1 0%, #005a8b 50%, #004471 100%);
-  background-clip: text;
+  background-clip: text;               /* Applica gradiente al testo */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   position: relative;
-  margin-right: -2px;
+  margin-right: -2px;                  /* Sovrapposizione leggera */
 }
 
+/* PARTE CENTRALE LOGO */
 .logo-middle {
   color: #333;
   font-weight: 600;
@@ -63,21 +78,23 @@
   margin: 0 2px;
 }
 
+/* SECONDA 'C' DEL LOGO - ACCENTO ARANCIONE */
 .c-second {
   color: #FFB366;
   font-size: 36px;
   font-weight: 900;
-  text-shadow: 2px 2px 4px rgba(255, 179, 102, 0.3);
+  text-shadow: 2px 2px 4px rgba(255, 179, 102, 0.3); /* Ombra testo */
   background: linear-gradient(135deg, #FFB366 0%, #FF9A3C 50%, #FF7F1F 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   position: relative;
   margin: 0 -2px 0 -1px;
-  transform: rotate(-5deg);
+  transform: rotate(-5deg);            /* Rotazione leggera per dinamismo */
   display: inline-block;
 }
 
+/* PARTE FINALE LOGO */
 .logo-end {
   color: #333;
   font-weight: 600;
@@ -85,45 +102,50 @@
   margin-left: 2px;
 }
 
+/* NAVIGAZIONE PRINCIPALE */
 .nav {
   display: flex;
-  gap: 32px;
-  margin-left: 48px;
+  gap: 32px;                           /* Spaziatura tra link navigazione */
+  margin-left: 48px;                   /* Distanza dal logo */
 }
 
+/* LINK NAVIGAZIONE */
 .nav-link {
   text-decoration: none;
-  color: #666;
+  color: #666;                         /* Colore grigio neutro */
   font-weight: 500;
   padding: 8px 16px;
   border-radius: 4px;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease;           /* Transizione fluida */
   position: relative;
 }
 
+/* HOVER SUI LINK NAVIGAZIONE */
 .nav-link:hover {
-  color: #0072b1;
-  background: #f3f6f8;
+  color: #0072b1;                      /* Colore brand al hover */
+  background: #f3f6f8;                 /* Sfondo chiaro al hover */
 }
 
+/* LINK NAVIGAZIONE ATTIVO */
 .nav-link.active {
   color: #0072b1;
-  background: rgba(0, 114, 177, 0.08);
+  background: rgba(0, 114, 177, 0.08); /* Sfondo brand trasparente */
   font-weight: 600;
 }
 
 .nav-link.active::after {
-  display: none;
+  display: none;                       /* Nasconde decorazioni aggiuntive */
 }
 
-/* Header right section */
+/* SEZIONE DESTRA HEADER */
 .header-right {
   display: flex;
   align-items: center;
-  gap: 24px;
-  margin-left: auto;
+  gap: 24px;                           /* Spaziatura tra elementi */
+  margin-left: auto;                   /* Spinge a destra */
 }
 
+/* SELETTORE LINGUA */
 .language-selector {
   display: flex;
   align-items: center;
@@ -131,6 +153,7 @@
   margin-right: 24px;
 }
 
+/* BOTTONE TOGGLE LINGUA */
 .lang-toggle-btn {
   display: flex;
   align-items: center;
@@ -139,56 +162,63 @@
   border: 1px solid #e6e6e6;
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   color: #374151;
-  border-radius: 24px;
+  border-radius: 24px;                 /* Bordi molto arrotondati */
   cursor: pointer;
   font-size: 12px;
   font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Transizione personalizzata */
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.5px;               /* Spaziatura lettere per effetto premium */
   position: relative;
-  overflow: hidden;
+  overflow: hidden;                    /* Nasconde overflow per effetti */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* EFFETTO SHIMMER PRE-HOVER */
 .lang-toggle-btn::before {
   content: '';
   position: absolute;
   top: 0;
-  left: -100%;
+  left: -100%;                         /* Inizia fuori vista */
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(0, 114, 177, 0.1), transparent);
-  transition: left 0.5s;
+  transition: left 0.5s;               /* Animazione shimmer */
 }
 
+/* ATTIVAZIONE SHIMMER AL HOVER */
 .lang-toggle-btn:hover::before {
-  left: 100%;
+  left: 100%;                          /* Attraversa il bottone */
 }
 
+/* HOVER BOTTONE LINGUA */
 .lang-toggle-btn:hover {
   border-color: #0072b1;
   background: linear-gradient(135deg, #f1f8ff 0%, #e6f3ff 100%);
   color: #0072b1;
-  transform: translateY(-1px);
+  transform: translateY(-1px);         /* Leggero sollevamento */
   box-shadow: 0 4px 12px rgba(0, 114, 177, 0.15);
 }
 
+/* STATO ATTIVO BOTTONE LINGUA */
 .lang-toggle-btn:active {
-  transform: translateY(0);
+  transform: translateY(0);            /* Ritorna alla posizione normale */
 }
 
+/* LINGUA CORRENTE */
 .current-lang {
   color: #0072b1;
   font-weight: 700;
 }
 
+/* SEPARATORE LINGUE */
 .lang-separator {
   color: #cbd5e1;
   font-weight: 300;
   margin: 0 2px;
 }
 
+/* PROSSIMA LINGUA */
 .next-lang {
   color: #94a3b8;
   font-weight: 500;
@@ -196,17 +226,20 @@
   transition: all 0.2s ease;
 }
 
+/* HOVER PROSSIMA LINGUA */
 .lang-toggle-btn:hover .next-lang {
   color: #0072b1;
   opacity: 1;
 }
 
+/* CONTENITORE BOTTONI AUTENTICAZIONE */
 .auth-buttons {
   display: flex;
   gap: 16px;
   align-items: center;
 }
 
+/* STILE BASE BOTTONI */
 .btn {
   padding: 10px 24px;
   border-radius: 8px;
@@ -221,12 +254,13 @@
   gap: 8px;
   position: relative;
   overflow: hidden;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.025em;             /* Spaziatura lettere leggera */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  white-space: nowrap;
+  white-space: nowrap;                 /* Evita interruzioni testo */
   min-width: fit-content;
 }
 
+/* EFFETTO SHIMMER BOTTONI */
 .btn::before {
   content: '';
   position: absolute;
@@ -238,10 +272,12 @@
   transition: left 0.5s;
 }
 
+/* ATTIVAZIONE SHIMMER HOVER BOTTONI */
 .btn:hover::before {
   left: 100%;
 }
 
+/* BOTTONE OUTLINE */
 .btn-outline {
   color: #0072b1;
   border-color: #0072b1;
@@ -249,6 +285,7 @@
   position: relative;
 }
 
+/* HOVER BOTTONE OUTLINE */
 .btn-outline:hover {
   background: linear-gradient(135deg, #f1f8ff 0%, #e6f3ff 100%);
   border-color: #005a8b;
@@ -261,7 +298,7 @@
   transform: translateY(0);
 }
 
-/* Custom styling for login button */
+/* BOTTONE LOGIN PERSONALIZZATO */
 .login-btn {
   background: linear-gradient(135deg, #0072b1 0%, #005a8b 100%) !important;
   color: white !important;
@@ -283,6 +320,7 @@
   transform: translateY(0) !important;
 }
 
+/* BOTTONE PRIMARIO */
 .btn-primary {
   background: linear-gradient(135deg, #0072b1 0%, #005a8b 100%);
   color: white;
@@ -301,13 +339,14 @@
   transform: translateY(0);
 }
 
-/* User Menu - Professional Dropdown */
+/* MENU UTENTE - DROPDOWN PROFESSIONALE */
 .user-menu {
   position: relative;
   display: flex;
   align-items: center;
 }
 
+/* TRIGGER PROFILO UTENTE */
 .user-profile-trigger {
   display: flex;
   align-items: center;
@@ -316,7 +355,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: #f8fafc;
+  background: #f8fafc;                 /* Sfondo grigio chiaro */
   border: 1px solid #e2e8f0;
 }
 
@@ -326,37 +365,43 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* INFORMAZIONI UTENTE */
 .user-info {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+/* NOME UTENTE */
 .user-name {
   color: #1e293b;
   font-weight: 600;
   font-size: 14px;
 }
 
+/* TIPO UTENTE (BADGE) */
 .user-type {
   color: #64748b;
   font-size: 11px;
   text-transform: capitalize;
   background: #e2e8f0;
   padding: 2px 6px;
-  border-radius: 10px;
+  border-radius: 10px;                 /* Bordi molto arrotondati per pill effect */
   font-weight: 500;
 }
 
+/* FRECCIA DROPDOWN */
 .dropdown-arrow {
   color: #64748b;
   transition: transform 0.2s ease;
 }
 
+/* FRECCIA DROPDOWN APERTA */
 .dropdown-arrow.open {
-  transform: rotate(180deg);
+  transform: rotate(180deg);           /* Rotazione per indicare stato aperto */
 }
 
+/* DROPDOWN UTENTE */
 .user-dropdown {
   position: absolute;
   top: 100%;
@@ -366,23 +411,25 @@
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Ombra profonda */
+  z-index: 1000;                       /* Z-index alto per visibilità */
   overflow: hidden;
-  animation: dropdownFadeIn 0.2s ease;
+  animation: dropdownFadeIn 0.2s ease; /* Animazione entrata */
 }
 
+/* ANIMAZIONE ENTRATA DROPDOWN */
 @keyframes dropdownFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-10px);      /* Inizia spostato in alto */
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0);          /* Posizione finale */
   }
 }
 
+/* ELEMENTI DROPDOWN */
 .dropdown-item {
   display: flex;
   align-items: center;
@@ -398,11 +445,11 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;   /* Separatore sottile */
 }
 
 .dropdown-item:last-child {
-  border-bottom: none;
+  border-bottom: none;                 /* Rimuove bordo dall'ultimo elemento */
 }
 
 .dropdown-item:hover {
@@ -419,25 +466,27 @@
   color: #0072b1;
 }
 
+/* INDICATORE CV PRESENTE */
 .cv-indicator {
-  color: #10b981;
+  color: #10b981;                      /* Verde per stato positivo */
   font-weight: bold;
   margin-left: 6px;
   font-size: 1.2em;
 }
 
+/* ELEMENTO LOGOUT SPECIALE */
 .logout-item:hover {
-  background: #fef2f2;
-  color: #dc2626;
+  background: #fef2f2;                 /* Sfondo rosso chiaro */
+  color: #dc2626;                      /* Testo rosso */
 }
 
 .logout-item:hover svg {
   color: #dc2626;
 }
 
-/* Admin Header Styles */
+/* STILI HEADER AMMINISTRATORE */
 .admin-header {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Gradiente scuro */
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -446,12 +495,14 @@
   border-bottom: none;
 }
 
+/* LOGO ADMIN */
 .admin-logo {
   color: #ffffff !important;
 }
 
+/* BADGE ADMIN */
 .admin-badge {
-  background: linear-gradient(45deg, #dc2626, #b91c1c);
+  background: linear-gradient(45deg, #dc2626, #b91c1c); /* Gradiente rosso */
   color: #ffffff;
   font-size: 10px;
   font-weight: 700;
@@ -463,8 +514,9 @@
   box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
 }
 
+/* INFORMAZIONI UTENTE ADMIN */
 .admin-user-info {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1); /* Sfondo semi-trasparente */
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   padding: 8px 12px;
@@ -478,21 +530,24 @@
 
 .admin-user-info .user-name,
 .admin-user-info .user-type {
-  color: #ffffff;
+  color: #ffffff;                      /* Testo bianco per contrasto */
 }
 
+/* BADGE TIPO ADMIN */
 .admin-type {
-  background: rgba(168, 85, 247, 0.3);
+  background: rgba(168, 85, 247, 0.3);  /* Viola semi-trasparente */
   color: #a855f7 !important;
   border: 1px solid rgba(168, 85, 247, 0.5);
 }
 
+/* DROPDOWN ADMIN */
 .admin-dropdown {
-  background: rgba(26, 26, 46, 0.95);
+  background: rgba(26, 26, 46, 0.95);   /* Sfondo scuro semi-trasparente */
   border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);          /* Effetto blur sfondo */
 }
 
+/* LOGOUT ADMIN */
 .admin-logout {
   color: #ffffff;
   background: transparent;
@@ -500,19 +555,20 @@
 }
 
 .admin-logout:hover {
-  background: rgba(220, 38, 38, 0.2);
+  background: rgba(220, 38, 38, 0.2);   /* Sfondo rosso al hover */
   color: #dc2626;
 }
 
-/* Header divider */
+/* DIVISORE HEADER */
 .header-divider {
   width: 1px;
   height: 32px;
   background: linear-gradient(to bottom, transparent 0%, #e6e6e6 20%, #e6e6e6 80%, transparent 100%);
   margin: 0 24px;
-  flex-shrink: 0;
+  flex-shrink: 0;                       /* Non si riduce su schermi piccoli */
 }
 
+/* VISUALIZZAZIONE CONDIZIONALE DIVISORE */
 .header-container.has-nav-or-auth .header-divider {
   display: block;
 }
@@ -521,18 +577,24 @@
   display: none;
 }
 
-/* Media queries */
+/* ==============================================
+   RESPONSIVE DESIGN
+   
+   Adattamenti per schermi di diverse dimensioni
+   ============================================== */
+
+/* TABLET E MOBILE */
 @media (max-width: 768px) {
   .header-container {
-    padding: 0 16px;
+    padding: 0 16px;                    /* Padding ridotto */
   }
   
   .nav {
-    display: none;
+    display: none;                      /* Nasconde navigazione su mobile */
   }
   
   .logo span {
-    display: none;
+    display: none;                      /* Nasconde testo logo se presente */
   }
   
   .language-selector {
@@ -541,61 +603,67 @@
   }
   
   .lang-toggle-btn {
-    padding: 6px 12px;
+    padding: 6px 12px;                  /* Padding ridotto */
     font-size: 11px;
     gap: 6px;
   }
   
   .auth-buttons {
-    gap: 12px;
+    gap: 12px;                          /* Gap ridotto tra bottoni */
   }
   
   .btn {
-    padding: 8px 18px;
+    padding: 8px 18px;                  /* Padding bottoni ridotto */
     font-size: 13px;
   }
   
   .btn svg {
-    width: 14px;
+    width: 14px;                        /* Icone più piccole */
     height: 14px;
   }
   
   .user-profile-trigger {
-    padding: 6px 8px;
+    padding: 6px 8px;                   /* Padding trigger ridotto */
   }
 
   .user-name {
-    display: none;
+    display: none;                      /* Nasconde nome utente su mobile */
   }
 
   .user-dropdown {
-    min-width: 160px;
-    right: -8px;
+    min-width: 160px;                   /* Dropdown più stretto */
+    right: -8px;                        /* Compensazione allineamento */
   }
 
   .dropdown-item {
-    padding: 10px 12px;
+    padding: 10px 12px;                 /* Padding item ridotto */
     font-size: 13px;
   }
 }
 
-/* Icon animations */
+/* ==============================================
+   ANIMAZIONI ICONE
+   
+   Effetti hover per migliore feedback visivo
+   ============================================== */
+
 .btn svg {
   transition: transform 0.2s ease;
 }
 
 .btn:hover svg {
-  transform: scale(1.1);
+  transform: scale(1.1);                /* Leggero ingrandimento */
 }
 
 .btn-outline:hover svg {
-  animation: pulse 1.5s infinite;
+  animation: pulse 1.5s infinite;       /* Animazione pulse */
 }
 
 .btn-primary:hover svg {
-  animation: bounce 0.6s ease;
+  animation: bounce 0.6s ease;          /* Animazione bounce */
 }
 
+/* ANIMAZIONE PULSE */
 @keyframes pulse {
   0%, 100% {
     transform: scale(1.1);
@@ -605,6 +673,7 @@
   }
 }
 
+/* ANIMAZIONE BOUNCE */
 @keyframes bounce {
   0%, 20%, 60%, 100% {
     transform: scale(1.1);

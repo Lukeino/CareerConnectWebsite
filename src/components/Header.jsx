@@ -1,3 +1,11 @@
+// ==============================================
+// COMPONENTE HEADER
+// 
+// Header principale del sito con logo, navigazione,
+// autenticazione utente e overlay per gestione CV.
+// Supporta interfacce diverse per admin, recruiter e candidati.
+// ==============================================
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,17 +15,21 @@ import CVUploadOverlay from './CVUploadOverlay';
 import './Header.css';
 
 const Header = () => {
+  // HOOKS E CONTEXT
   const { user, logout, isAuthenticated, refreshUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isCVUploadOpen, setIsCVUploadOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  
+  // STATI LOCALI DEL COMPONENTE
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);    // Stato dropdown menu utente
+  const [isCVUploadOpen, setIsCVUploadOpen] = useState(false);    // Stato overlay caricamento CV
+  const dropdownRef = useRef(null);                               // Ref per gestione click outside
 
-  // Debug log per vedere quando l'user cambia
+  // DEBUG LOG - Traccia cambiamenti stato utente
   console.log('🔍 Header render - User state:', user);
 
-  // Chiudi il dropdown quando si clicca fuori
+  // EFFECT: GESTIONE CLICK OUTSIDE DROPDOWN
+  // Chiude il dropdown quando si clicca fuori dall'area
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -31,64 +43,82 @@ const Header = () => {
     };
   }, []);
 
+  // GESTIONE LOGOUT
   const handleLogout = () => {
-    logout();
-    navigate('/');
-    setIsDropdownOpen(false);
+    logout();                           // Esegue logout dal context
+    navigate('/');                      // Redirect alla homepage
+    setIsDropdownOpen(false);           // Chiude dropdown
   };
+  
+  // TOGGLE DROPDOWN MENU UTENTE
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
-  };  const handleCVUpload = async (file) => {
+  };
+  
+  // GESTIONE CARICAMENTO CV
+  const handleCVUpload = async (file) => {
     try {
-      // Debug: controlla se user e user.id esistono
+      // DEBUG: Verifica stato utente
       console.log('🔍 Debug CV Upload - User:', user);
       console.log('🔍 Debug CV Upload - User ID:', user?.id);
       
+      // Validazione: verifica autenticazione e presenza ID utente
       if (!user || !user.id) {
         throw new Error('Utente non autenticato o ID mancante');
       }
 
+      // Preparazione FormData per upload file
       const formData = new FormData();
       formData.append('cv', file);
-      formData.append('userId', user.id);      console.log('📤 Sending CV upload request with userId:', user.id);
+      formData.append('userId', user.id);
 
+      console.log('📤 Sending CV upload request with userId:', user.id);
+
+      // Chiamata API per upload CV
       const response = await fetch(`${API_CONFIG.BASE_URL}/upload-cv`, {
         method: 'POST',
         body: formData,
       });
 
       const result = await response.json();
-        if (result.success) {
-        // Aggiorna i dati dell'utente nel context se necessario
+      
+      if (result.success) {
         alert('CV caricato con successo!');
-        // Aggiorna i dati dell'utente invece di ricaricare la pagina
+        // Aggiorna dati utente nel context (refresh invece di reload pagina)
         await refreshUser();
-        setIsCVUploadOpen(false);
+        setIsCVUploadOpen(false);         // Chiude overlay
       } else {
         throw new Error(result.error || 'Errore durante il caricamento');
       }
     } catch (error) {
       console.error('Errore durante l\'upload del CV:', error);
-      throw error;
+      throw error;                        // Rilancia errore per gestione nel componente figlio
     }
   };
+  
+  // GESTIONE ELIMINAZIONE CV
   const handleCVDelete = async () => {
-    // Aggiorna i dati dell'utente invece di ricaricare la pagina
+    // Aggiorna dati utente dopo eliminazione CV
     await refreshUser();
-  };const getLogoDestination = () => {
-    if (!isAuthenticated) return "/";
-    if (user?.user_type === 'admin') return "/admin";
-    if (user?.user_type === 'recruiter') return "/my-jobs";
-    return "/jobs"; // For candidates
   };
 
+  // DESTINAZIONE LOGO DINAMICA BASATA SU TIPO UTENTE
+  const getLogoDestination = () => {
+    if (!isAuthenticated) return "/";                    // Ospiti -> Homepage
+    if (user?.user_type === 'admin') return "/admin";    // Admin -> Dashboard admin
+    if (user?.user_type === 'recruiter') return "/my-jobs"; // Recruiter -> I miei annunci
+    return "/jobs";                                      // Candidati -> Lista offerte
+  };
+
+  // HELPER: VERIFICA SE LINK È ATTIVO
   const isActive = (path) => location.pathname === path;
 
-  // If user is admin, show minimal header
+  // RENDER HEADER AMMINISTRATORE - Layout minimale e tema scuro
   if (isAuthenticated && user?.user_type === 'admin') {
     return (
       <header className="header admin-header">
         <div className="header-container">
+          {/* Logo amministratore con badge */}
           <Link to="/admin" className="logo">
             <div className="custom-logo">
               <span className="logo-text admin-logo">
@@ -101,9 +131,11 @@ const Header = () => {
             </div>
           </Link>
 
+          {/* Sezione destra con menu utente admin */}
           <div className="header-right">
             <div className="auth-section">
               <div className="user-menu" ref={dropdownRef}>
+                {/* Trigger profilo admin */}
                 <div className="user-profile-trigger" onClick={toggleDropdown}>
                   <div className="user-info admin-user-info">
                     <User size={20} />
@@ -116,6 +148,7 @@ const Header = () => {
                   />
                 </div>
                 
+                {/* Dropdown admin (solo logout) */}
                 {isDropdownOpen && (
                   <div className="dropdown-menu admin-dropdown">
                     <button onClick={handleLogout} className="dropdown-item admin-logout">
@@ -131,109 +164,140 @@ const Header = () => {
       </header>
     );
   }
-  // Check if there are nav items or auth section visible
+
+  // LOGICA VISUALIZZAZIONE ELEMENTI: Determina se mostrare navigazione o sezione auth
   const hasNavOrAuth = (user?.user_type !== 'admin' && isAuthenticated) || isAuthenticated;
+
+  // RENDER HEADER NORMALE - Per ospiti, candidati e recruiter
   return (
     <>
       <header className="header">
-        <div className={`header-container ${hasNavOrAuth ? 'has-nav-or-auth' : ''}`}>        <Link to={getLogoDestination()} className="logo">
-          <div className="custom-logo">
-            <span className="logo-text">
-              <span className="c-first">C</span>
-              <span className="logo-middle">areer</span>
-              <span className="c-second">C</span>
-              <span className="logo-end">onnect</span>
-            </span>
-          </div>
-        </Link>
+        <div className={`header-container ${hasNavOrAuth ? 'has-nav-or-auth' : ''}`}>
+          {/* Logo principale con destinazione dinamica */}
+          <Link to={getLogoDestination()} className="logo">
+            <div className="custom-logo">
+              <span className="logo-text">
+                <span className="c-first">C</span>
+                <span className="logo-middle">areer</span>
+                <span className="c-second">C</span>
+                <span className="logo-end">onnect</span>
+              </span>
+            </div>
+          </Link>
 
-        {/* Divider - only show when there are nav items or auth buttons */}
-        {hasNavOrAuth && <div className="header-divider"></div>}<nav className="nav">
-          {/* Hide navigation for admin users and guests */}
-          {user?.user_type !== 'admin' && isAuthenticated && (
-            <>
-              {/* Show Jobs link only for authenticated candidates */}
-              {user?.user_type === 'candidate' && (
-                <Link 
-                  to="/jobs" 
-                  className={`nav-link ${isActive('/jobs') ? 'active' : ''}`}
-                >
-                  Lista Offerte
-                </Link>
-              )}
-              
-              {/* Show My Jobs link only for authenticated recruiters */}
-              {user?.user_type === 'recruiter' && (
-                <Link 
-                  to="/my-jobs" 
-                  className={`nav-link ${isActive('/my-jobs') ? 'active' : ''}`}
-                >
-                  I Miei Annunci
-                </Link>
-              )}
-            </>
-          )}
-        </nav><div className="header-right">
-          <div className="auth-section">{isAuthenticated ? (
-            <div className="user-menu" ref={dropdownRef}>              <div className="user-profile-trigger" onClick={toggleDropdown}>
-                <div className="user-info">
-                  <User size={20} />
-                  <span className="user-name">{user.first_name} {user.last_name}</span>
-                </div>
-                <ChevronDown 
-                  size={16} 
-                  className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}
-                />
-              </div>
-                {isDropdownOpen && (
-                <div className="user-dropdown">
-                  {user?.user_type === 'recruiter' && (
-                    <Link
-                      to="/create-job" 
-                      className="dropdown-item"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      <Plus size={16} />                      <span>Crea Offerta</span>
-                    </Link>
-                  )}                  {user?.user_type === 'candidate' && (
-                    <button
-                      onClick={() => {
-                        setIsDropdownOpen(false);
-                        setIsCVUploadOpen(true);
-                      }}
-                      className="dropdown-item"
-                    >
-                      <Upload size={16} />
-                      <span>
-                        {user?.cv_filename ? 'Gestisci CV' : 'Carica CV'}
-                        {user?.cv_filename && <span className="cv-indicator">•</span>}
-                      </span>
-                    </button>
-                  )}
+          {/* Divisore visuale - mostrato solo quando necessario */}
+          {hasNavOrAuth && <div className="header-divider"></div>}
+
+          {/* NAVIGAZIONE PRINCIPALE */}
+          <nav className="nav">
+            {/* Navigazione nascosta per admin e ospiti */}
+            {user?.user_type !== 'admin' && isAuthenticated && (
+              <>
+                {/* Link "Lista Offerte" - solo per candidati autenticati */}
+                {user?.user_type === 'candidate' && (
+                  <Link 
+                    to="/jobs" 
+                    className={`nav-link ${isActive('/jobs') ? 'active' : ''}`}
+                  >
+                    Lista Offerte
+                  </Link>
+                )}
+                
+                {/* Link "I Miei Annunci" - solo per recruiter autenticati */}
+                {user?.user_type === 'recruiter' && (
+                  <Link 
+                    to="/my-jobs" 
+                    className={`nav-link ${isActive('/my-jobs') ? 'active' : ''}`}
+                  >
+                    I Miei Annunci
+                  </Link>
+                )}
+              </>
+            )}
+          </nav>
+
+          {/* SEZIONE DESTRA HEADER */}
+          <div className="header-right">
+            <div className="auth-section">
+              {/* RENDERING CONDIZIONALE: Menu utente vs Bottoni guest */}
+              {isAuthenticated ? (
+                // MENU UTENTE AUTENTICATO
+                <div className="user-menu" ref={dropdownRef}>
+                  {/* Trigger profilo utente */}
+                  <div className="user-profile-trigger" onClick={toggleDropdown}>
+                    <div className="user-info">
+                      <User size={20} />
+                      <span className="user-name">{user.first_name} {user.last_name}</span>
+                    </div>
+                    <ChevronDown 
+                      size={16} 
+                      className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}
+                    />
+                  </div>
                   
-                  <button onClick={handleLogout} className="dropdown-item logout-item">
-                    <LogOut size={16} />
-                    <span>Esci</span>
-                  </button>
+                  {/* Dropdown con azioni utente */}
+                  {isDropdownOpen && (
+                    <div className="user-dropdown">
+                      {/* Opzione "Crea Offerta" - solo per recruiter */}
+                      {user?.user_type === 'recruiter' && (
+                        <Link
+                          to="/create-job" 
+                          className="dropdown-item"
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          <Plus size={16} />
+                          <span>Crea Offerta</span>
+                        </Link>
+                      )}
+                      
+                      {/* Opzione "Gestisci CV" - solo per candidati */}
+                      {user?.user_type === 'candidate' && (
+                        <button
+                          onClick={() => {
+                            setIsDropdownOpen(false);
+                            setIsCVUploadOpen(true);
+                          }}
+                          className="dropdown-item"
+                        >
+                          <Upload size={16} />
+                          <span>
+                            {user?.cv_filename ? 'Gestisci CV' : 'Carica CV'}
+                            {/* Indicatore CV presente */}
+                            {user?.cv_filename && <span className="cv-indicator">•</span>}
+                          </span>
+                        </button>
+                      )}
+                      
+                      {/* Opzione Logout - sempre presente */}
+                      <button onClick={handleLogout} className="dropdown-item logout-item">
+                        <LogOut size={16} />
+                        <span>Esci</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                // BOTTONI PER UTENTI NON AUTENTICATI
+                <div className="auth-buttons">
+                  <Link to="/login" className="btn btn-outline login-btn">
+                    Accedi
+                  </Link>
                 </div>
               )}
-            </div>) : (            <div className="auth-buttons">
-              <Link to="/login" className="btn btn-outline login-btn">
-                Accedi
-              </Link>
-            </div>)}          </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </header>
-      {/* CV Upload Overlay */}
-    <CVUploadOverlay
-      isOpen={isCVUploadOpen}
-      onClose={() => setIsCVUploadOpen(false)}
-      onUpload={handleCVUpload}
-      onDeleteCV={handleCVDelete}
-      currentCV={user?.cv_filename}
-      userId={user?.id}
-    />
+      </header>
+
+      {/* OVERLAY GESTIONE CV - Mostrato condizionalmente */}
+      <CVUploadOverlay
+        isOpen={isCVUploadOpen}
+        onClose={() => setIsCVUploadOpen(false)}
+        onUpload={handleCVUpload}
+        onDeleteCV={handleCVDelete}
+        currentCV={user?.cv_filename}
+        userId={user?.id}
+      />
     </>
   );
 };

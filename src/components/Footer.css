@@ -1,124 +1,152 @@
+/* ==============================================
+   COMPONENTE FOOTER
+   
+   Stili per il footer del sito con layout a griglia,
+   sezioni informative, link utili e design responsive.
+   Include link discreto per accesso admin.
+   ============================================== */
+
+/* CONTENITORE PRINCIPALE FOOTER */
 .footer {
-  background: #D6D9DC;
-  padding: 60px 0 20px 0;
-  margin-top: 0;
-  border-top: 1px solid #e6e6e6;
+  background: #D6D9DC;            /* Sfondo grigio chiaro neutrale */
+  padding: 60px 0 20px 0;         /* Padding asimmetrico: più spazio sopra */
+  margin-top: 0;                  /* Nessun margine superiore */
+  border-top: 1px solid #e6e6e6;  /* Linea di separazione sottile */
 }
 
+/* CONTENITORE INTERNO CENTRATO */
 .footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
+  max-width: 1200px;              /* Larghezza massima per leggibilità */
+  margin: 0 auto;                 /* Centratura orizzontale */
+  padding: 0 24px;                /* Padding orizzontale per spaziatura */
 }
 
+/* GRIGLIA CONTENUTO PRINCIPALE */
 .footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 40px;
-  margin-bottom: 40px;
+  display: grid;                                          /* Layout a griglia */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Colonne responsive */
+  gap: 40px;                      /* Spaziatura tra sezioni */
+  margin-bottom: 40px;            /* Spazio prima del footer bottom */
 }
 
+/* TITOLI PRINCIPALI SEZIONI FOOTER */
 .footer-section h3 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-size: 24px;                /* Dimensione maggiore per gerarchia */
+  font-weight: 700;               /* Peso bold per enfasi */
+  color: #333;                    /* Colore scuro per contrasto */
+  margin-bottom: 16px;            /* Spazio sotto il titolo */
+  font-family: 'Poppins', sans-serif; /* Font moderno e leggibile */
 }
 
+/* SOTTOTITOLI SEZIONI FOOTER */
 .footer-section h4 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-size: 18px;                /* Dimensione intermedia */
+  font-weight: 600;               /* Peso semi-bold */
+  color: #333;                    /* Stesso colore dei titoli principali */
+  margin-bottom: 16px;            /* Consistente con h3 */
+  font-family: 'Poppins', sans-serif; /* Font consistente */
 }
 
+/* PARAGRAFI DESCRITTIVI */
 .footer-section p {
-  color: #666;
-  font-size: 16px;
-  line-height: 1.6;
-  margin: 0;
+  color: #666;                    /* Grigio medio per testo secondario */
+  font-size: 16px;                /* Dimensione standard leggibile */
+  line-height: 1.6;               /* Interlinea per miglior leggibilità */
+  margin: 0;                      /* Rimuove margini default */
 }
 
+/* LISTE LINK FOOTER */
 .footer-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  list-style: none;               /* Rimuove bullet points */
+  padding: 0;                     /* Rimuove padding default */
+  margin: 0;                      /* Rimuove margini default */
 }
 
+/* ELEMENTI LISTA */
 .footer-section ul li {
-  margin-bottom: 12px;
+  margin-bottom: 12px;            /* Spaziatura tra elementi lista */
 }
 
+/* LINK NELLE LISTE */
 .footer-section ul li a {
-  color: #666;
-  text-decoration: none;
-  font-size: 14px;
-  transition: color 0.2s ease;
+  color: #666;                    /* Colore grigio medio */
+  text-decoration: none;          /* Rimuove sottolineatura */
+  font-size: 14px;                /* Dimensione leggermente più piccola */
+  transition: color 0.2s ease;    /* Transizione fluida per hover */
 }
 
+/* HOVER SUI LINK */
 .footer-section ul li a:hover {
-  color: #0072b1;
+  color: #0072b1;                 /* Colore brand al hover */
 }
 
+/* SEZIONE BOTTOM DEL FOOTER */
 .footer-bottom {
-  border-top: 1px solid #bbb;
-  padding-top: 20px;
-  text-align: center;
-  position: relative;
+  border-top: 1px solid #bbb;     /* Linea separatrice più marcata */
+  padding-top: 20px;              /* Spazio sopra il contenuto */
+  text-align: center;             /* Centratura del testo */
+  position: relative;             /* Necessario per posizionamento admin link */
 }
 
+/* TESTO COPYRIGHT */
 .footer-bottom p {
-  color: #666;
-  font-size: 14px;
-  margin: 0;
+  color: #666;                    /* Colore grigio consistente */
+  font-size: 14px;                /* Dimensione più piccola per copyright */
+  margin: 0;                      /* Rimuove margini default */
 }
 
-/* Admin Access Link - Discrete */
+/* LINK ACCESSO ADMIN - DISCRETO */
 .admin-access-link {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  color: #ccc;
-  text-decoration: none;
-  font-size: 16px;
-  opacity: 0.3;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  position: absolute;             /* Posizionamento assoluto nell'angolo */
+  right: 10px;                    /* Distanza dal bordo destro */
+  bottom: 10px;                   /* Distanza dal bordo inferiore */
+  color: #ccc;                    /* Colore molto chiaro, quasi invisibile */
+  text-decoration: none;          /* Nessuna sottolineatura */
+  font-size: 16px;                /* Dimensione piccola */
+  opacity: 0.3;                   /* Trasparenza alta per discrezione */
+  transition: all 0.3s ease;      /* Transizione fluida per tutti gli effetti */
+  cursor: pointer;                /* Cursore pointer per indicare interattività */
 }
 
+/* HOVER SUL LINK ADMIN */
 .admin-access-link:hover {
-  opacity: 0.7;
-  color: #666;
-  transform: scale(1.2);
+  opacity: 0.7;                   /* Aumenta visibilità al hover */
+  color: #666;                    /* Colore più scuro al hover */
+  transform: scale(1.2);          /* Leggero ingrandimento */
 }
 
-/* Responsive Design */
+/* ==============================================
+   RESPONSIVE DESIGN
+   
+   Adattamenti per schermi di diverse dimensioni
+   ============================================== */
+
+/* TABLET E SCHERMI MEDI */
 @media (max-width: 768px) {
   .footer {
-    padding: 40px 0 20px 0;
-    margin-top: 40px;
+    padding: 40px 0 20px 0;       /* Padding ridotto per tablet */
+    margin-top: 40px;             /* Margine superiore per separazione */
   }
   
   .footer-content {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    margin-bottom: 30px;
+    grid-template-columns: repeat(2, 1fr); /* Due colonne su tablet */
+    gap: 30px;                    /* Gap ridotto */
+    margin-bottom: 30px;          /* Margine inferiore ridotto */
   }
   
   .footer-section h3 {
-    font-size: 20px;
+    font-size: 20px;              /* Titoli più piccoli su tablet */
   }
   
   .footer-section h4 {
-    font-size: 16px;
+    font-size: 16px;              /* Sottotitoli più piccoli */
   }
 }
 
+/* MOBILE E SCHERMI PICCOLI */
 @media (max-width: 480px) {
   .footer-content {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: 1fr;    /* Una sola colonna su mobile */
+    gap: 20px;                    /* Gap ulteriormente ridotto */
   }
 }

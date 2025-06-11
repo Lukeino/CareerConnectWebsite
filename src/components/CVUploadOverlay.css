@@ -1,58 +1,71 @@
-/* CV Upload Overlay */
+/* ==============================================
+   COMPONENTE CV UPLOAD OVERLAY
+   
+   Questo file contiene tutti gli stili per il modal
+   di caricamento CV, inclusi overlay, modal, drag&drop,
+   azioni sui CV esistenti e responsive design
+   ============================================== */
+
+/* OVERLAY PRINCIPALE */
 .cv-upload-overlay {
-  position: fixed;
+  position: fixed;           /* Posizionamento fisso per coprire tutto lo schermo */
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  bottom: 0;                /* Copre l'intera viewport */
+  background: rgba(0, 0, 0, 0.6);  /* Sfondo scuro semi-trasparente */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  backdrop-filter: blur(4px);
+  align-items: center;      /* Centra verticalmente il modal */
+  justify-content: center;  /* Centra orizzontalmente il modal */
+  z-index: 10000;          /* Z-index elevato per stare sopra tutto */
+  backdrop-filter: blur(4px); /* Effetto blur sullo sfondo */
 }
 
+/* MODAL PRINCIPALE */
 .cv-upload-modal {
   background: white;
-  border-radius: 16px;
-  max-width: 500px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: modalFadeIn 0.3s ease-out;
+  border-radius: 16px;      /* Angoli arrotondati per design moderno */
+  max-width: 500px;         /* Larghezza massima del modal */
+  width: 90%;               /* Larghezza responsiva */
+  max-height: 90vh;         /* Altezza massima per evitare overflow */
+  overflow-y: auto;         /* Scroll verticale se necessario */
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); /* Ombra profonda */
+  animation: modalFadeIn 0.3s ease-out; /* Animazione di entrata */
 }
 
+/* ANIMAZIONE DI ENTRATA DEL MODAL */
 @keyframes modalFadeIn {
   from {
-    opacity: 0;
-    transform: scale(0.9) translateY(-20px);
+    opacity: 0;                        /* Inizia trasparente */
+    transform: scale(0.9) translateY(-20px); /* Inizia più piccolo e spostato in alto */
   }
   to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
+    opacity: 1;                        /* Diventa opaco */
+    transform: scale(1) translateY(0); /* Raggiunge dimensioni e posizione normali */
   }
 }
 
+/* HEADER DEL MODAL */
 .cv-upload-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; /* Titolo a sinistra, bottone chiudi a destra */
   padding: 24px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0; /* Linea di separazione sottile */
 }
 
+/* TITOLO NELL'HEADER */
 .cv-upload-header h2 {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1e293b;
+  gap: 12px;               /* Spazio tra icona e testo */
+  margin: 0;               /* Rimuove margini default */
+  font-size: 1.25rem;      /* Dimensione testo leggermente maggiore */
+  font-weight: 600;        /* Peso semi-bold */
+  color: #1e293b;          /* Colore scuro per buona leggibilità */
 }
 
+/* BOTTONE CHIUDI */
 .close-btn {
   display: flex;
   align-items: center;
@@ -60,184 +73,202 @@
   width: 32px;
   height: 32px;
   border: none;
-  background: #f8fafc;
+  background: #f8fafc;     /* Sfondo grigio chiaro */
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  color: #64748b;
+  transition: all 0.2s ease; /* Transizione fluida per hover */
+  color: #64748b;          /* Colore grigio medio */
 }
 
+/* HOVER DEL BOTTONE CHIUDI */
 .close-btn:hover {
-  background: #f1f5f9;
-  color: #374151;
+  background: #f1f5f9;     /* Sfondo più scuro al hover */
+  color: #374151;          /* Testo più scuro al hover */
 }
 
+/* CONTENUTO PRINCIPALE DEL MODAL */
 .cv-upload-content {
-  padding: 24px;
+  padding: 24px;           /* Padding generoso per respirabilità */
 }
 
+/* INFORMAZIONI CV CORRENTE (versione principale) */
 .current-cv-info {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
+  background: #f0f9ff;     /* Sfondo blu molto chiaro */
+  border: 1px solid #bae6fd; /* Bordo blu chiaro */
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 20px;
-  color: #0369a1;
-  font-size: 0.9rem;
+  color: #0369a1;          /* Testo blu scuro */
+  font-size: 0.9rem;       /* Testo leggermente più piccolo */
 }
 
+/* SEZIONE CV CORRENTE */
 .current-cv-section {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  background: #f8fafc;     /* Sfondo grigio molto chiaro */
+  border: 1px solid #e2e8f0; /* Bordo grigio chiaro */
+  border-radius: 12px;     /* Angoli più arrotondati */
   padding: 16px;
   margin-bottom: 20px;
 }
 
+/* INFORMAZIONI CV NELLA SEZIONE (override stili) */
 .current-cv-section .current-cv-info {
-  background: transparent;
-  border: none;
-  padding: 0;
+  background: transparent; /* Sfondo trasparente per integrarsi */
+  border: none;           /* Rimuove bordo */
+  padding: 0;             /* Rimuove padding */
   margin-bottom: 12px;
-  color: #374151;
-  font-weight: 500;
+  color: #374151;         /* Colore grigio scuro */
+  font-weight: 500;       /* Peso medio */
 }
 
+/* CONTENITORE AZIONI CV */
 .current-cv-actions {
   display: flex;
-  gap: 8px;
-  justify-content: flex-start;
+  gap: 8px;               /* Spazio tra i bottoni */
+  justify-content: flex-start; /* Allineamento a sinistra */
 }
 
+/* STILE BASE PER BOTTONI AZIONE CV */
 .cv-action-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
+  width: 36px;            /* Dimensioni quadrate */
   height: 36px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 14px;
+  transition: all 0.2s ease; /* Transizione fluida */
+  font-size: 14px;        /* Dimensione icona/testo */
 }
 
+/* BOTTONE VISUALIZZA CV */
 .view-cv-btn {
-  background: #e0f2fe;
-  color: #0369a1;
-  border: 1px solid #bae6fd;
+  background: #e0f2fe;    /* Sfondo azzurro chiaro */
+  color: #0369a1;         /* Testo blu scuro */
+  border: 1px solid #bae6fd; /* Bordo azzurro */
 }
 
 .view-cv-btn:hover {
-  background: #bae6fd;
-  color: #0c4a6e;
+  background: #bae6fd;    /* Sfondo più intenso al hover */
+  color: #0c4a6e;         /* Testo più scuro al hover */
 }
 
+/* BOTTONE SCARICA CV */
 .download-cv-btn {
-  background: #f0fdf4;
-  color: #15803d;
-  border: 1px solid #bbf7d0;
+  background: #f0fdf4;    /* Sfondo verde chiaro */
+  color: #15803d;         /* Testo verde scuro */
+  border: 1px solid #bbf7d0; /* Bordo verde chiaro */
 }
 
 .download-cv-btn:hover {
-  background: #bbf7d0;
-  color: #14532d;
+  background: #bbf7d0;    /* Sfondo più intenso al hover */
+  color: #14532d;         /* Testo più scuro al hover */
 }
 
+/* BOTTONE ELIMINA CV */
 .delete-cv-btn {
-  background: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fecaca;
+  background: #fef2f2;    /* Sfondo rosso chiaro */
+  color: #dc2626;         /* Testo rosso */
+  border: 1px solid #fecaca; /* Bordo rosso chiaro */
 }
 
 .delete-cv-btn:hover:not(:disabled) {
-  background: #fecaca;
-  color: #991b1b;
+  background: #fecaca;    /* Sfondo più intenso al hover (solo se non disabilitato) */
+  color: #991b1b;         /* Testo più scuro al hover */
 }
 
 .delete-cv-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  opacity: 0.6;           /* Riduce opacità quando disabilitato */
+  cursor: not-allowed;    /* Cursore di divieto */
 }
 
+/* SPINNER DI CARICAMENTO PICCOLO */
 .loading-spinner-small {
   width: 14px;
   height: 14px;
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+  border: 2px solid transparent;        /* Bordo trasparente */
+  border-top: 2px solid currentColor;   /* Solo il bordo superiore visibile */
+  border-radius: 50%;                   /* Forma circolare */
+  animation: spin 1s linear infinite;   /* Rotazione continua */
 }
 
+/* ZONA DRAG & DROP */
 .drop-zone {
-  border: 2px dashed #cbd5e1;
+  border: 2px dashed #cbd5e1;  /* Bordo tratteggiato grigio */
   border-radius: 12px;
-  padding: 40px 20px;
+  padding: 40px 20px;          /* Padding generoso */
   text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: #fafbfc;
-  min-height: 200px;
+  cursor: pointer;             /* Indica che è cliccabile */
+  transition: all 0.3s ease;   /* Transizione fluida per stati */
+  background: #fafbfc;         /* Sfondo grigio molto chiaro */
+  min-height: 200px;           /* Altezza minima per area generosa */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* HOVER SULLA ZONA DROP */
 .drop-zone:hover {
-  border-color: #0072b1;
-  background: #f8fafc;
+  border-color: #0072b1;      /* Bordo blu al hover */
+  background: #f8fafc;        /* Sfondo leggermente diverso */
 }
 
+/* STATO DRAG OVER (quando si trascina un file sopra) */
 .drop-zone.drag-over {
-  border-color: #0072b1;
-  background: #f0f9ff;
-  border-style: solid;
+  border-color: #0072b1;      /* Bordo blu */
+  background: #f0f9ff;        /* Sfondo azzurro chiaro */
+  border-style: solid;        /* Cambia da tratteggiato a solido */
 }
 
+/* STATO CON FILE SELEZIONATO */
 .drop-zone.has-file {
-  border-color: #10b981;
-  background: #f0fdf4;
+  border-color: #10b981;      /* Bordo verde per successo */
+  background: #f0fdf4;        /* Sfondo verde chiaro */
 }
 
+/* CONTENUTO DELLA ZONA DROP */
 .drop-zone-content {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;     /* Layout verticale */
+  align-items: center;        /* Centrato orizzontalmente */
+  gap: 12px;                  /* Spazio tra elementi */
 }
 
 .drop-zone-content svg {
-  color: #94a3b8;
+  color: #94a3b8;            /* Colore grigio per icone */
 }
 
 .drop-zone-content h3 {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #374151;
+  color: #374151;            /* Colore scuro per titolo */
 }
 
 .drop-zone-content p {
   margin: 0;
-  color: #64748b;
+  color: #64748b;            /* Colore grigio medio per testo */
   font-size: 0.9rem;
 }
 
+/* REQUISITI FILE */
 .file-requirements {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 4px;                  /* Spazio ridotto tra requisiti */
   margin-top: 12px;
 }
 
 .file-requirements small {
-  color: #9ca3af;
+  color: #9ca3af;            /* Colore grigio chiaro per testo piccolo */
   font-size: 0.8rem;
 }
 
+/* VISUALIZZAZIONE FILE SELEZIONATO */
 .selected-file {
   display: flex;
   flex-direction: column;
@@ -246,7 +277,7 @@
 }
 
 .selected-file svg {
-  color: #10b981;
+  color: #10b981;            /* Icona verde per successo */
 }
 
 .selected-file h3 {
@@ -254,7 +285,7 @@
   font-size: 1rem;
   font-weight: 600;
   color: #374151;
-  word-break: break-word;
+  word-break: break-word;    /* Spezza parole lunghe per evitare overflow */
 }
 
 .selected-file p {
@@ -263,41 +294,45 @@
   font-size: 0.9rem;
 }
 
+/* AZIONI SU FILE SELEZIONATO */
 .file-actions {
   margin-top: 8px;
 }
 
+/* BOTTONE RIMUOVI FILE */
 .remove-file-btn {
   padding: 6px 12px;
-  background: #fee2e2;
-  color: #dc2626;
-  border: 1px solid #fecaca;
+  background: #fee2e2;       /* Sfondo rosso chiaro */
+  color: #dc2626;            /* Testo rosso */
+  border: 1px solid #fecaca; /* Bordo rosso chiaro */
   border-radius: 6px;
-  font-size: 0.8rem;
+  font-size: 0.8rem;         /* Testo più piccolo */
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .remove-file-btn:hover {
-  background: #fecaca;
-  border-color: #f87171;
+  background: #fecaca;       /* Sfondo più intenso al hover */
+  border-color: #f87171;     /* Bordo più intenso al hover */
 }
 
+/* FOOTER DEL MODAL */
 .cv-upload-footer {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  justify-content: flex-end; /* Bottoni allineati a destra */
+  gap: 12px;                 /* Spazio tra bottoni */
   padding: 24px;
-  border-top: 1px solid #e2e8f0;
-  background: #fafbfc;
-  border-radius: 0 0 16px 16px;
+  border-top: 1px solid #e2e8f0; /* Linea di separazione */
+  background: #fafbfc;       /* Sfondo grigio chiaro */
+  border-radius: 0 0 16px 16px; /* Angoli arrotondati solo in basso */
 }
 
+/* BOTTONE ANNULLA */
 .cancel-btn {
   padding: 10px 20px;
   background: white;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
+  color: #64748b;            /* Testo grigio */
+  border: 1px solid #e2e8f0; /* Bordo grigio chiaro */
   border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
@@ -305,38 +340,42 @@
 }
 
 .cancel-btn:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: #f8fafc;       /* Sfondo grigio al hover */
+  border-color: #cbd5e1;     /* Bordo più scuro al hover */
 }
 
+/* BOTTONE CARICA */
 .upload-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 8px;                  /* Spazio tra icona e testo */
   padding: 10px 20px;
-  background: linear-gradient(135deg, #0072b1 0%, #005a8b 100%);
+  background: linear-gradient(135deg, #0072b1 0%, #005a8b 100%); /* Gradiente blu */
   color: white;
   border: none;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 120px;
+  transition: all 0.3s ease; /* Transizione più lunga per effetti */
+  min-width: 120px;          /* Larghezza minima per consistenza */
   justify-content: center;
 }
 
+/* HOVER BOTTONE CARICA */
 .upload-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #005a8b 0%, #004973 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 114, 177, 0.3);
+  background: linear-gradient(135deg, #005a8b 0%, #004973 100%); /* Gradiente più scuro */
+  transform: translateY(-1px); /* Leggero sollevamento */
+  box-shadow: 0 4px 12px rgba(0, 114, 177, 0.3); /* Ombra blu */
 }
 
+/* BOTTONE CARICA DISABILITATO */
 .upload-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
+  opacity: 0.6;              /* Riduce opacità */
+  cursor: not-allowed;       /* Cursore di divieto */
+  transform: none;           /* Rimuove effetti hover */
 }
 
+/* SPINNER DI CARICAMENTO PRINCIPALE */
 .loading-spinner {
   width: 16px;
   height: 16px;
@@ -346,35 +385,45 @@
   animation: spin 1s linear infinite;
 }
 
+/* ANIMAZIONE ROTAZIONE SPINNER */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { transform: rotate(0deg); }     /* Inizio rotazione */
+  100% { transform: rotate(360deg); } /* Fine rotazione completa */
 }
 
-/* Responsive */
+/* ==============================================
+   RESPONSIVE DESIGN
+   
+   Adattamenti per schermi piccoli (mobile)
+   ============================================== */
 @media (max-width: 768px) {
+  /* MODAL SU MOBILE */
   .cv-upload-modal {
-    width: 95%;
-    margin: 20px;
+    width: 95%;              /* Larghezza quasi completa */
+    margin: 20px;            /* Margini ridotti */
   }
   
+  /* PADDING RIDOTTO SU MOBILE */
   .cv-upload-header,
   .cv-upload-content,
   .cv-upload-footer {
-    padding: 20px;
+    padding: 20px;           /* Padding ridotto per più spazio */
   }
   
+  /* ZONA DROP PIÙ COMPATTA SU MOBILE */
   .drop-zone {
-    padding: 30px 15px;
-    min-height: 180px;
+    padding: 30px 15px;      /* Padding ridotto */
+    min-height: 180px;       /* Altezza minima ridotta */
   }
   
+  /* FOOTER VERTICALE SU MOBILE */
   .cv-upload-footer {
-    flex-direction: column;
+    flex-direction: column;  /* Bottoni in colonna invece che in riga */
   }
   
+  /* BOTTONI A LARGHEZZA COMPLETA SU MOBILE */
   .cancel-btn,
   .upload-btn {
-    width: 100%;
+    width: 100%;             /* Larghezza completa per tocco più facile */
   }
 }

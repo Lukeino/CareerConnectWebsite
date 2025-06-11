@@ -1,26 +1,40 @@
-// Configurazione API per diversi ambienti
+// ==============================================
+// CONFIGURAZIONE API
+// 
+// Gestisce la configurazione degli endpoint API per
+// diversi ambienti (sviluppo, produzione, staging).
+// Utilizza variabili d'ambiente Vite per flessibilità.
+// ==============================================
+
+// CONFIGURAZIONE PRINCIPALE API
 export const API_CONFIG = {  
-  // URL base API - priorità: PROD -> DEV -> EC2 default
-  // In produzione su Netlify, userà /api (proxy)
-  // In sviluppo, userà localhost
+  // URL BASE API - LOGICA DI FALLBACK A CASCATA
+  // Priorità: PROD -> DEV -> Default basato su ambiente
+  // 1. VITE_API_URL_PROD: URL produzione (es. https://api.careerconnect.com)
+  // 2. VITE_API_URL: URL sviluppo personalizzato
+  // 3. Fallback automatico:
+  //    - Produzione: '/api' (usa proxy Netlify/Vercel)
+  //    - Sviluppo: 'http://localhost:3001/api' (server locale)
   BASE_URL: import.meta.env.VITE_API_URL_PROD || 
             import.meta.env.VITE_API_URL || 
             (import.meta.env.PROD ? '/api' : 'http://localhost:3001/api'),
   
-  // Timeout per le richieste (in millisecondi)
-  TIMEOUT: 10000,
+  // TIMEOUT RICHIESTE HTTP
+  TIMEOUT: 10000,                      // 10 secondi - timeout globale per tutte le richieste
   
-  // Headers predefiniti
+  // HEADERS HTTP PREDEFINITI
   DEFAULT_HEADERS: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json', // Tipo contenuto standard per API REST
   }
 };
 
-// Debug: mostra configurazione corrente
+// DEBUG: LOGGING CONFIGURAZIONE CORRENTE
+// Utile per troubleshooting problemi di connessione API
 console.log('🔧 API Configuration:', {
   BASE_URL: API_CONFIG.BASE_URL,
-  ENVIRONMENT: import.meta.env.MODE || 'development',
-  ALL_ENV_VARS: import.meta.env
+  ENVIRONMENT: import.meta.env.MODE || 'development',   // Modalità corrente (dev/prod)
+  ALL_ENV_VARS: import.meta.env                         // Tutte le variabili ambiente (per debug)
 });
 
+// EXPORT DEFAULT PER RETROCOMPATIBILITÀ
 export default API_CONFIG;

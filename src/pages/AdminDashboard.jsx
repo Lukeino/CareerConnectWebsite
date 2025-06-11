@@ -1,3 +1,13 @@
+// ==============================================
+// DASHBOARD AMMINISTRATORE
+// 
+// Interfaccia completa per gestione backend con:
+// - Panoramica statistiche sistema
+// - Gestione CRUD utenti (candidati, recruiter)
+// - Gestione annunci di lavoro e aziende
+// - Funzioni debug e sicurezza avanzata
+// ==============================================
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -28,17 +38,20 @@ import {
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
+  // HOOKS E NAVIGATION
   const navigate = useNavigate();
   const { logout, user, isAuthenticated } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState(null);
-  const [users, setUsers] = useState([]);
-  const [jobs, setJobs] = useState([]);
-  const [applications, setApplications] = useState([]);
-  const [companies, setCompanies] = useState([]);
-  const [activeTab, setActiveTab] = useState('overview');
+  
+  // STATI LOCALI COMPONENTE
+  const [loading, setLoading] = useState(true);           // Stato caricamento dati
+  const [stats, setStats] = useState(null);               // Statistiche sistema
+  const [users, setUsers] = useState([]);                 // Lista utenti
+  const [jobs, setJobs] = useState([]);                   // Lista annunci lavoro
+  const [applications, setApplications] = useState([]);   // Candidature (non utilizzato attualmente)
+  const [companies, setCompanies] = useState([]);         // Lista aziende
+  const [activeTab, setActiveTab] = useState('overview'); // Tab attiva nella navigazione
 
-  // Security check: redirect non-admin users
+  // SECURITY CHECK: Redirect utenti non admin
   useEffect(() => {
     if (!isAuthenticated || user?.user_type !== 'admin') {
       navigate('/adminlogin');
@@ -46,40 +59,47 @@ const AdminDashboard = () => {
     }
   }, [isAuthenticated, user, navigate]);
 
+  // EFFECT: Caricamento dati iniziale
   useEffect(() => {
     fetchAllData();
   }, []);
-  // Auto logout when leaving the page
+
+  // AUTO LOGOUT: Sicurezza quando si abbandona la pagina
   useEffect(() => {
     const handleBeforeUnload = (event) => {
-      // Only logout on actual page unload, not refresh
+      // Logout solo su chiusura reale, non su refresh
       if (event.type === 'beforeunload') {
         logout();
       }
     };
 
     const handlePopState = () => {
-      // Logout when navigating away from admin page
+      // Logout quando si naviga via dalla pagina admin
       logout();
     };
 
-    // Add event listeners
+    // Registrazione event listeners
     window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('popstate', handlePopState);
 
-    // Cleanup event listeners
+    // Cleanup listeners
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('popstate', handlePopState);
     };
-  }, [logout]);  const handleLogout = () => {
+  }, [logout]);
+
+  // GESTIONE LOGOUT MANUALE
+  const handleLogout = () => {
     logout();
     navigate('/adminlogin');
   };
 
+  // FETCH TUTTI I DATI - Funzione aggregata per caricamento parallelo
   const fetchAllData = async () => {
     setLoading(true);
     try {
+      // Esecuzione parallela di tutte le chiamate API
       await Promise.all([
         fetchStats(),
         fetchUsers(),
@@ -92,6 +112,8 @@ const AdminDashboard = () => {
       setLoading(false);
     }
   };
+
+  // FETCH STATISTICHE SISTEMA
   const fetchStats = async () => {
     try {
       const response = await fetch(`${API_CONFIG.BASE_URL}/admin/stats`);
@@ -103,6 +125,8 @@ const AdminDashboard = () => {
       console.error('Error fetching stats:', error);
     }
   };
+
+  // FETCH LISTA UTENTI
   const fetchUsers = async () => {
     try {
       const response = await fetch(`${API_CONFIG.BASE_URL}/users`);
@@ -114,6 +138,8 @@ const AdminDashboard = () => {
       console.error('Error fetching users:', error);
     }
   };
+
+  // FETCH LISTA ANNUNCI LAVORO
   const fetchJobs = async () => {
     try {
       const response = await fetch(`${API_CONFIG.BASE_URL}/jobs`);
@@ -125,6 +151,8 @@ const AdminDashboard = () => {
       console.error('Error fetching jobs:', error);
     }
   };
+
+  // FETCH LISTA AZIENDE
   const fetchCompanies = async () => {
     try {
       const response = await fetch(`${API_CONFIG.BASE_URL}/companies`);
@@ -136,8 +164,12 @@ const AdminDashboard = () => {
       console.error('Error fetching companies:', error);
     }
   };
+
+  // ELIMINAZIONE ANNUNCIO LAVORO
   const deleteJob = async (jobId) => {
-    if (window.confirm('Sei sicuro di voler eliminare questo annuncio di lavoro?')) {    try {
+    // Conferma utente con messaggio specifico
+    if (window.confirm('Sei sicuro di voler eliminare questo annuncio di lavoro?')) {
+      try {
         console.log('Deleting job with ID:', jobId);
         const response = await fetch(`${API_CONFIG.BASE_URL}/jobs/${jobId}`, {
           method: 'DELETE'
@@ -149,7 +181,7 @@ const AdminDashboard = () => {
           const result = await response.json();
           console.log('Delete response data:', result);
           
-          // Refresh the data
+          // Refresh dati dopo eliminazione
           await fetchJobs();
           await fetchStats();
           alert('Annuncio eliminato con successo!');
@@ -165,12 +197,13 @@ const AdminDashboard = () => {
     }
   };
 
-  // Block/Unblock user function
+  // BLOCCA/SBLOCCA UTENTE
   const toggleUserBlock = async (userId, isCurrentlyBlocked) => {
     const action = isCurrentlyBlocked ? 'sbloccare' : 'bloccare';
     const confirmMessage = `Sei sicuro di voler ${action} questo utente?`;
     
-    if (window.confirm(confirmMessage)) {      try {
+    if (window.confirm(confirmMessage)) {
+      try {
         console.log(`${action} user ID:`, userId);
         const response = await fetch(`${API_CONFIG.BASE_URL}/admin/users/${userId}/block`, {
           method: 'PATCH',
@@ -184,7 +217,7 @@ const AdminDashboard = () => {
           const result = await response.json();
           console.log('Block/Unblock response:', result);
           
-          // Refresh users data
+          // Refresh dati utenti
           await fetchUsers();
           alert(`Utente ${isCurrentlyBlocked ? 'sbloccato' : 'bloccato'} con successo!`);
         } else {
@@ -195,11 +228,13 @@ const AdminDashboard = () => {
       } catch (error) {
         console.error('Error blocking/unblocking user:', error);
         alert(`Errore di connessione: ${error.message}`);
-      }    }
+      }
+    }
   };
 
-  // Delete user function
+  // ELIMINAZIONE DEFINITIVA UTENTE
   const deleteUser = async (userId, userName) => {
+    // Conferma multipla per operazione critica
     const confirmMessage = `ATTENZIONE: Sei sicuro di voler ELIMINARE DEFINITIVAMENTE l'utente "${userName}"?\n\nQuesta azione:\n• Eliminerà permanentemente l'account\n• Rimuoverà tutti i dati associati\n• NON PUÒ ESSERE ANNULLATA\n\nDigita "ELIMINA" per confermare:`;
     
     const userConfirmation = prompt(confirmMessage);
@@ -218,7 +253,7 @@ const AdminDashboard = () => {
           const result = await response.json();
           console.log('Delete user response:', result);
           
-          // Refresh users data and stats
+          // Refresh dati utenti e statistiche
           await fetchUsers();
           await fetchStats();
           alert('Utente eliminato con successo!');
@@ -236,8 +271,9 @@ const AdminDashboard = () => {
     }
   };
 
-  // DEBUG FUNCTION - Clear all database records
+  // FUNZIONE DEBUG - Cancellazione completa database
   const handleDebugClearDatabase = async () => {
+    // Tripla conferma per operazione devastante
     const confirmDelete = window.confirm(
       '⚠️ ADMIN WARNING: This will DELETE ALL RECORDS from the database!\n\n' +
       'This includes:\n' +
@@ -265,7 +301,8 @@ const AdminDashboard = () => {
       return;
     }
 
-    try {      const response = await fetch(`${API_CONFIG.BASE_URL}/debug/clear-database`, {
+    try {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/debug/clear-database`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -276,7 +313,7 @@ const AdminDashboard = () => {
 
       if (result.success) {
         alert('✅ Database cleared successfully! All records have been deleted.');
-        // Refresh the data
+        // Refresh tutti i dati
         await fetchAllData();
       } else {
         alert('❌ Error clearing database: ' + result.error);
@@ -287,6 +324,7 @@ const AdminDashboard = () => {
     }
   };
 
+  // HELPER: Messaggio saluto basato su orario
   const getGreetingMessage = () => {
     const now = new Date();
     const hour = now.getHours();
@@ -300,6 +338,7 @@ const AdminDashboard = () => {
     }
   };
 
+  // HELPER: Formattazione data locale italiana
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('it-IT', {
@@ -311,6 +350,7 @@ const AdminDashboard = () => {
     });
   };
 
+  // HELPER: Formattazione range stipendio
   const formatSalary = (min, max) => {
     if (!min && !max) return 'Non specificato';
     if (min && max) return `€${min.toLocaleString()} - €${max.toLocaleString()}`;
@@ -318,6 +358,8 @@ const AdminDashboard = () => {
     if (max) return `Fino a €${max.toLocaleString()}`;
     return 'Non specificato';
   };
+
+  // HELPER: Traduzione tipo lavoro
   const getJobTypeText = (type) => {
     const types = {
       'full-time': 'Tempo Pieno',
@@ -328,11 +370,12 @@ const AdminDashboard = () => {
     return types[type] || type;
   };
 
-  // Authorization check
+  // SECURITY: Controllo autorizzazione finale
   if (!isAuthenticated || user?.user_type !== 'admin') {
-    return null; // Don't render anything while redirecting
+    return null; // Non renderizza nulla durante redirect
   }
 
+  // LOADING STATE: Schermata caricamento
   if (loading) {
     return (
       <div className="admin-dashboard">
@@ -345,9 +388,10 @@ const AdminDashboard = () => {
     );
   }
 
+  // RENDER PANORAMICA: Statistiche e analytics
   const renderOverview = () => (
     <>
-      {/* Statistics Grid */}
+      {/* Griglia Statistiche */}
       <div className="stats-grid">
         <div className="stat-card primary">
           <div className="stat-icon">
@@ -367,7 +411,9 @@ const AdminDashboard = () => {
             <h3>{users.filter(u => u.user_type === 'candidate').length}</h3>
             <p>Candidati</p>
           </div>
-        </div>        <div className="stat-card warning">
+        </div>
+
+        <div className="stat-card warning">
           <div className="stat-icon">
             <UserCheck size={24} />
           </div>
@@ -428,13 +474,14 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Analytics Section */}
+      {/* Sezione Analytics */}
       <div className="analytics-section">
         <div className="analytics-card">
           <div className="analytics-header">
             <BarChart3 size={20} />
             <h2>Panoramica Sistema</h2>
-          </div>          <div className="analytics-content">
+          </div>
+          <div className="analytics-content">
             <div className="analytics-item">
               <span className="analytics-label">Media annunci per recruiter</span>
               <span className="analytics-value">
@@ -456,6 +503,7 @@ const AdminDashboard = () => {
     </>
   );
 
+  // RENDER GESTIONE UTENTI: Tabella completa con azioni CRUD
   const renderUsers = () => (
     <div className="data-section">
       <div className="data-card">
@@ -491,7 +539,8 @@ const AdminDashboard = () => {
                       <Mail size={14} />
                       {user.email}
                     </div>
-                  </td>                  <td>
+                  </td>
+                  <td>
                     <span className={`user-type-badge ${user.user_type}`}>
                       {user.user_type === 'candidate' ? 'Candidato' : 
                        user.user_type === 'recruiter' ? 'Recruiter' : 
@@ -506,13 +555,16 @@ const AdminDashboard = () => {
                         {user.phone}
                       </div>
                     ) : 'N/A'}
-                  </td>                  <td>{formatDate(user.created_at)}</td>
+                  </td>
+                  <td>{formatDate(user.created_at)}</td>
                   <td>
                     <span className={`status-badge ${user.is_blocked ? 'blocked' : 'active'}`}>
                       {user.is_blocked ? 'Bloccato' : 'Attivo'}
                     </span>
-                  </td>                  <td>
+                  </td>
+                  <td>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      {/* Azioni solo per non-admin */}
                       {user.user_type !== 'admin' && (
                         <>
                           <button
@@ -542,6 +594,7 @@ const AdminDashboard = () => {
     </div>
   );
 
+  // RENDER GESTIONE ANNUNCI: Tabella offerte lavoro con visualizzazione e eliminazione
   const renderJobs = () => (
     <div className="data-section">
       <div className="data-card">
@@ -599,6 +652,7 @@ const AdminDashboard = () => {
                   <td>{formatDate(job.created_at)}</td>
                   <td>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      {/* Bottone visualizza - apre in nuova tab */}
                       <button
                         onClick={() => window.open(`/jobs/${job.id}`, '_blank')}
                         className="action-btn view-btn"
@@ -606,6 +660,7 @@ const AdminDashboard = () => {
                       >
                         <Eye size={14} />
                       </button>
+                      {/* Bottone elimina */}
                       <button
                         onClick={() => deleteJob(job.id)}
                         className="action-btn delete-btn"
@@ -624,6 +679,7 @@ const AdminDashboard = () => {
     </div>
   );
 
+  // RENDER GESTIONE AZIENDE: Tabella read-only con statistiche
   const renderCompanies = () => (
     <div className="data-section">
       <div className="data-card">
@@ -634,7 +690,9 @@ const AdminDashboard = () => {
             <span className="data-count">{companies.length}</span>
           </h2>
         </div>
-        <div className="table-container">          <table className="admin-table">            <thead>
+        <div className="table-container">
+          <table className="admin-table">
+            <thead>
               <tr>
                 <th>ID</th>
                 <th>Nome</th>
@@ -644,7 +702,8 @@ const AdminDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {companies.map(company => (                <tr key={company.id}>
+              {companies.map(company => (
+                <tr key={company.id}>
                   <td>{company.id}</td>
                   <td>{company.name}</td>
                   <td>
@@ -667,17 +726,23 @@ const AdminDashboard = () => {
       </div>
     </div>
   );
+
+  // RENDER PRINCIPALE DASHBOARD
   return (
     <div className="admin-dashboard">
-      {/* Logout Button */}
-      <div className="admin-logout-section">        <div className="logout-info">          <span className="admin-welcome">
+      {/* Sezione Header con Logout */}
+      <div className="admin-logout-section">
+        <div className="logout-info">
+          <span className="admin-welcome">
             {getGreetingMessage()}, {user?.first_name ? `${user.first_name} ${user.last_name || ''}` : user?.name || 'Amministratore'}
           </span>
           <div className="admin-status">
             <CheckCircle size={16} />
             Sistema Operativo
-          </div>        </div>
+          </div>
+        </div>
         <div className="admin-actions">
+          {/* Bottone Debug - Funzione devastante */}
           <button 
             className="debug-button"
             onClick={handleDebugClearDatabase}
@@ -685,6 +750,7 @@ const AdminDashboard = () => {
           >
             🗑️
           </button>
+          {/* Bottone Logout */}
           <button 
             className="logout-button"
             onClick={handleLogout}
@@ -696,7 +762,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Navigation Tabs */}
+      {/* Navigazione Tab */}
       <div className="admin-nav">
         <button 
           className={`nav-tab ${activeTab === 'overview' ? 'active' : ''}`}
@@ -728,7 +794,7 @@ const AdminDashboard = () => {
         </button>
       </div>
 
-      {/* Content */}
+      {/* Contenuto Dinamico Basato su Tab Attiva */}
       <div className="admin-content">
         {activeTab === 'overview' && renderOverview()}
         {activeTab === 'users' && renderUsers()}

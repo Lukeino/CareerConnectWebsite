@@ -77,4 +77,4 @@ DELETE /api/admin/users/:userId
 
 ---
 
-**Stato**: ✅ Implementato Frontend | ⏳ Pending Backend Endpoint
+**Stato**: ✅ Implementato Frontend | ✅ Implementato Backend Endpoint
