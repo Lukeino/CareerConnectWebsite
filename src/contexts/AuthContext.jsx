@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
-// API URL - usa proxy Netlify invece di chiamata diretta a EC2
-const API_BASE_URL = '/api';
+// API URL - torna alla chiamata diretta a EC2 con HTTP
+const API_BASE_URL = 'http://13.51.194.249/api';
 
 // Debug: verifica che l'URL sia caricato correttamente
 console.log('🔗 API_BASE_URL:', API_BASE_URL);
