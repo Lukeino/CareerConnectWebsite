@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Trash2, Eye, Calendar, MapPin, DollarSign, Users, Briefcase, Clock, Building, ChevronRight, Mail, Phone, FileText } from 'lucide-react';
 import { API_CONFIG } from '../config/api';
+import { formatTimeAgoSimple, formatDateOnly } from '../utils/dateUtils';
 import './MyJobsPage.css';
 
 const MyJobsPage = () => {
@@ -259,18 +260,11 @@ const MyJobsPage = () => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('it-IT');
+    return formatDateOnly(dateString);
   };
+  
   const formatTimeAgo = (dateString) => {
-    const now = new Date();
-    const jobDate = new Date(dateString);
-    const diffInDays = Math.floor((now - jobDate) / (1000 * 60 * 60 * 24));
-    
-    if (diffInDays === 0) return 'Oggi';
-    if (diffInDays === 1) return 'Ieri';
-    if (diffInDays < 7) return `${diffInDays} giorni fa`;
-    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} settimane fa`;
-    return `${Math.floor(diffInDays / 30)} mesi fa`;
+    return formatTimeAgoSimple(dateString);
   };
 
   const formatSalary = (salaryMin, salaryMax) => {

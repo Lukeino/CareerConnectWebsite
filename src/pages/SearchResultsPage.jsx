@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { Search, MapPin, Briefcase, Filter, SlidersHorizontal } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { API_CONFIG } from '../config/api';
+import { formatTimeAgo } from '../utils/dateUtils';
 import './SearchResultsPage.css';
 
 const SearchResultsPage = () => {
@@ -383,7 +384,7 @@ const SearchResultsPage = () => {
                     <div className="job-salary">{formatSalary(job.salary_min, job.salary_max)}</div>
                     <p className="job-description">{job.description}</p>
                     <div className="job-footer">
-                      <span className="job-posted">{getTimeAgo(job.created_at, job.id)}</span>
+                      <span className="job-posted">{formatTimeAgo(job.created_at, job.id)}</span>
                       <Link to={`/jobs/${job.id}`} className="apply-btn">
                         {t('homepage.viewDetails')}
                       </Link>

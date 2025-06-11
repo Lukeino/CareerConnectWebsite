@@ -11,6 +11,7 @@ import {
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { API_CONFIG } from '../config/api';
+import { formatTimeAgo } from '../utils/dateUtils';
 import './JobDetailsPage.css';
 
 const JobDetailsPage = () => {
@@ -78,48 +79,11 @@ const JobDetailsPage = () => {
     };
     return typeMap[type] || type;
   };  const formatSalary = (min, max) => {
-    if (!min && !max) return 'Stipendio da concordare';
+    if (!min && max) return 'Stipendio da concordare';
     if (min && max) return `€${min.toLocaleString()} - €${max.toLocaleString()}`;
     if (min) return `Da €${min.toLocaleString()}`;
     if (max) return `Fino a €${max.toLocaleString()}`;
-  };  // Funzione per generare numeri pseudo-casuali deterministici
-  const seededRandom = (seed, min, max) => {
-    const x = Math.sin(seed) * 10000;
-    const random = x - Math.floor(x);
-    return Math.floor(random * (max - min + 1)) + min;
   };
-  const getTimeAgo = (dateString, jobId = '') => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInMs = now - date;
-    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
-    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
-    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-    const diffInWeeks = Math.floor(diffInDays / 7);
-    const diffInMonths = Math.floor(diffInDays / 30);
-    
-    // Se la data è invalida o futura, mostra un messaggio di errore
-    if (isNaN(date.getTime()) || diffInMs < 0) {
-      return 'Data non valida';
-    }
-    
-    // Usa sempre il tempo reale - nessuna variazione artificiale
-    if (diffInMinutes < 1) {
-      return 'Appena pubblicato';
-    } else if (diffInMinutes < 60) {
-      return `${diffInMinutes} minut${diffInMinutes === 1 ? 'o' : 'i'} fa`;
-    } else if (diffInHours < 24) {
-      return `${diffInHours} or${diffInHours === 1 ? 'a' : 'e'} fa`;
-    } else if (diffInDays < 7) {
-      return diffInDays === 1 ? '1 giorno fa' : `${diffInDays} giorni fa`;
-    } else if (diffInWeeks < 4) {
-      return diffInWeeks === 1 ? '1 settimana fa' : `${diffInWeeks} settimane fa`;
-    } else if (diffInMonths < 12) {
-      return diffInMonths === 1 ? '1 mese fa' : `${diffInMonths} mesi fa`;
-    } else {
-      const years = Math.floor(diffInMonths / 12);
-      return years === 1 ? '1 anno fa' : `${years} anni fa`;
-    }  };
 
   const handleApply = async () => {
     if (!isAuthenticated) {
@@ -217,7 +181,7 @@ const JobDetailsPage = () => {
                 </div>
                 <div className="meta-item">
                   <Calendar size={16} />
-                  <span>{getTimeAgo(job.created_at, job.id)}</span>
+                  <span>{formatTimeAgo(job.created_at, job.id)}</span>
                 </div>
               </div>
             </div>

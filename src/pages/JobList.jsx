@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { API_CONFIG } from '../config/api';
+import { formatTimeAgo } from '../utils/dateUtils';
 import { MapPin, Clock, Building, Search, Filter } from 'lucide-react';
 import './JobList.css';
 
@@ -232,7 +233,7 @@ const JobList = () => {
                     </div>
                     <div className="job-salary">{formatSalary(job.salary_min, job.salary_max)}</div>
                     <div className="job-footer">
-                      <span className="job-posted">{getTimeAgo(job.created_at, job.id)}</span>
+                      <span className="job-posted">{formatTimeAgo(job.created_at, job.id)}</span>
                       <span className="apply-btn">
                         Visualizza Dettagli
                       </span>

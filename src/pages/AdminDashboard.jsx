@@ -12,6 +12,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { API_CONFIG } from '../config/api';
+import { formatDate } from '../utils/dateUtils';
 import { 
   CheckCircle,
   LogOut
@@ -263,18 +264,6 @@ const AdminDashboard = () => {
     } else {
       return 'Buonasera';
     }
-  };
-
-  // HELPER: Formattazione data locale italiana
-  const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString('it-IT', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
   };
 
   // HELPER: Formattazione range stipendio
