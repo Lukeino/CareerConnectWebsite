@@ -120,10 +120,6 @@ const LoginPage = () => {
               </button>
             </div>
             {errors.password && <span className="error-message">{errors.password}</span>}
-          </div>          <div className="form-options">
-            <Link to="/forgot-password" className="forgot-link">
-              {t('auth.forgotPassword')}
-            </Link>
           </div>
 
           {errors.submit && <div className="error-message submit-error">{errors.submit}</div>}

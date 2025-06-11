@@ -79,7 +79,7 @@ const JobDetailsPage = () => {
     };
     return typeMap[type] || type;
   };  const formatSalary = (min, max) => {
-    if (!min && max) return 'Stipendio da concordare';
+    if (!min && !max) return '-';
     if (min && max) return `€${min.toLocaleString()} - €${max.toLocaleString()}`;
     if (min) return `Da €${min.toLocaleString()}`;
     if (max) return `Fino a €${max.toLocaleString()}`;
@@ -169,15 +169,15 @@ const JobDetailsPage = () => {
               <div className="job-meta">
                 <div className="meta-item">
                   <Building2 size={16} />
-                  <span>{job.company_name}</span>
+                  <span>{job.company_name || '-'}</span>
                 </div>
                 <div className="meta-item">
                   <MapPin size={16} />
-                  <span>{job.location}</span>
+                  <span>{job.location || '-'}</span>
                 </div>
                 <div className="meta-item">
                   <Clock size={16} />
-                  <span>{getJobTypeText(job.job_type)}</span>
+                  <span>{job.job_type ? getJobTypeText(job.job_type) : '-'}</span>
                 </div>
                 <div className="meta-item">
                   <Calendar size={16} />
@@ -247,15 +247,15 @@ const JobDetailsPage = () => {
             <div className="company-card">
               <h3>{t('jobDetails.companyInfo')}</h3>              <div className="company-details">
                 <h4>{job.company_name}</h4>
-                <p>{job.company_description || 'Informazioni azienda non disponibili'}</p>
+                <p>{job.company_description || '-'}</p>
                 <div className="company-stats">
                   <div className="stat">
                     <span className="label">{t('jobDetails.location')}:</span>
-                    <span className="value">{job.location}</span>
+                    <span className="value">{job.location || '-'}</span>
                   </div>
                   <div className="stat">
                     <span className="label">Recruiter:</span>
-                    <span className="value">{job.recruiter_name}</span>
+                    <span className="value">{job.recruiter_name || '-'}</span>
                   </div>
                 </div>
               </div>

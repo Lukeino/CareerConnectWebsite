@@ -34,15 +34,15 @@
 }
 
 .hero-image {
-  flex: 0 0 450px;
+  flex: 0 0 600px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .hero-gif {
-  width: 400px;
-  height: 400px;
+  width: 550px;
+  height: 550px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -499,8 +499,8 @@ section.stats div.stat-icon svg,
     flex: none;
   }
     .hero-gif {
-    width: 280px;
-    height: 280px;
+    width: 380px;
+    height: 380px;
   }
     .hero h1 {
     font-size: 40px;
