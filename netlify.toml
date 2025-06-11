@@ -7,6 +7,13 @@
   status = 200
   force = true
 
+# Redirect per file CV e uploads
+[[redirects]]
+  from = "/uploads/*"
+  to = "http://16.170.241.18:3001/uploads/:splat"
+  status = 200
+  force = true
+
 [[headers]]
   for = "/api/*"
   [headers.values]
