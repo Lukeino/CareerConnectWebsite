@@ -57,8 +57,9 @@ update-*.ps1
 *.zip
 CareerConnect_AWS_Deploy.zip
 
-# Uploads directory (may contain user files)
-uploads/
+# Uploads directory (keep folder but ignore uploaded files)
+uploads/*
+!uploads/.gitkeep
 
 # Editor directories and files
 .vscode/*
