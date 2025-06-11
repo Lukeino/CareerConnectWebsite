@@ -1,7 +1,8 @@
 // Configurazione API per diversi ambienti
-export const API_CONFIG = {
-  // URL base API - viene preso dal file .env
-  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
+export const API_CONFIG = {  // URL base API - priorità: PROD -> DEV -> EC2 default
+  BASE_URL: import.meta.env.VITE_API_URL_PROD || 
+            import.meta.env.VITE_API_URL || 
+            'http://13.51.194.249:3001/api',
   
   // Timeout per le richieste (in millisecondi)
   TIMEOUT: 10000,
