@@ -33,11 +33,13 @@ const MyJobsPage = () => {
   useEffect(() => {
     if (applications.length > 0) {
       const allSelected = applications.every(app => selectedApplications.includes(app.id));
-      setSelectAll(allSelected && selectedApplications.length === applications.length);
-    } else {
+      setSelectAll(allSelected && selectedApplications.length === applications.length);    } else {
       setSelectAll(false);
     }
-  }, [applications, selectedApplications]);  // Helper function to get the correct URL for static files  const getStaticFileUrl = (filename) => {
+  }, [applications, selectedApplications]);
+
+  // Helper function to get the correct URL for static files
+  const getStaticFileUrl = (filename) => {
     // Debug del filename ricevuto
     console.log('🔍 Debug filename received:', filename);
     

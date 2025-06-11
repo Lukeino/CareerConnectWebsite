@@ -14,10 +14,12 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
   // STATI DEL COMPONENTE
   const [isDragOver, setIsDragOver] = useState(false);    // Stato drag over per feedback visivo
   const [isUploading, setIsUploading] = useState(false);  // Stato caricamento in corso
-  const [isDeleting, setIsDeleting] = useState(false);    // Stato eliminazione in corso
-  const [selectedFile, setSelectedFile] = useState(null); // File selezionato per upload  // FUNZIONE HELPER PER URL FILE STATICI  
+  const [isDeleting, setIsDeleting] = useState(false);    // Stato eliminazione in corso  const [selectedFile, setSelectedFile] = useState(null); // File selezionato per upload
+
+  // FUNZIONE HELPER PER URL FILE STATICI  
   // Helper per generare URL corretti per file statici  
-  // Utilizza la configurazione API centralizzata per coerenza  const getStaticFileUrl = (filename) => {
+  // Utilizza la configurazione API centralizzata per coerenza
+  const getStaticFileUrl = (filename) => {
     // Debug del filename ricevuto
     console.log('🔍 Debug filename received:', filename);
     
