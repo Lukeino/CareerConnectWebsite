@@ -11,9 +11,54 @@ node_modules
 dist
 dist-ssr
 *.local
+
+# Environment variables and sensitive configs
 .env
 .env.local
 .env.production
+.env.development.local
+.env.test.local
+
+# Database files (SENSITIVE!)
+*.sqlite
+*.db
+database-backup-*.sqlite
+server/db/
+
+# Server files with credentials (SENSITIVE!)
+server.cjs
+simple-server.cjs
+create-admin*.cjs
+create-admin*.js
+check-admin*.cjs
+check-admin*.js
+fix-admin-password.cjs
+update-admin-password.cjs
+
+# Database utilities (may contain sensitive info)
+analyze-*.cjs
+check-*.cjs
+migrate-*.cjs
+update-*.cjs
+create-*.cjs
+database-service.cjs
+
+# AWS and deployment files (SENSITIVE!)
+*.pem
+*.key
+AWS_*.md
+*DEPLOY*.md
+CORS_FIX_GUIDE.md
+UPDATE_BACKEND_GUIDE.md
+deploy-*.bat
+deploy-*.ps1
+update-*.ps1
+*_update_*.zip
+*.zip
+CareerConnect_AWS_Deploy.zip
+
+# Uploads directory (may contain user files)
+uploads/
 
 # Editor directories and files
 .vscode/*
@@ -25,4 +70,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-key.pem
