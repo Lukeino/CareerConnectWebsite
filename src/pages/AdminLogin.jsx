@@ -10,7 +10,7 @@ import {
   AlertTriangle,
   Users,
   Activity,
-  Settings
+  Database
 } from 'lucide-react';
 import './AdminLogin.css';
 
@@ -112,19 +112,18 @@ const AdminLogin = () => {
               <p className="admin-subtitle">
                 Sistema di Amministrazione
               </p>
-            </div>
-              <div className="admin-features">
+            </div>            <div className="admin-features">
               <div className="feature-item">
                 <Users size={20} />
-                <span>Gestione utenti e contenuti</span>
+                <span>Gestione utenti registrati</span>
               </div>
               <div className="feature-item">
                 <Activity size={20} />
                 <span>Monitoraggio delle attività</span>
               </div>
               <div className="feature-item">
-                <Settings size={20} />
-                <span>Controllo del sistema</span>
+                <Database size={20} />
+                <span>Gestione del Database</span>
               </div>
             </div>
           </div>
