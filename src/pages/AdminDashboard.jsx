@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { API_CONFIG } from '../config/api';
 import { 
-  BarChart3, 
   CheckCircle,
   LogOut
 } from 'lucide-react';
@@ -302,62 +301,66 @@ const AdminDashboard = () => {
   if (!isAuthenticated || user?.user_type !== 'admin') {
     return null; // Non renderizza nulla durante redirect
   }
-
   // LOADING STATE: Schermata caricamento
   if (loading) {
     return (
       <div className="admin-dashboard">
         <div className="loading-container">
-          <BarChart3 size={48} className="loading-icon" />
           <h2>Caricamento Dashboard Admin...</h2>
           <p>Recupero dei dati in corso...</p>
         </div>
       </div>
     );
-  }
-  // RENDER PANORAMICA: Statistiche e analytics
-  const renderOverview = () => (
+  }// RENDER PANORAMICA: Statistiche e analytics
+  const renderOverview = () => {
+    // Debug: Verificare i dati
+    console.log('Debug Dashboard - Users:', users.length);
+    console.log('Debug Dashboard - Jobs:', jobs.length);
+    console.log('Debug Dashboard - Companies:', companies.length);
+    console.log('Debug Dashboard - Stats:', stats);
+    
+    return (
     <>
       {/* Griglia Statistiche - Design Professionale Senza Icone */}
       <div className="stats-grid">
         <div className="stat-card primary">
           <div className="stat-content">
-            <h3>{users.length}</h3>
+            <h3>{users.length || 0}</h3>
             <p>Utenti Totali</p>
           </div>
         </div>
 
         <div className="stat-card success">
           <div className="stat-content">
-            <h3>{users.filter(u => u.user_type === 'candidate').length}</h3>
+            <h3>{users.filter(u => u.user_type === 'candidate').length || 0}</h3>
             <p>Candidati</p>
           </div>
         </div>
 
         <div className="stat-card warning">
           <div className="stat-content">
-            <h3>{users.filter(u => u.user_type === 'recruiter').length}</h3>
+            <h3>{users.filter(u => u.user_type === 'recruiter').length || 0}</h3>
             <p>Recruiter</p>
           </div>
         </div>
 
         <div className="stat-card info">
           <div className="stat-content">
-            <h3>{jobs.length}</h3>
+            <h3>{jobs.length || 0}</h3>
             <p>Annunci di Lavoro</p>
           </div>
         </div>
 
         <div className="stat-card primary">
           <div className="stat-content">
-            <h3>{jobs.filter(j => j.status === 'active').length}</h3>
+            <h3>{jobs.filter(j => j.status === 'active').length || 0}</h3>
             <p>Annunci Attivi</p>
           </div>
         </div>
 
         <div className="stat-card success">
           <div className="stat-content">
-            <h3>{companies.length}</h3>
+            <h3>{companies.length || 0}</h3>
             <p>Aziende</p>
           </div>
         </div>
@@ -375,13 +378,10 @@ const AdminDashboard = () => {
             <p>Nuovi Utenti (30gg)</p>
           </div>
         </div>
-      </div>
-
-      {/* Sezione Analytics - Design Pulito */}
+      </div>      {/* Sezione Analytics - Design Pulito */}
       <div className="analytics-section">
         <div className="analytics-card">
           <div className="analytics-header">
-            <BarChart3 size={20} />
             <h2>Panoramica Sistema</h2>
           </div>
           <div className="analytics-content">
@@ -404,7 +404,7 @@ const AdminDashboard = () => {
         </div>
       </div>
     </>
-  );
+  )};
 
   // RENDER GESTIONE UTENTI: Tabella completa con azioni CRUD
   const renderUsers = () => (

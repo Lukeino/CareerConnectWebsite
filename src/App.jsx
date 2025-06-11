@@ -91,15 +91,15 @@ const AppContent = () => {
   const isAdmin = user?.user_type === 'admin';
   const isAdminLoginPage = window.location.pathname === '/adminlogin';
   const isAdminPage = window.location.pathname === '/admin';
-  
-  // Special layout for admin login page OR when non-admin tries to access /admin
+    // Special layout for admin login page OR when non-admin tries to access /admin
   if (isAdminLoginPage || (isAdminPage && (!isAuthenticated || user?.user_type !== 'admin'))) {
     return <AdminLogin />;
   }
   
   return (
     <div className="app">
-      <Header />
+      {/* Hide header for admin users */}
+      {!isAdmin && <Header />}
       <main className="main-content"><Routes>
           <Route path="/" element={<HomeRoute />} />
           <Route 
