@@ -16,13 +16,24 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
   const [isUploading, setIsUploading] = useState(false);  // Stato caricamento in corso
   const [isDeleting, setIsDeleting] = useState(false);    // Stato eliminazione in corso
   const [selectedFile, setSelectedFile] = useState(null); // File selezionato per upload
-
-  // FUNZIONE HELPER PER URL FILE STATICI  // Helper per generare URL corretti per file statici
+  // FUNZIONE HELPER PER URL FILE STATICI  
+  // Helper per generare URL corretti per file statici  
   // Utilizza la configurazione API centralizzata per coerenza
   const getStaticFileUrl = (filename) => {
     // Rimuove '/api' dalla base URL e aggiunge '/uploads'
-    const baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
-    return `${baseUrl}/uploads/${filename}`;
+    let baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
+    
+    // Per produzione, assicuriamo che l'URL sia completo
+    if (import.meta.env.PROD && baseUrl.startsWith('/')) {
+      // Se siamo in produzione e l'URL è relativo, usa l'origin corrente
+      baseUrl = window.location.origin + baseUrl;
+    }
+    
+    const fullUrl = `${baseUrl}/uploads/${filename}`;
+    console.log('🔗 Generated CV URL:', fullUrl, 'from filename:', filename);
+    console.log('🔧 Environment:', import.meta.env.PROD ? 'PRODUCTION' : 'DEVELOPMENT');
+    console.log('🔧 Base URL:', baseUrl);
+    return fullUrl;
   };
 
   // GESTORI DRAG & DROP
@@ -133,12 +144,42 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
       console.error('❌ Error downloading CV:', error);
       alert('Errore durante il download del CV. Prova a visualizzarlo invece.');
     }
-  };
-
-  // VISUALIZZAZIONE CV IN NUOVA TAB
-  const handleViewCV = () => {
+  };  // VISUALIZZAZIONE CV IN NUOVA TAB
+  const handleViewCV = (e) => {
+    console.log('🖱️ CV View Button clicked!', { event: e, currentCV });
+    
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (currentCV) {
-      window.open(getStaticFileUrl(currentCV), '_blank');  // Apre in nuova tab
+      const cvUrl = getStaticFileUrl(currentCV);
+      console.log('🔍 Opening CV URL:', cvUrl);
+      
+      // Test diretto dell'URL
+      console.log('🌐 Testing URL accessibility...');
+      fetch(cvUrl)
+        .then(response => {
+          console.log('📊 URL Response:', response.status, response.statusText);
+          return response;
+        })
+        .catch(err => {
+          console.error('❌ URL not accessible:', err);
+        });
+      
+      // Prova window.open, se fallisce usa location.href
+      try {
+        const newWindow = window.open(cvUrl, '_blank');
+        console.log('🪟 Window.open result:', newWindow);
+        if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+          // Fallback se il popup è bloccato
+          console.log('⚠️ Popup blocked, using location.href');
+          window.location.href = cvUrl;
+        }
+      } catch (error) {
+        console.error('❌ Error opening window:', error);
+        window.location.href = cvUrl;
+      }
     }
   };
 
@@ -205,9 +246,9 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
               </div>
               
               {/* AZIONI SU CV ESISTENTE */}
-              <div className="current-cv-actions">
-                {/* Bottone Visualizza */}
+              <div className="current-cv-actions">                {/* Bottone Visualizza */}
                 <button 
+                  type="button"
                   onClick={handleViewCV}
                   className="cv-action-btn view-cv-btn"
                   title="Visualizza CV"

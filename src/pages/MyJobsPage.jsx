@@ -37,13 +37,22 @@ const MyJobsPage = () => {
     } else {
       setSelectAll(false);
     }
-  }, [applications, selectedApplications]);
-
-  // Helper function to get the correct URL for static files
+  }, [applications, selectedApplications]);  // Helper function to get the correct URL for static files
   const getStaticFileUrl = (filename) => {
     // Utilizza la configurazione API centralizzata per coerenza
-    const baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
-    return `${baseUrl}/uploads/${filename}`;
+    let baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
+    
+    // Per produzione, assicuriamo che l'URL sia completo
+    if (import.meta.env.PROD && baseUrl.startsWith('/')) {
+      // Se siamo in produzione e l'URL è relativo, usa l'origin corrente
+      baseUrl = window.location.origin + baseUrl;
+    }
+    
+    const fullUrl = `${baseUrl}/uploads/${filename}`;
+    console.log('🔗 Generated CV URL:', fullUrl, 'from filename:', filename);
+    console.log('🔧 Environment:', import.meta.env.PROD ? 'PRODUCTION' : 'DEVELOPMENT');
+    console.log('🔧 Base URL:', baseUrl);
+    return fullUrl;
   };
 
   const fetchMyJobs = async () => {
@@ -520,11 +529,48 @@ const MyJobsPage = () => {
                                     <Phone size={14} />
                                     <span className="candidate-phone">{application.phone}</span>
                                   </div>
-                                )}
-                                {application.cv_filename && (
+                                )}                                {application.cv_filename && (
                                   <div className="candidate-contact">
                                     <FileText size={14} />                                    <button 
-                                      onClick={() => window.open(getStaticFileUrl(application.cv_filename), '_blank')}
+                                      type="button"
+                                      onClick={(e) => {
+                                        console.log('🖱️ CV Button clicked!', {
+                                          event: e,
+                                          filename: application.cv_filename,
+                                          application: application
+                                        });
+                                        
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        
+                                        const cvUrl = getStaticFileUrl(application.cv_filename);
+                                        console.log('🔍 Opening CV URL:', cvUrl);
+                                        
+                                        // Test diretto dell'URL
+                                        console.log('🌐 Testing URL accessibility...');
+                                        fetch(cvUrl)
+                                          .then(response => {
+                                            console.log('📊 URL Response:', response.status, response.statusText);
+                                            return response;
+                                          })
+                                          .catch(err => {
+                                            console.error('❌ URL not accessible:', err);
+                                          });
+                                        
+                                        // Prova window.open, se fallisce usa location.href
+                                        try {
+                                          const newWindow = window.open(cvUrl, '_blank');
+                                          console.log('🪟 Window.open result:', newWindow);
+                                          if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                                            // Fallback se il popup è bloccato
+                                            console.log('⚠️ Popup blocked, using location.href');
+                                            window.location.href = cvUrl;
+                                          }
+                                        } catch (error) {
+                                          console.error('❌ Error opening window:', error);
+                                          window.location.href = cvUrl;
+                                        }
+                                      }}
                                       className="cv-link-btn"
                                     >
                                       Visualizza CV
