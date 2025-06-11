@@ -1,26 +1,6 @@
 [build]
   publish = "dist"
 
-# IMPORTANTE: I redirect per file uploads devono essere PRIMI
-# altrimenti React Router li intercetta
-[[redirects]]
-  from = "/uploads/*"
-  to = "http://16.170.241.18:3001/uploads/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/*"
-  to = "http://16.170.241.18:3001/api/:splat"
-  status = 200
-  force = true
-
-# Fallback per React Router - DEVE essere ultimo
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
 [[headers]]
   for = "/api/*"
   [headers.values]
