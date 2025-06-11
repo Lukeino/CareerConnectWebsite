@@ -39,6 +39,14 @@ const MyJobsPage = () => {
     }
   }, [applications, selectedApplications]);  // Helper function to get the correct URL for static files
   const getStaticFileUrl = (filename) => {
+    // Debug del filename ricevuto
+    console.log('🔍 Debug filename received:', filename);
+    
+    if (!filename) {
+      console.error('❌ No filename provided to getStaticFileUrl');
+      return '';
+    }
+    
     // Utilizza la configurazione API centralizzata per coerenza
     let baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
     
@@ -48,10 +56,16 @@ const MyJobsPage = () => {
       baseUrl = window.location.origin + baseUrl;
     }
     
+    // Se l'URL di base non contiene http/https, aggiungiamo il protocollo
+    if (!baseUrl.startsWith('http')) {
+      baseUrl = `http://${baseUrl}`;
+    }
+    
     const fullUrl = `${baseUrl}/uploads/${filename}`;
     console.log('🔗 Generated CV URL:', fullUrl, 'from filename:', filename);
     console.log('🔧 Environment:', import.meta.env.PROD ? 'PRODUCTION' : 'DEVELOPMENT');
     console.log('🔧 Base URL:', baseUrl);
+    console.log('🔧 API_CONFIG.BASE_URL:', API_CONFIG.BASE_URL);
     return fullUrl;
   };
 

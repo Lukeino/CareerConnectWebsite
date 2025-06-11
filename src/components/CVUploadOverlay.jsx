@@ -15,11 +15,18 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
   const [isDragOver, setIsDragOver] = useState(false);    // Stato drag over per feedback visivo
   const [isUploading, setIsUploading] = useState(false);  // Stato caricamento in corso
   const [isDeleting, setIsDeleting] = useState(false);    // Stato eliminazione in corso
-  const [selectedFile, setSelectedFile] = useState(null); // File selezionato per upload
-  // FUNZIONE HELPER PER URL FILE STATICI  
+  const [selectedFile, setSelectedFile] = useState(null); // File selezionato per upload  // FUNZIONE HELPER PER URL FILE STATICI  
   // Helper per generare URL corretti per file statici  
   // Utilizza la configurazione API centralizzata per coerenza
   const getStaticFileUrl = (filename) => {
+    // Debug del filename ricevuto
+    console.log('🔍 Debug filename received:', filename);
+    
+    if (!filename) {
+      console.error('❌ No filename provided to getStaticFileUrl');
+      return '';
+    }
+    
     // Rimuove '/api' dalla base URL e aggiunge '/uploads'
     let baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
     
@@ -29,10 +36,16 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
       baseUrl = window.location.origin + baseUrl;
     }
     
+    // Se l'URL di base non contiene http/https, aggiungiamo il protocollo
+    if (!baseUrl.startsWith('http')) {
+      baseUrl = `http://${baseUrl}`;
+    }
+    
     const fullUrl = `${baseUrl}/uploads/${filename}`;
     console.log('🔗 Generated CV URL:', fullUrl, 'from filename:', filename);
     console.log('🔧 Environment:', import.meta.env.PROD ? 'PRODUCTION' : 'DEVELOPMENT');
     console.log('🔧 Base URL:', baseUrl);
+    console.log('🔧 API_CONFIG.BASE_URL:', API_CONFIG.BASE_URL);
     return fullUrl;
   };
 
