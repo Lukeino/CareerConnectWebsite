@@ -477,6 +477,18 @@
   transform: translateY(-1px);
 }
 
+.action-btn.delete-user-btn {
+  background: rgba(220, 38, 127, 0.2);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 127, 0.3);
+}
+
+.action-btn.delete-user-btn:hover {
+  background: rgba(220, 38, 127, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 127, 0.3);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .admin-dashboard {

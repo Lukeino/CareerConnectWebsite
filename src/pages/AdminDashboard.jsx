@@ -198,6 +198,44 @@ const AdminDashboard = () => {
       }    }
   };
 
+  // Delete user function
+  const deleteUser = async (userId, userName) => {
+    const confirmMessage = `ATTENZIONE: Sei sicuro di voler ELIMINARE DEFINITIVAMENTE l'utente "${userName}"?\n\nQuesta azione:\n• Eliminerà permanentemente l'account\n• Rimuoverà tutti i dati associati\n• NON PUÒ ESSERE ANNULLATA\n\nDigita "ELIMINA" per confermare:`;
+    
+    const userConfirmation = prompt(confirmMessage);
+    
+    if (userConfirmation === "ELIMINA") {
+      try {
+        console.log('Deleting user ID:', userId);
+        const response = await fetch(`${API_CONFIG.BASE_URL}/admin/users/${userId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Delete user response:', result);
+          
+          // Refresh users data and stats
+          await fetchUsers();
+          await fetchStats();
+          alert('Utente eliminato con successo!');
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          console.error('Delete user error:', errorData);
+          alert(`Errore nell'eliminazione dell'utente: ${errorData.error || 'Errore sconosciuto'}`);
+        }
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        alert(`Errore di connessione: ${error.message}`);
+      }
+    } else if (userConfirmation !== null) {
+      alert('Operazione annullata. Devi digitare esattamente "ELIMINA" per confermare.');
+    }
+  };
+
   // DEBUG FUNCTION - Clear all database records
   const handleDebugClearDatabase = async () => {
     const confirmDelete = window.confirm(
@@ -473,17 +511,25 @@ const AdminDashboard = () => {
                     <span className={`status-badge ${user.is_blocked ? 'blocked' : 'active'}`}>
                       {user.is_blocked ? 'Bloccato' : 'Attivo'}
                     </span>
-                  </td>
-                  <td>
+                  </td>                  <td>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                       {user.user_type !== 'admin' && (
-                        <button
-                          onClick={() => toggleUserBlock(user.id, user.is_blocked)}
-                          className={`action-btn ${user.is_blocked ? 'unblock-btn' : 'block-btn'}`}
-                          title={user.is_blocked ? 'Sblocca utente' : 'Blocca utente'}
-                        >
-                          {user.is_blocked ? <Shield size={14} /> : <Ban size={14} />}
-                        </button>
+                        <>
+                          <button
+                            onClick={() => toggleUserBlock(user.id, user.is_blocked)}
+                            className={`action-btn ${user.is_blocked ? 'unblock-btn' : 'block-btn'}`}
+                            title={user.is_blocked ? 'Sblocca utente' : 'Blocca utente'}
+                          >
+                            {user.is_blocked ? <Shield size={14} /> : <Ban size={14} />}
+                          </button>
+                          <button
+                            onClick={() => deleteUser(user.id, `${user.first_name} ${user.last_name}`)}
+                            className="action-btn delete-user-btn"
+                            title="Elimina utente definitivamente"
+                          >
+                            <UserX size={14} />
+                          </button>
+                        </>
                       )}
                     </div>
                   </td>
