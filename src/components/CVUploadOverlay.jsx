@@ -27,10 +27,10 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
       console.error('❌ No filename provided to getStaticFileUrl');
       return '';
     }
-    
-    // Rimuove '/api' dalla base URL e aggiunge '/uploads'
+      // Rimuove '/api' dalla base URL e aggiunge '/uploads'
     let baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
     console.log('🔧 Base URL from config:', baseUrl);
+    console.log('🔧 Original API_CONFIG.BASE_URL:', API_CONFIG.BASE_URL);
     
     // Per produzione, assicuriamo che l'URL sia completo
     if (import.meta.env.PROD && baseUrl.startsWith('/')) {
@@ -46,6 +46,12 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
       const protocol = import.meta.env.PROD && window.location.protocol === 'https:' ? 'https' : 'http';
       baseUrl = `${protocol}://${baseUrl}`;
       console.log('🔧 Added protocol:', protocol, 'to baseUrl:', baseUrl);
+    }
+    
+    // FALLBACK SICURO: Se baseUrl è vuoto, usa window.location.origin
+    if (!baseUrl || baseUrl === '') {
+      baseUrl = window.location.origin;
+      console.log('🔧 Using fallback baseUrl:', baseUrl);
     }
     
     const fullUrl = `${baseUrl}/uploads/${filename}`;

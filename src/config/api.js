@@ -29,6 +29,11 @@ export const API_CONFIG = {
 };
 
 // DEBUG: LOGGING CONFIGURAZIONE CORRENTE
+console.log('🔧 API Config Debug:');
+console.log('🔧 VITE_API_URL_PROD:', import.meta.env.VITE_API_URL_PROD);
+console.log('🔧 VITE_API_URL:', import.meta.env.VITE_API_URL);
+console.log('🔧 import.meta.env.PROD:', import.meta.env.PROD);
+console.log('🔧 Final BASE_URL:', API_CONFIG.BASE_URL);
 // Utile per troubleshooting problemi di connessione API
 console.log('🔧 API Configuration:', {
   BASE_URL: API_CONFIG.BASE_URL,

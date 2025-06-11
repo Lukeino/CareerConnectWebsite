@@ -58,14 +58,19 @@ const MyJobsPage = () => {
       baseUrl = window.location.origin + baseUrl;
       console.log('🔧 Production relative URL converted to:', baseUrl);
     }
-    
-    // Se l'URL di base non contiene http/https, aggiungiamo il protocollo
+      // Se l'URL di base non contiene http/https, aggiungiamo il protocollo
     if (!baseUrl.startsWith('http')) {
       // In produzione HTTPS (Netlify), usar HTTPS anche per backend se possibile
       // Altrimenti usa HTTP per sviluppo locale
       const protocol = import.meta.env.PROD && window.location.protocol === 'https:' ? 'https' : 'http';
       baseUrl = `${protocol}://${baseUrl}`;
       console.log('🔧 Added protocol:', protocol, 'to baseUrl:', baseUrl);
+    }
+    
+    // FALLBACK SICURO: Se baseUrl è vuoto, usa window.location.origin
+    if (!baseUrl || baseUrl === '') {
+      baseUrl = window.location.origin;
+      console.log('🔧 Using fallback baseUrl:', baseUrl);
     }
     
     const fullUrl = `${baseUrl}/uploads/${filename}`;
