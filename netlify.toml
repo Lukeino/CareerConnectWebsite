@@ -6,7 +6,6 @@
   to = "http://13.51.194.249/api/:splat"
   status = 200
   force = true
-  headers = {X-From = "Netlify"}
 
 [[headers]]
   for = "/api/*"
