@@ -37,8 +37,7 @@ const MyJobsPage = () => {
     } else {
       setSelectAll(false);
     }
-  }, [applications, selectedApplications]);  // Helper function to get the correct URL for static files
-  const getStaticFileUrl = (filename) => {
+  }, [applications, selectedApplications]);  // Helper function to get the correct URL for static files  const getStaticFileUrl = (filename) => {
     // Debug del filename ricevuto
     console.log('🔍 Debug filename received:', filename);
     
@@ -49,23 +48,30 @@ const MyJobsPage = () => {
     
     // Utilizza la configurazione API centralizzata per coerenza
     let baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
+    console.log('🔧 Base URL from config:', baseUrl);
     
     // Per produzione, assicuriamo che l'URL sia completo
     if (import.meta.env.PROD && baseUrl.startsWith('/')) {
       // Se siamo in produzione e l'URL è relativo, usa l'origin corrente
       baseUrl = window.location.origin + baseUrl;
+      console.log('🔧 Production relative URL converted to:', baseUrl);
     }
     
     // Se l'URL di base non contiene http/https, aggiungiamo il protocollo
     if (!baseUrl.startsWith('http')) {
-      baseUrl = `http://${baseUrl}`;
+      // In produzione HTTPS (Netlify), usar HTTPS anche per backend se possibile
+      // Altrimenti usa HTTP per sviluppo locale
+      const protocol = import.meta.env.PROD && window.location.protocol === 'https:' ? 'https' : 'http';
+      baseUrl = `${protocol}://${baseUrl}`;
+      console.log('🔧 Added protocol:', protocol, 'to baseUrl:', baseUrl);
     }
     
     const fullUrl = `${baseUrl}/uploads/${filename}`;
     console.log('🔗 Generated CV URL:', fullUrl, 'from filename:', filename);
     console.log('🔧 Environment:', import.meta.env.PROD ? 'PRODUCTION' : 'DEVELOPMENT');
-    console.log('🔧 Base URL:', baseUrl);
+    console.log('🔧 Final Base URL:', baseUrl);
     console.log('🔧 API_CONFIG.BASE_URL:', API_CONFIG.BASE_URL);
+    
     return fullUrl;
   };
 
