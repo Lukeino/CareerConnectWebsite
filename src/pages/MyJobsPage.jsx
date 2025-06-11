@@ -48,7 +48,14 @@ const MyJobsPage = () => {
       return '';
     }
     
-    // Utilizza la configurazione API centralizzata per coerenza
+    // SOLUZIONE DIRETTA: In produzione usa sempre il dominio Netlify
+    if (import.meta.env.PROD) {
+      const fullUrl = `https://careerconnectproject.netlify.app/uploads/${filename}`;
+      console.log('🔗 Production CV URL:', fullUrl);
+      return fullUrl;
+    }
+    
+    // Per sviluppo locale, usa la logica originale
     let baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
     console.log('🔧 Base URL from config:', baseUrl);
     

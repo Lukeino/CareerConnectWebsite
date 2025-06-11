@@ -18,8 +18,7 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
 
   // FUNZIONE HELPER PER URL FILE STATICI  
   // Helper per generare URL corretti per file statici  
-  // Utilizza la configurazione API centralizzata per coerenza
-  const getStaticFileUrl = (filename) => {
+  // Utilizza la configurazione API centralizzata per coerenza  const getStaticFileUrl = (filename) => {
     // Debug del filename ricevuto
     console.log('🔍 Debug filename received:', filename);
     
@@ -27,7 +26,15 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
       console.error('❌ No filename provided to getStaticFileUrl');
       return '';
     }
-      // Rimuove '/api' dalla base URL e aggiunge '/uploads'
+
+    // SOLUZIONE DIRETTA: In produzione usa sempre il dominio Netlify
+    if (import.meta.env.PROD) {
+      const fullUrl = `https://careerconnectproject.netlify.app/uploads/${filename}`;
+      console.log('🔗 Production CV URL:', fullUrl);
+      return fullUrl;
+    }
+
+    // Per sviluppo locale, usa la logica originale
     let baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
     console.log('🔧 Base URL from config:', baseUrl);
     console.log('🔧 Original API_CONFIG.BASE_URL:', API_CONFIG.BASE_URL);
