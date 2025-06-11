@@ -320,65 +320,64 @@ const AdminDashboard = () => {
     console.log('Debug Dashboard - Stats:', stats);
     
     return (
-    <>
-      {/* Griglia Statistiche - Design Professionale Senza Icone */}
+    <>      {/* Griglia Statistiche - Design Professionale Senza Icone */}
       <div className="stats-grid">
         <div className="stat-card primary">
           <div className="stat-content">
-            <h3>{users.length || 0}</h3>
-            <p>Utenti Totali</p>
+            <h3 style={{color: '#0f172a !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Utenti Totali</p>
           </div>
         </div>
 
         <div className="stat-card success">
           <div className="stat-content">
-            <h3>{users.filter(u => u.user_type === 'candidate').length || 0}</h3>
-            <p>Candidati</p>
+            <h3 style={{color: '#059669 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.filter(u => u.user_type === 'candidate').length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Candidati</p>
           </div>
         </div>
 
         <div className="stat-card warning">
           <div className="stat-content">
-            <h3>{users.filter(u => u.user_type === 'recruiter').length || 0}</h3>
-            <p>Recruiter</p>
+            <h3 style={{color: '#d97706 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.filter(u => u.user_type === 'recruiter').length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Recruiter</p>
           </div>
         </div>
 
         <div className="stat-card info">
           <div className="stat-content">
-            <h3>{jobs.length || 0}</h3>
-            <p>Annunci di Lavoro</p>
+            <h3 style={{color: '#7c3aed !important', fontSize: '2.5rem', fontWeight: '700'}}>{jobs.length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Annunci di Lavoro</p>
           </div>
         </div>
 
         <div className="stat-card primary">
           <div className="stat-content">
-            <h3>{jobs.filter(j => j.status === 'active').length || 0}</h3>
-            <p>Annunci Attivi</p>
+            <h3 style={{color: '#0284c7 !important', fontSize: '2.5rem', fontWeight: '700'}}>{jobs.filter(j => j.status === 'active').length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Annunci Attivi</p>
           </div>
         </div>
 
         <div className="stat-card success">
           <div className="stat-content">
-            <h3>{companies.length || 0}</h3>
-            <p>Aziende</p>
+            <h3 style={{color: '#059669 !important', fontSize: '2.5rem', fontWeight: '700'}}>{companies.length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Aziende</p>
           </div>
         </div>
 
         <div className="stat-card warning">
           <div className="stat-content">
-            <h3>{stats?.applications || 0}</h3>
-            <p>Candidature</p>
+            <h3 style={{color: '#d97706 !important', fontSize: '2.5rem', fontWeight: '700'}}>{stats?.applications || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Candidature</p>
           </div>
         </div>
 
         <div className="stat-card info">
           <div className="stat-content">
-            <h3>{stats?.recentActivity?.users || 0}</h3>
-            <p>Nuovi Utenti (30gg)</p>
+            <h3 style={{color: '#7c3aed !important', fontSize: '2.5rem', fontWeight: '700'}}>{stats?.recentActivity?.users || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Nuovi Utenti (30gg)</p>
           </div>
         </div>
-      </div>      {/* Sezione Analytics - Design Pulito */}
+      </div>{/* Sezione Analytics - Design Pulito */}
       <div className="analytics-section">
         <div className="analytics-card">
           <div className="analytics-header">

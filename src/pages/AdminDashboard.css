@@ -265,6 +265,43 @@ html body .admin-dashboard .stat-card.info .stat-content h3,
   color: #7c3aed !important; 
 }
 
+/* ULTIMATE OVERRIDE FOR HOMEPAGE CONFLICTS */
+html body .admin-dashboard .stats-grid .stat-content h3,
+html body .admin-dashboard .stats-grid .stat-content p,
+html body .admin-dashboard .stat-card .stat-content h3,
+html body .admin-dashboard .stat-card .stat-content p {
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+}
+
+/* OVERRIDE SPECIFIC HOMEPAGE RULES */
+html body .admin-dashboard .stat-content h3,
+html body .admin-dashboard .stats-grid .stat-content h3 {
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+}
+
+html body .admin-dashboard .stat-content p,
+html body .admin-dashboard .stats-grid .stat-content p {
+  color: #64748b !important;
+  -webkit-text-fill-color: #64748b !important;
+  font-size: 0.875rem !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+}
+
 /* ANALYTICS SECTION - CLEAN DATA PRESENTATION */
 .analytics-section {
   margin-bottom: 2rem;
@@ -568,4 +605,64 @@ html body .admin-dashboard .stat-card.info .stat-content h3,
     box-shadow: none !important;
     border: 1px solid #000 !important;
   }
+}
+
+/* NUCLEAR OPTION - BEAT HOMEPAGE.CSS CONFLICTS */
+/* These rules have maximum specificity to override HomePage.css */
+html body div.admin-dashboard div.stats-grid div.stat-card div.stat-content h3,
+html body div.admin-dashboard div.stat-card div.stat-content h3,
+html body .admin-dashboard .stats-grid .stat-card .stat-content h3,
+html body .admin-dashboard .stat-card .stat-content h3 {
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+html body div.admin-dashboard div.stats-grid div.stat-card div.stat-content p,
+html body div.admin-dashboard div.stat-card div.stat-content p,
+html body .admin-dashboard .stats-grid .stat-card .stat-content p,
+html body .admin-dashboard .stat-card .stat-content p {
+  color: #64748b !important;
+  -webkit-text-fill-color: #64748b !important;
+  font-size: 0.875rem !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* VARIANT COLORS WITH MAXIMUM SPECIFICITY */
+html body div.admin-dashboard div.stats-grid div.stat-card.primary div.stat-content h3,
+html body .admin-dashboard .stats-grid .stat-card.primary .stat-content h3 {
+  color: #0284c7 !important;
+  -webkit-text-fill-color: #0284c7 !important;
+}
+
+html body div.admin-dashboard div.stats-grid div.stat-card.success div.stat-content h3,
+html body .admin-dashboard .stats-grid .stat-card.success .stat-content h3 {
+  color: #059669 !important;
+  -webkit-text-fill-color: #059669 !important;
+}
+
+html body div.admin-dashboard div.stats-grid div.stat-card.warning div.stat-content h3,
+html body .admin-dashboard .stats-grid .stat-card.warning .stat-content h3 {
+  color: #d97706 !important;
+  -webkit-text-fill-color: #d97706 !important;
+}
+
+html body div.admin-dashboard div.stats-grid div.stat-card.info div.stat-content h3,
+html body .admin-dashboard .stats-grid .stat-card.info .stat-content h3 {
+  color: #7c3aed !important;
+  -webkit-text-fill-color: #7c3aed !important;
 }
