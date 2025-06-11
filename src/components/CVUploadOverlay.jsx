@@ -10,11 +10,11 @@ import { X, Upload, FileText, Check, Download, Trash2, Eye } from 'lucide-react'
 import { API_CONFIG } from '../config/api';
 import './CVUploadOverlay.css';
 
-const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, userId }) => {
-  // STATI DEL COMPONENTE
+const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, userId }) => {  // STATI DEL COMPONENTE
   const [isDragOver, setIsDragOver] = useState(false);    // Stato drag over per feedback visivo
   const [isUploading, setIsUploading] = useState(false);  // Stato caricamento in corso
-  const [isDeleting, setIsDeleting] = useState(false);    // Stato eliminazione in corso  const [selectedFile, setSelectedFile] = useState(null); // File selezionato per upload
+  const [isDeleting, setIsDeleting] = useState(false);    // Stato eliminazione in corso
+  const [selectedFile, setSelectedFile] = useState(null); // File selezionato per upload
 
   // FUNZIONE HELPER PER URL FILE STATICI  
   // Helper per generare URL corretti per file statici  
