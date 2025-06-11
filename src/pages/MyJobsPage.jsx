@@ -37,18 +37,18 @@ const MyJobsPage = () => {
       setSelectAll(false);
     }
   }, [applications, selectedApplications]);  // Helper function to get the correct URL for static files
-  // I file statici sono serviti a /uploads/, NON a /api/uploads/
-  // Utilizza il reindirizzamento Netlify configurato in netlify.toml
+  // In produzione usa Netlify redirect, in sviluppo punta direttamente al server
   const getStaticFileUrl = (filename) => {
     if (!filename) return '';
     
     // In produzione, usa il reindirizzamento Netlify per /uploads/*
-    // In sviluppo, usa localhost direttamente
+    // In sviluppo, usa il server di sviluppo direttamente
     const fullUrl = import.meta.env.PROD 
       ? `/uploads/${filename}` 
       : `http://localhost:3001/uploads/${filename}`;
     
     console.log('🔗 CV URL:', fullUrl);
+    console.log('🌍 Environment PROD:', import.meta.env.PROD);
     return fullUrl;
   };
 
