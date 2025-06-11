@@ -13,16 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { API_CONFIG } from '../config/api';
 import { 
-  Users, 
-  Briefcase, 
-  Building2, 
-  FileText, 
   BarChart3, 
-  AlertCircle,
   CheckCircle,
-  Clock,
-  UserCheck,
-  Calendar,
   LogOut
 } from 'lucide-react';
 import './AdminDashboard.css';
@@ -258,61 +250,7 @@ const AdminDashboard = () => {
       }
     } else if (userConfirmation !== null) {
       alert('Operazione annullata. Devi digitare esattamente "ELIMINA" per confermare.');
-    }
-  };
-
-  // FUNZIONE DEBUG - Cancellazione completa database
-  const handleDebugClearDatabase = async () => {
-    // Tripla conferma per operazione devastante
-    const confirmDelete = window.confirm(
-      '⚠️ ADMIN WARNING: This will DELETE ALL RECORDS from the database!\n\n' +
-      'This includes:\n' +
-      '• All user accounts (except admin)\n' +
-      '• All companies\n' +
-      '• All job postings\n' +
-      '• All applications\n\n' +
-      'This action CANNOT be undone!\n\nAre you absolutely sure?'
-    );
-
-    if (!confirmDelete) return;
-
-    const secondConfirm = window.confirm(
-      '🔥 FINAL WARNING 🔥\n\n' +
-      'You are about to permanently delete ALL DATA from the database.\n\n' +
-      'Type "YES" in the next prompt to confirm.'
-    );
-
-    if (!secondConfirm) return;
-
-    const finalConfirm = prompt('Type "YES" to confirm deletion of all database records:');
-    
-    if (finalConfirm !== 'YES') {
-      alert('Database clearing cancelled.');
-      return;
-    }
-
-    try {
-      const response = await fetch(`${API_CONFIG.BASE_URL}/debug/clear-database`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        alert('✅ Database cleared successfully! All records have been deleted.');
-        // Refresh tutti i dati
-        await fetchAllData();
-      } else {
-        alert('❌ Error clearing database: ' + result.error);
-      }
-    } catch (error) {
-      console.error('Debug clear database error:', error);
-      alert('❌ Network error while clearing database: ' + error.message);
-    }
-  };
+    }  };
 
   // HELPER: Messaggio saluto basato su orario
   const getGreetingMessage = () => {
@@ -377,16 +315,12 @@ const AdminDashboard = () => {
       </div>
     );
   }
-
   // RENDER PANORAMICA: Statistiche e analytics
   const renderOverview = () => (
     <>
-      {/* Griglia Statistiche */}
+      {/* Griglia Statistiche - Design Professionale Senza Icone */}
       <div className="stats-grid">
         <div className="stat-card primary">
-          <div className="stat-icon">
-            <Users size={24} />
-          </div>
           <div className="stat-content">
             <h3>{users.length}</h3>
             <p>Utenti Totali</p>
@@ -394,9 +328,6 @@ const AdminDashboard = () => {
         </div>
 
         <div className="stat-card success">
-          <div className="stat-icon">
-            <UserCheck size={24} />
-          </div>
           <div className="stat-content">
             <h3>{users.filter(u => u.user_type === 'candidate').length}</h3>
             <p>Candidati</p>
@@ -404,9 +335,6 @@ const AdminDashboard = () => {
         </div>
 
         <div className="stat-card warning">
-          <div className="stat-icon">
-            <UserCheck size={24} />
-          </div>
           <div className="stat-content">
             <h3>{users.filter(u => u.user_type === 'recruiter').length}</h3>
             <p>Recruiter</p>
@@ -414,9 +342,6 @@ const AdminDashboard = () => {
         </div>
 
         <div className="stat-card info">
-          <div className="stat-icon">
-            <Briefcase size={24} />
-          </div>
           <div className="stat-content">
             <h3>{jobs.length}</h3>
             <p>Annunci di Lavoro</p>
@@ -424,9 +349,6 @@ const AdminDashboard = () => {
         </div>
 
         <div className="stat-card primary">
-          <div className="stat-icon">
-            <CheckCircle size={24} />
-          </div>
           <div className="stat-content">
             <h3>{jobs.filter(j => j.status === 'active').length}</h3>
             <p>Annunci Attivi</p>
@@ -434,9 +356,6 @@ const AdminDashboard = () => {
         </div>
 
         <div className="stat-card success">
-          <div className="stat-icon">
-            <Building2 size={24} />
-          </div>
           <div className="stat-content">
             <h3>{companies.length}</h3>
             <p>Aziende</p>
@@ -444,9 +363,6 @@ const AdminDashboard = () => {
         </div>
 
         <div className="stat-card warning">
-          <div className="stat-icon">
-            <FileText size={24} />
-          </div>
           <div className="stat-content">
             <h3>{stats?.applications || 0}</h3>
             <p>Candidature</p>
@@ -454,9 +370,6 @@ const AdminDashboard = () => {
         </div>
 
         <div className="stat-card info">
-          <div className="stat-icon">
-            <Calendar size={24} />
-          </div>
           <div className="stat-content">
             <h3>{stats?.recentActivity?.users || 0}</h3>
             <p>Nuovi Utenti (30gg)</p>
@@ -464,7 +377,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Sezione Analytics */}
+      {/* Sezione Analytics - Design Pulito */}
       <div className="analytics-section">
         <div className="analytics-card">
           <div className="analytics-header">
@@ -496,10 +409,8 @@ const AdminDashboard = () => {
   // RENDER GESTIONE UTENTI: Tabella completa con azioni CRUD
   const renderUsers = () => (
     <div className="data-section">
-      <div className="data-card">
-        <div className="data-header">
+      <div className="data-card">        <div className="data-header">
           <h2>
-            <Users size={20} />
             Gestione Utenti
             <span className="data-count">{users.length}</span>
           </h2>
@@ -574,10 +485,8 @@ const AdminDashboard = () => {
   // RENDER GESTIONE ANNUNCI: Tabella offerte lavoro con visualizzazione e eliminazione
   const renderJobs = () => (
     <div className="data-section">
-      <div className="data-card">
-        <div className="data-header">
+      <div className="data-card">        <div className="data-header">
           <h2>
-            <Briefcase size={20} />
             Gestione Annunci di Lavoro
             <span className="data-count">{jobs.length}</span>
           </h2>
@@ -652,10 +561,8 @@ const AdminDashboard = () => {
   // RENDER GESTIONE AZIENDE: Tabella read-only con statistiche
   const renderCompanies = () => (
     <div className="data-section">
-      <div className="data-card">
-        <div className="data-header">
+      <div className="data-card">        <div className="data-header">
           <h2>
-            <Building2 size={20} />
             Gestione Aziende
             <span className="data-count">{companies.length}</span>
           </h2>
@@ -704,16 +611,7 @@ const AdminDashboard = () => {
             <CheckCircle size={16} />
             Sistema Operativo
           </div>
-        </div>
-        <div className="admin-actions">
-          {/* Bottone Debug - Funzione devastante */}
-          <button 
-            className="debug-button"
-            onClick={handleDebugClearDatabase}
-            title="DEBUG: Cancella Database"
-          >
-            🗑️
-          </button>
+        </div>        <div className="admin-actions">
           {/* Bottone Logout */}
           <button 
             className="logout-button"
@@ -724,36 +622,30 @@ const AdminDashboard = () => {
             Disconnetti
           </button>
         </div>
-      </div>
-
-      {/* Navigazione Tab */}
+      </div>      {/* Navigazione Tab - Design Pulito Senza Icone */}
       <div className="admin-nav">
         <button 
           className={`nav-tab ${activeTab === 'overview' ? 'active' : ''}`}
           onClick={() => setActiveTab('overview')}
         >
-          <BarChart3 size={16} />
           Panoramica
         </button>
         <button 
           className={`nav-tab ${activeTab === 'users' ? 'active' : ''}`}
           onClick={() => setActiveTab('users')}
         >
-          <Users size={16} />
           Utenti ({users.length})
         </button>
         <button 
           className={`nav-tab ${activeTab === 'jobs' ? 'active' : ''}`}
           onClick={() => setActiveTab('jobs')}
         >
-          <Briefcase size={16} />
           Annunci ({jobs.length})
         </button>
         <button 
           className={`nav-tab ${activeTab === 'companies' ? 'active' : ''}`}
           onClick={() => setActiveTab('companies')}
         >
-          <Building2 size={16} />
           Aziende ({companies.length})
         </button>
       </div>
