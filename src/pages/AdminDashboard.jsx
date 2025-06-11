@@ -21,9 +21,19 @@ import {
   AlertCircle,
   CheckCircle,
   Clock,
+  Eye,
+  Trash2,
+  MoreHorizontal,
   UserCheck,
+  UserMinus,
   Calendar,
-  LogOut
+  MapPin,
+  Mail,
+  Phone,
+  LogOut,
+  Ban,
+  UserX,
+  Shield
 } from 'lucide-react';
 import './AdminDashboard.css';
 
@@ -523,7 +533,13 @@ const AdminDashboard = () => {
               {users.map(user => (
                 <tr key={user.id}>
                   <td>{user.id}</td>
-                  <td>{user.first_name} {user.last_name}</td>                  <td>{user.email}</td>
+                  <td>{user.first_name} {user.last_name}</td>
+                  <td>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <Mail size={14} />
+                      {user.email}
+                    </div>
+                  </td>
                   <td>
                     <span className={`user-type-badge ${user.user_type}`}>
                       {user.user_type === 'candidate' ? 'Candidato' : 
@@ -531,8 +547,14 @@ const AdminDashboard = () => {
                        user.user_type === 'admin' ? 'Amministratore' : user.user_type}
                     </span>
                   </td>
-                  <td>{user.company || 'N/A'}</td>                  <td>
-                    {user.phone || 'N/A'}
+                  <td>{user.company || 'N/A'}</td>
+                  <td>
+                    {user.phone ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Phone size={14} />
+                        {user.phone}
+                      </div>
+                    ) : 'N/A'}
                   </td>
                   <td>{formatDate(user.created_at)}</td>
                   <td>
@@ -540,7 +562,8 @@ const AdminDashboard = () => {
                       {user.is_blocked ? 'Bloccato' : 'Attivo'}
                     </span>
                   </td>
-                  <td>                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <td>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
                       {/* Azioni solo per non-admin */}
                       {user.user_type !== 'admin' && (
                         <>
@@ -549,14 +572,14 @@ const AdminDashboard = () => {
                             className={`action-btn ${user.is_blocked ? 'unblock-btn' : 'block-btn'}`}
                             title={user.is_blocked ? 'Sblocca utente' : 'Blocca utente'}
                           >
-                            {user.is_blocked ? 'Sblocca' : 'Blocca'}
+                            {user.is_blocked ? <Shield size={14} /> : <Ban size={14} />}
                           </button>
                           <button
                             onClick={() => deleteUser(user.id, `${user.first_name} ${user.last_name}`)}
                             className="action-btn delete-user-btn"
                             title="Elimina utente definitivamente"
                           >
-                            Elimina
+                            <UserX size={14} />
                           </button>
                         </>
                       )}
@@ -608,7 +631,13 @@ const AdminDashboard = () => {
                     </div>
                   </td>
                   <td>{job.company_name || 'N/A'}</td>
-                  <td>{job.recruiter_name || 'N/A'}</td>                  <td>{job.location || 'N/A'}</td>
+                  <td>{job.recruiter_name || 'N/A'}</td>
+                  <td>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <MapPin size={14} />
+                      {job.location || 'N/A'}
+                    </div>
+                  </td>
                   <td>
                     <span className="job-type-badge">
                       {getJobTypeText(job.job_type)}
@@ -621,14 +650,15 @@ const AdminDashboard = () => {
                     </span>
                   </td>
                   <td>{formatDate(job.created_at)}</td>
-                  <td>                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <td>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
                       {/* Bottone visualizza - apre in nuova tab */}
                       <button
                         onClick={() => window.open(`/jobs/${job.id}`, '_blank')}
                         className="action-btn view-btn"
                         title="Visualizza annuncio"
                       >
-                        Visualizza
+                        <Eye size={14} />
                       </button>
                       {/* Bottone elimina */}
                       <button
@@ -636,7 +666,7 @@ const AdminDashboard = () => {
                         className="action-btn delete-btn"
                         title="Elimina annuncio"
                       >
-                        Elimina
+                        <Trash2 size={14} />
                       </button>
                     </div>
                   </td>
@@ -675,7 +705,13 @@ const AdminDashboard = () => {
               {companies.map(company => (
                 <tr key={company.id}>
                   <td>{company.id}</td>
-                  <td>{company.name}</td>                  <td>{company.location || 'N/A'}</td>
+                  <td>{company.name}</td>
+                  <td>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <MapPin size={14} />
+                      {company.location || 'N/A'}
+                    </div>
+                  </td>
                   <td>
                     <span className="status-badge active">
                       {company.job_count || 0}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 CareerConnect
 
 > **Una moderna piattaforma web per il recruiting e la gestione delle candidature**
@@ -17,11 +18,224 @@ CareerConnect è una piattaforma completa per il recruiting che connette candida
 - **Registrazione e Profilo**: Creazione profilo personalizzato con CV upload
 - **Ricerca Intelligente**: Filtra opportunità per location, tipologia, settore
 - **Candidature Facili**: Sistema di candidatura con un click
+- **Dashboard Personale**: Traccia le tue candidature e il loro stato
 
 ### 🏢 Per i Recruiters
 - **Gestione Annunci**: Crea e gestisci le tue offerte di lavoro
-- **Candidature Centralizzate**: Visualizza e gestisci tutte le candidature e i CV ricevuti
+- **Candidature Centralizzate**: Visualizza e gestisci tutte le candidature
+- **Profili Candidati**: Accesso ai CV e profili dei candidati
+- **Analytics**: Statistiche sulle performance degli annunci
 
+### 🔐 Per gli Amministratori
+- **Dashboard Completa**: Panoramica utenti, aziende e statistiche
+- **Gestione Utenti**: Moderazione e gestione degli account
+- **Controllo Contenuti**: Supervisione degli annunci di lavoro
+
+---
+
+## 🛠️ Tecnologie Utilizzate
+
+**Frontend:**
+- ⚛️ React 18 con Hooks e Context API
+- ⚡ Vite per build ultra-veloci
+- 🎨 CSS3 con design responsive
+- 🔍 React Router per SPA navigation
+- 🌐 i18n per supporto multilingue
+
+**Backend:**
+- 🟢 Node.js con Express
+- 🗄️ SQLite per persistenza dati
+- 📁 Multer per upload file
+- 🔒 CORS e sicurezza implementati
+
+**Deploy & Infrastructure:**
+- 🌍 Netlify per frontend hosting
+- ☁️ AWS EC2 per backend
+- 🔄 Proxy configuration per CORS
+- 📦 Automated build pipeline
+
+**Sviluppo:**
+- 📋 Metodologia Agile Scrum
+- 🔧 ESLint per code quality
+- 📝 Git workflow strutturato
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+ 
+- npm o yarn
+- Git
+
+### Installazione
+
+1. **Clona il repository**
+   ```bash
+   git clone https://github.com/yourusername/careerconnect.git
+   cd careerconnect
+   ```
+
+2. **Installa le dipendenze**
+   ```bash
+   npm install
+   ```
+
+3. **Configura l'ambiente**
+   ```bash
+   # Copia il file di ambiente di esempio
+   cp .env.example .env
+   
+   # Modifica le variabili secondo le tue necessità
+   # VITE_API_URL_DEV=http://localhost:3001/api
+   ```
+
+4. **Avvia in modalità sviluppo**
+   ```bash
+   npm run dev
+   ```
+
+5. **Apri il browser**
+   ```
+   http://localhost:5173
+   ```
+
+### Build per Produzione
+
+```bash
+# Build dell'applicazione
+npm run build
+
+# Preview del build
+npm run preview
+```
+
+---
+
+## 📁 Struttura del Progetto
+
+```
+CareerConnect/
+├── public/                 # File statici e configurazioni
+│   ├── _redirects         # Netlify redirects per SPA
+│   └── vite.svg          
+├── src/
+│   ├── components/        # Componenti React riutilizzabili
+│   ├── pages/            # Pagine principali dell'applicazione
+│   ├── contexts/         # Context API (Auth, Language)
+│   ├── config/           # Configurazioni (API endpoints)
+│   ├── hooks/            # Custom React hooks
+│   ├── locales/          # File di traduzione
+│   └── assets/           # Immagini e risorse statiche
+├── server/               # Dati di esempio e configurazione DB
+├── uploads/              # Directory per file uploadati
+└── package.json
+```
+
+---
+
+## 🌐 Deploy
+
+### Frontend (Netlify)
+Il frontend è automaticamente deployato su Netlify ad ogni push sul main branch.
+
+**Configurazioni Netlify necessarie:**
+- Build command: `npm run build`
+- Publish directory: `dist`
+- Environment variables: `VITE_API_URL_PROD=/api`
+
+### Backend (AWS EC2)
+Il backend richiede un server Node.js configurato con:
+- SQLite database
+- Configurazione CORS per il dominio Netlify
+- Gestione upload file
+
+---
+
+## 🔧 Configurazione
+
+### Variabili d'Ambiente
+
+**Frontend (.env):**
+```env
+VITE_API_URL_DEV=http://localhost:3001/api
+VITE_API_URL_PROD=/api
+```
+
+**Backend:**
+- Configurazione database SQLite
+- CORS origins per Netlify
+- Upload directory permissions
+
+---
+
+## 🤝 Contribuire
+
+1. Fork del progetto
+2. Crea un feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit delle modifiche (`git commit -m 'Add some AmazingFeature'`)
+4. Push al branch (`git push origin feature/AmazingFeature`)
+5. Apri una Pull Request
+
+---
+
+## 🐛 Bug Report e Feature Request
+
+Utilizza le [GitHub Issues](https://github.com/yourusername/careerconnect/issues) per:
+- 🐛 Segnalare bug
+- 💡 Proporre nuove funzionalità
+- 📖 Miglioramenti alla documentazione
+
+---
+
+## 📄 Licenza
+
+Questo progetto è distribuito sotto licenza MIT. Vedi il file [LICENSE](LICENSE) per maggiori dettagli.
+
+---
+
+## 👥 Team
+
+Sviluppato con ❤️ da un team di 4 studenti del corso di Informatica e Tecnologie per la Produzione del Software, utilizzando metodologie Agile Scrum per garantire qualità e collaborazione efficace.
+
+---
+
+## 📞 Supporto
+
+Per supporto tecnico o domande sul progetto:
+- 📧 Email: [tuo-email@example.com]
+- 💬 Issues: [GitHub Issues](https://github.com/yourusername/careerconnect/issues)
+- 📋 Documentation: [Wiki del progetto](https://github.com/yourusername/careerconnect/wiki)
+
+---
+
+**CareerConnect** — Il tuo ponte verso il lavoro giusto! 🌉
+=======
+# 🚀 CareerConnect
+
+> **Una moderna piattaforma web per il recruiting e la gestione delle candidature**
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge-id/deploy-status)](https://app.netlify.com/sites/careerconnectproject/deploys)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+CareerConnect è una piattaforma completa per il recruiting che connette candidati e recruiters attraverso un'interfaccia moderna e intuitiva.
+
+🌐 **Live Demo:** [careerconnectproject.netlify.app](https://careerconnectproject.netlify.app)
+
+---
+
+## ✨ Caratteristiche Principali
+
+### 👥 Per i Candidati
+- **Registrazione e Profilo**: Creazione profilo personalizzato con CV upload
+- **Ricerca Intelligente**: Filtra opportunità per location, tipologia, settore
+- **Candidature Facili**: Sistema di candidatura con un click
+- **Dashboard Personale**: Traccia le tue candidature
+
+### 🏢 Per i Recruiters
+- **Gestione Annunci**: Crea e gestisci le tue offerte di lavoro
+- **Candidature Centralizzate**: Visualizza e gestisci tutte le candidature
+- **Profili Candidati**: Accesso ai CV
 
 ### 🔐 Per gli Amministratori
 - **Dashboard Completa**: Panoramica utenti, aziende e statistiche
@@ -195,3 +409,6 @@ Questo progetto è distribuito sotto licenza MIT. Vedi il file [LICENSE](LICENSE
 Sviluppato da un team di 4 studenti del corso di Informatica e Tecnologie per la Produzione del Software, utilizzando metodologie Agile Scrum per garantire qualità e collaborazione efficace.
 
 ---
+
+**CareerConnect** — Il tuo ponte verso il lavoro giusto! 🌉
+>>>>>>> 9db2904b15440b251181b125b3442409ff0202fb
