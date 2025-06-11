@@ -1,6 +1,9 @@
 # Netlify redirects for React Router (SPA)
 # This file should be in the public directory
 
+# IMPORTANTE: File uploads devono essere PRIMI
+/uploads/* http://16.170.241.18:3001/uploads/:splat 200
+
 # Proxy for Backend API
 /api/* http://16.170.241.18:3001/api/:splat 200
 
@@ -21,5 +24,5 @@
 /profile /index.html 200
 /privacy /index.html 200
 
-# Catch all other routes
+# Catch all other routes - DEVE essere ultimo
 /* /index.html 200
