@@ -1,13 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
-// Cambia questo URL con l'indirizzo del tuo server EC2
-// Per development locale usa HTTP, per produzione su Netlify forza HTTP (temporaneo)
-const API_BASE_URL = import.meta.env.VITE_API_URL_PROD || 
-                     import.meta.env.VITE_API_URL || 
-                     (window.location.protocol === 'https:' ? 
-                      'http://13.51.194.249:3001/api' : 
-                      'http://13.51.194.249:3001/api');
+// API URL - usa proxy Netlify invece di chiamata diretta a EC2
+const API_BASE_URL = '/api';
 
 // Debug: verifica che l'URL sia caricato correttamente
 console.log('🔗 API_BASE_URL:', API_BASE_URL);
