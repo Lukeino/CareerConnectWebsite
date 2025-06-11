@@ -28,7 +28,7 @@ export const API_CONFIG = {
   }
 };
 
-// DEBUG: LOGGING CONFIGURAZIONE CORRENTE
+// DEBUG: LOGGING CONFIGURAZIONE API
 console.log('🔧 API Config Debug:');
 console.log('🔧 VITE_API_URL_PROD:', import.meta.env.VITE_API_URL_PROD);
 console.log('🔧 VITE_API_URL:', import.meta.env.VITE_API_URL);
