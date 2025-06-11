@@ -21,6 +21,14 @@
     Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type, Authorization"
 
+# Headers per file uploads
+[[headers]]
+  for = "/uploads/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, OPTIONS"
+    Cache-Control = "public, max-age=3600"
+
 # Cache control per favicon e assets statici
 [[headers]]
   for = "/favicon.svg"
