@@ -26,12 +26,25 @@ db.exec(`
     status TEXT DEFAULT 'pending',
     FOREIGN KEY (job_id) REFERENCES jobs (id),
     FOREIGN KEY (candidate_id) REFERENCES users (id),
-    UNIQUE(job_id, candidate_id)
-  )
+    UNIQUE(job_id, candidate_id)  )
 `);
 
+// CORS configuration to allow both localhost and production
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'https://careerconnectproject.netlify.app',
+    'https://main--careerconnectproject.netlify.app'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Configure multer for CV uploads

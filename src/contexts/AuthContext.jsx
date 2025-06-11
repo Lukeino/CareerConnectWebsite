@@ -1,7 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
-const API_BASE_URL = 'http://localhost:3001/api';
+// Cambia questo URL con l'indirizzo del tuo server EC2
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+
+// Debug: verifica che l'URL sia caricato correttamente
+console.log('🔗 API_BASE_URL:', API_BASE_URL);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

@@ -2,12 +2,12 @@
   "name": "careerconnect",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
-  "scripts": {
+  "type": "module",  "scripts": {
     "dev": "vite",
     "server": "node simple-server.cjs",
     "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
     "build": "vite build",
+    "build:prod": "VITE_API_URL=$VITE_API_URL vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

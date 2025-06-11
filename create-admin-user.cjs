@@ -12,16 +12,20 @@ async function createAdmin() {
     // Check if admin already exists
     const adminCheck = db.prepare('SELECT * FROM users WHERE user_type = ? OR email = ?');
     const existingAdmin = adminCheck.get('admin', 'admin@careerconnect.com');
-    
-    if (existingAdmin) {
-      console.log('✅ Admin user already exists:');
+      if (existingAdmin) {
+      console.log('✅ Admin user exists, updating password...');
       console.log(`   Email: ${existingAdmin.email}`);
       console.log(`   Type: ${existingAdmin.user_type}`);
       console.log(`   Name: ${existingAdmin.first_name} ${existingAdmin.last_name}`);
-    } else {
-      // Create admin user
+      
+      // Update password to correct one
+      const hashedPassword = await bcrypt.hash('NullpointerTeams321', 10);
+      const updateAdmin = db.prepare('UPDATE users SET password = ? WHERE email = ? AND user_type = ?');
+      updateAdmin.run(hashedPassword, 'admin@careerconnect.com', 'admin');
+      console.log('🔐 Password updated to: NullpointerTeams321');
+    } else {      // Create admin user
       console.log('👤 Creating new admin user...');
-      const hashedPassword = await bcrypt.hash('admin123', 10);
+      const hashedPassword = await bcrypt.hash('NullpointerTeams321', 10);
       
       const insertAdmin = db.prepare(`
         INSERT INTO users (email, password, user_type, first_name, last_name, company, phone)
@@ -37,11 +41,10 @@ async function createAdmin() {
         'CareerConnect',
         null
       );
-      
-      console.log('✅ Admin user created successfully!');
+        console.log('✅ Admin user created successfully!');
       console.log(`   ID: ${result.lastInsertRowid}`);
       console.log('   Email: admin@careerconnect.com');
-      console.log('   Password: admin123');
+      console.log('   Password: NullpointerTeams321');
       console.log('   Type: admin');
     }
     

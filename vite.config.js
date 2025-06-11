@@ -7,7 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        // Usa la variabile d'ambiente se disponibile, altrimenti localhost
+        target: process.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3001',
         changeOrigin: true,
         secure: false
       }
