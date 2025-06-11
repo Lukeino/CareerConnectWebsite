@@ -7,28 +7,23 @@
 
 /**
  * Converte una data string dal database in un oggetto Date corretto
- * Gestisce i timestamp SQLite che vengono salvati come UTC ma interpretati come locali
+ * SOLUZIONE SEMPLICE: Aggiunge sempre +2 ore per compensare lo sfasamento del database
  */
 export const parseDbDate = (dateString) => {
   if (!dateString) return null;
   
-  // Se la stringa ha già timezone info, usala direttamente
-  if (dateString.includes('Z') || dateString.includes('+') || dateString.includes('-')) {
-    return new Date(dateString);
+  // Parsing normale del timestamp
+  const date = new Date(dateString);
+  
+  // Se la data è invalida, restituisci null
+  if (isNaN(date.getTime())) {
+    return null;
   }
   
-  // SQLite CURRENT_TIMESTAMP restituisce UTC in formato "YYYY-MM-DD HH:MM:SS"
-  // JavaScript new Date() interpreta questo come ora locale, causando errori
+  // CORREZIONE FISSA: Aggiungi sempre 2 ore per compensare lo sfasamento
+  const correctedDate = new Date(date.getTime() + (2 * 60 * 60 * 1000)); // +2 ore
   
-  // Soluzione: forziamo l'interpretazione come UTC aggiungendo 'Z'
-  const utcDate = new Date(dateString + 'Z');
-  
-  // Debug temporaneo (da rimuovere dopo il test)
-  if (typeof window !== 'undefined') {
-    console.log(`DEBUG: ${dateString} -> UTC: ${utcDate.toISOString()} -> Local: ${utcDate.toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}`);
-  }
-  
-  return utcDate;
+  return correctedDate;
 };
 
 /**
