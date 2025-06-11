@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useDisableNumberInputWheel } from '../hooks/useDisableNumberInputWheel';
+import { API_CONFIG } from '../config/api';
 import { 
   ArrowLeft, 
   Building, 
@@ -96,9 +97,8 @@ const CreateJobPage = () => {
         salary_min: formData.salary_min ? parseInt(formData.salary_min) : null,
         salary_max: formData.salary_max ? parseInt(formData.salary_max) : null
       };
-      
-      console.log('Creating job with data:', jobData);
-        const response = await fetch('http://localhost:3001/api/jobs', {
+        console.log('Creating job with data:', jobData);
+        const response = await fetch(`${API_CONFIG.BASE_URL}/jobs`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { User, LogOut, Plus, ChevronDown, Upload } from 'lucide-react';
+import { API_CONFIG } from '../config/api';
 import CVUploadOverlay from './CVUploadOverlay';
 import './Header.css';
 
@@ -49,11 +50,9 @@ const Header = () => {
 
       const formData = new FormData();
       formData.append('cv', file);
-      formData.append('userId', user.id);
+      formData.append('userId', user.id);      console.log('📤 Sending CV upload request with userId:', user.id);
 
-      console.log('📤 Sending CV upload request with userId:', user.id);
-
-      const response = await fetch('http://localhost:3001/api/upload-cv', {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/upload-cv`, {
         method: 'POST',
         body: formData,
       });

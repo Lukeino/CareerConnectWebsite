@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { API_CONFIG } from '../config/api';
 import { 
   Users, 
   Briefcase, 
@@ -91,10 +92,9 @@ const AdminDashboard = () => {
       setLoading(false);
     }
   };
-
   const fetchStats = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/admin/stats');
+      const response = await fetch(`${API_CONFIG.BASE_URL}/admin/stats`);
       if (response.ok) {
         const data = await response.json();
         setStats(data.stats);
@@ -103,10 +103,9 @@ const AdminDashboard = () => {
       console.error('Error fetching stats:', error);
     }
   };
-
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/users');
+      const response = await fetch(`${API_CONFIG.BASE_URL}/users`);
       if (response.ok) {
         const data = await response.json();
         setUsers(data.users || []);
@@ -115,10 +114,9 @@ const AdminDashboard = () => {
       console.error('Error fetching users:', error);
     }
   };
-
   const fetchJobs = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/jobs');
+      const response = await fetch(`${API_CONFIG.BASE_URL}/jobs`);
       if (response.ok) {
         const data = await response.json();
         setJobs(data || []);
@@ -127,10 +125,9 @@ const AdminDashboard = () => {
       console.error('Error fetching jobs:', error);
     }
   };
-
   const fetchCompanies = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/companies');
+      const response = await fetch(`${API_CONFIG.BASE_URL}/companies`);
       if (response.ok) {
         const data = await response.json();
         setCompanies(data || []);
@@ -140,10 +137,9 @@ const AdminDashboard = () => {
     }
   };
   const deleteJob = async (jobId) => {
-    if (window.confirm('Sei sicuro di voler eliminare questo annuncio di lavoro?')) {
-      try {
+    if (window.confirm('Sei sicuro di voler eliminare questo annuncio di lavoro?')) {    try {
         console.log('Deleting job with ID:', jobId);
-        const response = await fetch(`http://localhost:3001/api/jobs/${jobId}`, {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/jobs/${jobId}`, {
           method: 'DELETE'
         });
         
@@ -174,10 +170,9 @@ const AdminDashboard = () => {
     const action = isCurrentlyBlocked ? 'sbloccare' : 'bloccare';
     const confirmMessage = `Sei sicuro di voler ${action} questo utente?`;
     
-    if (window.confirm(confirmMessage)) {
-      try {
+    if (window.confirm(confirmMessage)) {      try {
         console.log(`${action} user ID:`, userId);
-        const response = await fetch(`http://localhost:3001/api/admin/users/${userId}/block`, {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/admin/users/${userId}/block`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json'
@@ -232,8 +227,7 @@ const AdminDashboard = () => {
       return;
     }
 
-    try {
-      const response = await fetch('http://localhost:3001/api/debug/clear-database', {
+    try {      const response = await fetch(`${API_CONFIG.BASE_URL}/debug/clear-database`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

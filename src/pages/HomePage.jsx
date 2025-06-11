@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Search, MapPin, Briefcase, Users, Building2, TrendingUp } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { API_CONFIG } from '../config/api';
 import ProfessionalJobPng from '../assets/ProfessionalJob.png';
 import './HomePage.css';
 
@@ -20,10 +21,9 @@ const HomePage = () => {
       fetchJobs();
       fetchCompanies();
       fetchUsers();
-    }, []);
-    const fetchJobs = async () => {
+    }, []);    const fetchJobs = async () => {
     try {      // Fetch jobs from SQLite database via API
-      const response = await fetch('http://localhost:3001/api/jobs');
+      const response = await fetch(`${API_CONFIG.BASE_URL}/jobs`);
       if (!response.ok) {
         throw new Error('Failed to fetch jobs');
       }
@@ -36,11 +36,10 @@ const HomePage = () => {
       console.error('Error fetching jobs:', error);
     }
   }
-
   const fetchCompanies = async () => {
     try {
       setStatsLoading(true);
-      const response = await fetch('http://localhost:3001/api/companies');
+      const response = await fetch(`${API_CONFIG.BASE_URL}/companies`);
       if (!response.ok) {
         throw new Error('Failed to fetch companies');
       }
@@ -53,10 +52,9 @@ const HomePage = () => {
       setStatsLoading(false);
     }
   };
-
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/users');
+      const response = await fetch(`${API_CONFIG.BASE_URL}/users`);
       if (!response.ok) {
         throw new Error('Failed to fetch users');
       }

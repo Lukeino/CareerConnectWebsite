@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { API_CONFIG } from '../config/api';
 import { 
   Building2, 
   MapPin, 
@@ -72,12 +73,11 @@ const CompaniesList = () => {
     }
 
     setFilteredCompanies(filtered);
-  }, [companies, searchTerm, locationFilter, sortBy]);
-  const fetchCompanies = async () => {
+  }, [companies, searchTerm, locationFilter, sortBy]);  const fetchCompanies = async () => {
     try {
       setLoading(true);
       console.log('🔍 Fetching companies from API...');
-      const response = await fetch('http://localhost:3001/api/companies');
+      const response = await fetch(`${API_CONFIG.BASE_URL}/companies`);
       console.log('📊 Response status:', response.status);
       
       if (!response.ok) {

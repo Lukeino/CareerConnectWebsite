@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Search, MapPin, Briefcase, Filter, SlidersHorizontal } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { API_CONFIG } from '../config/api';
 import './SearchResultsPage.css';
 
 const SearchResultsPage = () => {
@@ -18,7 +19,7 @@ const SearchResultsPage = () => {
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3001/api/jobs');
+      const response = await fetch(`${API_CONFIG.BASE_URL}/jobs`);
       if (!response.ok) {
         throw new Error('Failed to fetch jobs');
       }

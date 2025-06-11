@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Trash2, Eye, Calendar, MapPin, DollarSign, Users, Briefcase, Clock, Building, ChevronRight, Mail, Phone, FileText } from 'lucide-react';
+import { API_CONFIG } from '../config/api';
 import './MyJobsPage.css';
 
 const MyJobsPage = () => {
@@ -36,7 +37,17 @@ const MyJobsPage = () => {
     } else {
       setSelectAll(false);
     }
-  }, [applications, selectedApplications]);  const fetchMyJobs = async () => {
+  }, [applications, selectedApplications]);
+
+  // Helper function to get the correct URL for static files
+  const getStaticFileUrl = (filename) => {
+    // In production, use relative path that goes through Netlify proxy
+    // In development, use localhost
+    const baseUrl = import.meta.env.PROD ? '' : 'http://localhost:3001';
+    return `${baseUrl}/uploads/${filename}`;
+  };
+
+  const fetchMyJobs = async () => {
     // Prevent multiple simultaneous calls
     if (isLoadingJobs) return;
     
@@ -47,7 +58,7 @@ const MyJobsPage = () => {
       setLoading(true);
       setError(null);
       
-      const response = await fetch(`http://localhost:3001/api/jobs/recruiter/${user.id}`);
+      const response = await fetch(`${API_CONFIG.BASE_URL}/jobs/recruiter/${user.id}`);
       
       if (!response.ok) {
         if (response.status === 404) {
@@ -101,10 +112,8 @@ const MyJobsPage = () => {
     
     if (!window.confirm(`Sei sicuro di voler eliminare l'annuncio "${jobTitle}"?\n\nQuesta azione non può essere annullata.`)) {
       return;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:3001/api/jobs/${jobId}`, {
+    }    try {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/jobs/${jobId}`, {
         method: 'DELETE',
       });
 
@@ -128,10 +137,9 @@ const MyJobsPage = () => {
 
   const fetchApplications = async (jobId) => {
     if (!jobId) return;
-    
-    try {
+      try {
       setLoadingApplications(true);
-      const response = await fetch(`http://localhost:3001/api/jobs/${jobId}/applications`);
+      const response = await fetch(`${API_CONFIG.BASE_URL}/jobs/${jobId}/applications`);
       
       if (!response.ok) {
         throw new Error('Errore nel caricamento delle candidature');
@@ -147,10 +155,8 @@ const MyJobsPage = () => {
     }  };  const deleteApplication = async (applicationId, candidateName) => {
     if (!window.confirm(`Sei sicuro di voler eliminare la candidatura di ${candidateName}?\n\nQuesta azione non può essere annullata.`)) {
       return;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:3001/api/applications/${applicationId}`, {
+    }    try {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/applications/${applicationId}`, {
         method: 'DELETE'
       });
 
@@ -205,11 +211,9 @@ const MyJobsPage = () => {
 
     if (!window.confirm(`Sei sicuro di voler eliminare ${selectedApplications.length} candidature selezionate?\n\nQuesta azione non può essere annullata.`)) {
       return;
-    }
-
-    try {
+    }    try {
       const deletePromises = selectedApplications.map(applicationId =>
-        fetch(`http://localhost:3001/api/applications/${applicationId}`, {
+        fetch(`${API_CONFIG.BASE_URL}/applications/${applicationId}`, {
           method: 'DELETE'
         })
       );
@@ -520,9 +524,8 @@ const MyJobsPage = () => {
                                 )}
                                 {application.cv_filename && (
                                   <div className="candidate-contact">
-                                    <FileText size={14} />
-                                    <button 
-                                      onClick={() => window.open(`http://localhost:3001/uploads/${application.cv_filename}`, '_blank')}
+                                    <FileText size={14} />                                    <button 
+                                      onClick={() => window.open(getStaticFileUrl(application.cv_filename), '_blank')}
                                       className="cv-link-btn"
                                     >
                                       Visualizza CV

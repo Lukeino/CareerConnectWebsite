@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { X, Upload, FileText, Check, Download, Trash2, Eye } from 'lucide-react';
+import { API_CONFIG } from '../config/api';
 import './CVUploadOverlay.css';
 
 const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, userId }) => {
@@ -7,6 +8,14 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
   const [isUploading, setIsUploading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+
+  // Helper function to get the correct URL for static files
+  const getStaticFileUrl = (filename) => {
+    // In production, use relative path that goes through Netlify proxy
+    // In development, use localhost
+    const baseUrl = import.meta.env.PROD ? '' : 'http://localhost:3001';
+    return `${baseUrl}/uploads/${filename}`;
+  };
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault();
@@ -74,11 +83,10 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
   const handleDownloadCV = async () => {
     if (!currentCV) return;
     
-    try {
-      console.log('📥 Starting CV download for:', currentCV);
+    try {      console.log('📥 Starting CV download for:', currentCV);
       
       // Fetch the file as blob
-      const response = await fetch(`http://localhost:3001/uploads/${currentCV}`);
+      const response = await fetch(getStaticFileUrl(currentCV));
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -106,10 +114,9 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
       alert('Errore durante il download del CV. Prova a visualizzarlo invece.');
     }
   };
-
   const handleViewCV = () => {
     if (currentCV) {
-      window.open(`http://localhost:3001/uploads/${currentCV}`, '_blank');
+      window.open(getStaticFileUrl(currentCV), '_blank');
     }
   };
 
@@ -118,11 +125,9 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
     
     if (!window.confirm('Sei sicuro di voler eliminare il tuo CV? Questa azione non può essere annullata.')) {
       return;
-    }
-
-    setIsDeleting(true);
+    }    setIsDeleting(true);
     try {
-      const response = await fetch(`http://localhost:3001/api/user/${userId}/cv`, {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/user/${userId}/cv`, {
         method: 'DELETE'
       });
 

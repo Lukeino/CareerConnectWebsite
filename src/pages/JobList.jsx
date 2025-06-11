@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { API_CONFIG } from '../config/api';
 import { MapPin, Clock, Building, Search, Filter } from 'lucide-react';
 import './JobList.css';
 
@@ -43,13 +44,12 @@ const JobList = () => {
       filtered = filtered.filter(job => job.job_type === jobTypeFilter);
     }    setFilteredJobs(filtered);
   }, [jobs, searchTerm, locationFilter, jobTypeFilter]);
-  
-  const fetchJobs = async () => {
+    const fetchJobs = async () => {
     try {
       setLoading(true);
       
       // Fetch jobs from SQLite database via API
-      const response = await fetch('http://localhost:3001/api/jobs');
+      const response = await fetch(`${API_CONFIG.BASE_URL}/jobs`);
       if (!response.ok) {
         throw new Error('Failed to fetch jobs');
       }

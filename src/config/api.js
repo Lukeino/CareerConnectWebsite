@@ -1,8 +1,11 @@
 // Configurazione API per diversi ambienti
-export const API_CONFIG = {  // URL base API - priorità: PROD -> DEV -> EC2 default
+export const API_CONFIG = {  
+  // URL base API - priorità: PROD -> DEV -> EC2 default
+  // In produzione su Netlify, userà /api (proxy)
+  // In sviluppo, userà localhost
   BASE_URL: import.meta.env.VITE_API_URL_PROD || 
             import.meta.env.VITE_API_URL || 
-            'http://13.51.194.249:3001/api',
+            (import.meta.env.PROD ? '/api' : 'http://localhost:3001/api'),
   
   // Timeout per le richieste (in millisecondi)
   TIMEOUT: 10000,

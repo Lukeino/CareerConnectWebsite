@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { API_CONFIG } from '../config/api.js';
 
 const AuthContext = createContext();
-// API URL - torna alla chiamata diretta a EC2 con HTTP
-const API_BASE_URL = 'http://13.51.194.249:3001/api';
+
+// Use centralized API configuration
+const API_BASE_URL = API_CONFIG.BASE_URL;
 
 // Debug: verifica che l'URL sia caricato correttamente
 console.log('🔗 API_BASE_URL:', API_BASE_URL);

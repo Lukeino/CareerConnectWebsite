@@ -10,21 +10,26 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
+import { API_CONFIG } from '../config/api';
 import './JobDetailsPage.css';
 
 const JobDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const { isAuthenticated, isCandidate, user } = useAuth();  const [job, setJob] = useState(null);
+  const { isAuthenticated, isCandidate, user } = useAuth();  
+
+  const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [hasApplied, setHasApplied] = useState(false);
   const [applying, setApplying] = useState(false);
-  useEffect(() => {    // Fetch job data from API
+
+  useEffect(() => {
+    // Fetch job data from API
     const fetchJob = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:3001/api/jobs/${id}`);
+        const response = await fetch(`${API_CONFIG.BASE_URL}/jobs/${id}`);
         if (!response.ok) {
           if (response.status === 404) {
             setJob(null);
@@ -41,15 +46,16 @@ const JobDetailsPage = () => {
       } finally {
         setLoading(false);
       }
-    };    fetchJob();
-  }, [id]);
+    };
 
+    fetchJob();
+  }, [id]);
   // Check if user has already applied for this job
   useEffect(() => {
     const checkApplication = async () => {
       if (isAuthenticated && isCandidate && user && job) {
         try {
-          const response = await fetch(`http://localhost:3001/api/applications/check/${id}/${user.id}`);
+          const response = await fetch(`${API_CONFIG.BASE_URL}/applications/check/${id}/${user.id}`);
           if (response.ok) {
             const data = await response.json();
             setHasApplied(data.hasApplied);
@@ -132,9 +138,8 @@ const JobDetailsPage = () => {
     }
 
     setApplying(true);
-    
-    try {
-      const response = await fetch('http://localhost:3001/api/applications', {
+      try {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/applications`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
