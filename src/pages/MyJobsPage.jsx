@@ -37,55 +37,13 @@ const MyJobsPage = () => {
       setSelectAll(false);
     }
   }, [applications, selectedApplications]);
-
   // Helper function to get the correct URL for static files
   const getStaticFileUrl = (filename) => {
-    // Debug del filename ricevuto
-    console.log('🔍 Debug filename received:', filename);
+    if (!filename) return '';
     
-    if (!filename) {
-      console.error('❌ No filename provided to getStaticFileUrl');
-      return '';
-    }
-    
-    // SOLUZIONE DIRETTA: In produzione usa sempre il dominio Netlify
-    if (import.meta.env.PROD) {
-      const fullUrl = `https://careerconnectproject.netlify.app/uploads/${filename}`;
-      console.log('🔗 Production CV URL:', fullUrl);
-      return fullUrl;
-    }
-    
-    // Per sviluppo locale, usa la logica originale
-    let baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
-    console.log('🔧 Base URL from config:', baseUrl);
-    
-    // Per produzione, assicuriamo che l'URL sia completo
-    if (import.meta.env.PROD && baseUrl.startsWith('/')) {
-      // Se siamo in produzione e l'URL è relativo, usa l'origin corrente
-      baseUrl = window.location.origin + baseUrl;
-      console.log('🔧 Production relative URL converted to:', baseUrl);
-    }
-      // Se l'URL di base non contiene http/https, aggiungiamo il protocollo
-    if (!baseUrl.startsWith('http')) {
-      // In produzione HTTPS (Netlify), usar HTTPS anche per backend se possibile
-      // Altrimenti usa HTTP per sviluppo locale
-      const protocol = import.meta.env.PROD && window.location.protocol === 'https:' ? 'https' : 'http';
-      baseUrl = `${protocol}://${baseUrl}`;
-      console.log('🔧 Added protocol:', protocol, 'to baseUrl:', baseUrl);
-    }
-    
-    // FALLBACK SICURO: Se baseUrl è vuoto, usa window.location.origin
-    if (!baseUrl || baseUrl === '') {
-      baseUrl = window.location.origin;
-      console.log('🔧 Using fallback baseUrl:', baseUrl);
-    }
-    
-    const fullUrl = `${baseUrl}/uploads/${filename}`;
-    console.log('🔗 Generated CV URL:', fullUrl, 'from filename:', filename);
-    console.log('🔧 Environment:', import.meta.env.PROD ? 'PRODUCTION' : 'DEVELOPMENT');
-    console.log('🔧 Final Base URL:', baseUrl);
-    console.log('🔧 API_CONFIG.BASE_URL:', API_CONFIG.BASE_URL);
-    
+    // Stesso pattern di AuthContext: usa API_CONFIG.BASE_URL e aggiungi il path
+    const fullUrl = `${API_CONFIG.BASE_URL}/uploads/${filename}`;
+    console.log('🔗 CV URL:', fullUrl);
     return fullUrl;
   };
 
