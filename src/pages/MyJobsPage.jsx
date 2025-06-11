@@ -36,13 +36,17 @@ const MyJobsPage = () => {
       setSelectAll(allSelected && selectedApplications.length === applications.length);    } else {
       setSelectAll(false);
     }
-  }, [applications, selectedApplications]);
-  // Helper function to get the correct URL for static files
+  }, [applications, selectedApplications]);  // Helper function to get the correct URL for static files
   const getStaticFileUrl = (filename) => {
     if (!filename) return '';
     
-    // Stesso pattern di AuthContext: usa API_CONFIG.BASE_URL e aggiungi il path
-    const fullUrl = `${API_CONFIG.BASE_URL}/uploads/${filename}`;
+    // In produzione, usa il dominio Netlify che redirge a EC2
+    // In sviluppo, usa localhost direttamente
+    const baseUrl = import.meta.env.PROD 
+      ? 'https://careerconnectproject.netlify.app' 
+      : 'http://localhost:3001';
+    
+    const fullUrl = `${baseUrl}/uploads/${filename}`;
     console.log('🔗 CV URL:', fullUrl);
     return fullUrl;
   };

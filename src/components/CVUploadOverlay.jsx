@@ -16,14 +16,18 @@ const CVUploadOverlay = ({ isOpen, onClose, onUpload, onDeleteCV, currentCV, use
   const [isUploading, setIsUploading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-
   // FUNZIONE HELPER PER URL FILE STATICI
-  // Usa la stessa logica delle altre API calls - semplice e funziona!
+  // I file statici sono serviti a /uploads/, NON a /api/uploads/
   const getStaticFileUrl = (filename) => {
     if (!filename) return '';
     
-    // Stesso pattern di AuthContext: usa API_CONFIG.BASE_URL e aggiungi il path
-    const fullUrl = `${API_CONFIG.BASE_URL}/uploads/${filename}`;
+    // In produzione, usa il dominio Netlify che redirge a EC2
+    // In sviluppo, usa localhost direttamente
+    const baseUrl = import.meta.env.PROD 
+      ? 'https://careerconnectproject.netlify.app' 
+      : 'http://localhost:3001';
+    
+    const fullUrl = `${baseUrl}/uploads/${filename}`;
     console.log('🔗 CV URL:', fullUrl);
     return fullUrl;
   };
