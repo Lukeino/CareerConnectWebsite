@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🚀 CareerConnect
 
 > **Una moderna piattaforma web per il recruiting e la gestione delle candidature**
