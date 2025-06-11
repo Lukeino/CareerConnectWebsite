@@ -71,3 +71,4 @@ uploads/*
 *.njsproj
 *.sln
 *.sw?
+*.md
