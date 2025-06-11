@@ -13,27 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { API_CONFIG } from '../config/api';
 import { 
-  Users, 
-  Briefcase, 
-  Building2, 
-  FileText, 
-  BarChart3, 
-  AlertCircle,
   CheckCircle,
-  Clock,
-  Eye,
-  Trash2,
-  MoreHorizontal,
-  UserCheck,
-  UserMinus,
-  Calendar,
-  MapPin,
-  Mail,
-  Phone,
-  LogOut,
-  Ban,
-  UserX,
-  Shield
+  LogOut
 } from 'lucide-react';
 import './AdminDashboard.css';
 
@@ -268,61 +249,7 @@ const AdminDashboard = () => {
       }
     } else if (userConfirmation !== null) {
       alert('Operazione annullata. Devi digitare esattamente "ELIMINA" per confermare.');
-    }
-  };
-
-  // FUNZIONE DEBUG - Cancellazione completa database
-  const handleDebugClearDatabase = async () => {
-    // Tripla conferma per operazione devastante
-    const confirmDelete = window.confirm(
-      '⚠️ ADMIN WARNING: This will DELETE ALL RECORDS from the database!\n\n' +
-      'This includes:\n' +
-      '• All user accounts (except admin)\n' +
-      '• All companies\n' +
-      '• All job postings\n' +
-      '• All applications\n\n' +
-      'This action CANNOT be undone!\n\nAre you absolutely sure?'
-    );
-
-    if (!confirmDelete) return;
-
-    const secondConfirm = window.confirm(
-      '🔥 FINAL WARNING 🔥\n\n' +
-      'You are about to permanently delete ALL DATA from the database.\n\n' +
-      'Type "YES" in the next prompt to confirm.'
-    );
-
-    if (!secondConfirm) return;
-
-    const finalConfirm = prompt('Type "YES" to confirm deletion of all database records:');
-    
-    if (finalConfirm !== 'YES') {
-      alert('Database clearing cancelled.');
-      return;
-    }
-
-    try {
-      const response = await fetch(`${API_CONFIG.BASE_URL}/debug/clear-database`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        alert('✅ Database cleared successfully! All records have been deleted.');
-        // Refresh tutti i dati
-        await fetchAllData();
-      } else {
-        alert('❌ Error clearing database: ' + result.error);
-      }
-    } catch (error) {
-      console.error('Debug clear database error:', error);
-      alert('❌ Network error while clearing database: ' + error.message);
-    }
-  };
+    }  };
 
   // HELPER: Messaggio saluto basato su orario
   const getGreetingMessage = () => {
@@ -374,111 +301,86 @@ const AdminDashboard = () => {
   if (!isAuthenticated || user?.user_type !== 'admin') {
     return null; // Non renderizza nulla durante redirect
   }
-
   // LOADING STATE: Schermata caricamento
   if (loading) {
     return (
       <div className="admin-dashboard">
         <div className="loading-container">
-          <BarChart3 size={48} className="loading-icon" />
           <h2>Caricamento Dashboard Admin...</h2>
           <p>Recupero dei dati in corso...</p>
         </div>
       </div>
     );
-  }
-
-  // RENDER PANORAMICA: Statistiche e analytics
-  const renderOverview = () => (
-    <>
-      {/* Griglia Statistiche */}
+  }// RENDER PANORAMICA: Statistiche e analytics
+  const renderOverview = () => {
+    // Debug: Verificare i dati
+    console.log('Debug Dashboard - Users:', users.length);
+    console.log('Debug Dashboard - Jobs:', jobs.length);
+    console.log('Debug Dashboard - Companies:', companies.length);
+    console.log('Debug Dashboard - Stats:', stats);
+    
+    return (
+    <>      {/* Griglia Statistiche - Design Professionale Senza Icone */}
       <div className="stats-grid">
         <div className="stat-card primary">
-          <div className="stat-icon">
-            <Users size={24} />
-          </div>
           <div className="stat-content">
-            <h3>{users.length}</h3>
-            <p>Utenti Totali</p>
+            <h3 style={{color: '#0f172a !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Utenti Totali</p>
           </div>
         </div>
 
         <div className="stat-card success">
-          <div className="stat-icon">
-            <UserCheck size={24} />
-          </div>
           <div className="stat-content">
-            <h3>{users.filter(u => u.user_type === 'candidate').length}</h3>
-            <p>Candidati</p>
+            <h3 style={{color: '#059669 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.filter(u => u.user_type === 'candidate').length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Candidati</p>
           </div>
         </div>
 
         <div className="stat-card warning">
-          <div className="stat-icon">
-            <UserCheck size={24} />
-          </div>
           <div className="stat-content">
-            <h3>{users.filter(u => u.user_type === 'recruiter').length}</h3>
-            <p>Recruiter</p>
+            <h3 style={{color: '#d97706 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.filter(u => u.user_type === 'recruiter').length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Recruiter</p>
           </div>
         </div>
 
         <div className="stat-card info">
-          <div className="stat-icon">
-            <Briefcase size={24} />
-          </div>
           <div className="stat-content">
-            <h3>{jobs.length}</h3>
-            <p>Annunci di Lavoro</p>
+            <h3 style={{color: '#7c3aed !important', fontSize: '2.5rem', fontWeight: '700'}}>{jobs.length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Annunci di Lavoro</p>
           </div>
         </div>
 
         <div className="stat-card primary">
-          <div className="stat-icon">
-            <CheckCircle size={24} />
-          </div>
           <div className="stat-content">
-            <h3>{jobs.filter(j => j.status === 'active').length}</h3>
-            <p>Annunci Attivi</p>
+            <h3 style={{color: '#0284c7 !important', fontSize: '2.5rem', fontWeight: '700'}}>{jobs.filter(j => j.status === 'active').length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Annunci Attivi</p>
           </div>
         </div>
 
         <div className="stat-card success">
-          <div className="stat-icon">
-            <Building2 size={24} />
-          </div>
           <div className="stat-content">
-            <h3>{companies.length}</h3>
-            <p>Aziende</p>
+            <h3 style={{color: '#059669 !important', fontSize: '2.5rem', fontWeight: '700'}}>{companies.length || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Aziende</p>
           </div>
         </div>
 
         <div className="stat-card warning">
-          <div className="stat-icon">
-            <FileText size={24} />
-          </div>
           <div className="stat-content">
-            <h3>{stats?.applications || 0}</h3>
-            <p>Candidature</p>
+            <h3 style={{color: '#d97706 !important', fontSize: '2.5rem', fontWeight: '700'}}>{stats?.applications || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Candidature</p>
           </div>
         </div>
 
         <div className="stat-card info">
-          <div className="stat-icon">
-            <Calendar size={24} />
-          </div>
           <div className="stat-content">
-            <h3>{stats?.recentActivity?.users || 0}</h3>
-            <p>Nuovi Utenti (30gg)</p>
+            <h3 style={{color: '#7c3aed !important', fontSize: '2.5rem', fontWeight: '700'}}>{stats?.recentActivity?.users || 0}</h3>
+            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Nuovi Utenti (30gg)</p>
           </div>
         </div>
-      </div>
-
-      {/* Sezione Analytics */}
+      </div>{/* Sezione Analytics - Design Pulito */}
       <div className="analytics-section">
         <div className="analytics-card">
           <div className="analytics-header">
-            <BarChart3 size={20} />
             <h2>Panoramica Sistema</h2>
           </div>
           <div className="analytics-content">
@@ -501,15 +403,13 @@ const AdminDashboard = () => {
         </div>
       </div>
     </>
-  );
+  )};
 
   // RENDER GESTIONE UTENTI: Tabella completa con azioni CRUD
   const renderUsers = () => (
     <div className="data-section">
-      <div className="data-card">
-        <div className="data-header">
+      <div className="data-card">        <div className="data-header">
           <h2>
-            <Users size={20} />
             Gestione Utenti
             <span className="data-count">{users.length}</span>
           </h2>
@@ -533,13 +433,7 @@ const AdminDashboard = () => {
               {users.map(user => (
                 <tr key={user.id}>
                   <td>{user.id}</td>
-                  <td>{user.first_name} {user.last_name}</td>
-                  <td>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <Mail size={14} />
-                      {user.email}
-                    </div>
-                  </td>
+                  <td>{user.first_name} {user.last_name}</td>                  <td>{user.email}</td>
                   <td>
                     <span className={`user-type-badge ${user.user_type}`}>
                       {user.user_type === 'candidate' ? 'Candidato' : 
@@ -547,14 +441,8 @@ const AdminDashboard = () => {
                        user.user_type === 'admin' ? 'Amministratore' : user.user_type}
                     </span>
                   </td>
-                  <td>{user.company || 'N/A'}</td>
-                  <td>
-                    {user.phone ? (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Phone size={14} />
-                        {user.phone}
-                      </div>
-                    ) : 'N/A'}
+                  <td>{user.company || 'N/A'}</td>                  <td>
+                    {user.phone || 'N/A'}
                   </td>
                   <td>{formatDate(user.created_at)}</td>
                   <td>
@@ -562,8 +450,7 @@ const AdminDashboard = () => {
                       {user.is_blocked ? 'Bloccato' : 'Attivo'}
                     </span>
                   </td>
-                  <td>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <td>                    <div style={{ display: 'flex', gap: '0.5rem' }}>
                       {/* Azioni solo per non-admin */}
                       {user.user_type !== 'admin' && (
                         <>
@@ -572,14 +459,14 @@ const AdminDashboard = () => {
                             className={`action-btn ${user.is_blocked ? 'unblock-btn' : 'block-btn'}`}
                             title={user.is_blocked ? 'Sblocca utente' : 'Blocca utente'}
                           >
-                            {user.is_blocked ? <Shield size={14} /> : <Ban size={14} />}
+                            {user.is_blocked ? 'Sblocca' : 'Blocca'}
                           </button>
                           <button
                             onClick={() => deleteUser(user.id, `${user.first_name} ${user.last_name}`)}
                             className="action-btn delete-user-btn"
                             title="Elimina utente definitivamente"
                           >
-                            <UserX size={14} />
+                            Elimina
                           </button>
                         </>
                       )}
@@ -597,10 +484,8 @@ const AdminDashboard = () => {
   // RENDER GESTIONE ANNUNCI: Tabella offerte lavoro con visualizzazione e eliminazione
   const renderJobs = () => (
     <div className="data-section">
-      <div className="data-card">
-        <div className="data-header">
+      <div className="data-card">        <div className="data-header">
           <h2>
-            <Briefcase size={20} />
             Gestione Annunci di Lavoro
             <span className="data-count">{jobs.length}</span>
           </h2>
@@ -631,13 +516,7 @@ const AdminDashboard = () => {
                     </div>
                   </td>
                   <td>{job.company_name || 'N/A'}</td>
-                  <td>{job.recruiter_name || 'N/A'}</td>
-                  <td>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <MapPin size={14} />
-                      {job.location || 'N/A'}
-                    </div>
-                  </td>
+                  <td>{job.recruiter_name || 'N/A'}</td>                  <td>{job.location || 'N/A'}</td>
                   <td>
                     <span className="job-type-badge">
                       {getJobTypeText(job.job_type)}
@@ -650,15 +529,14 @@ const AdminDashboard = () => {
                     </span>
                   </td>
                   <td>{formatDate(job.created_at)}</td>
-                  <td>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <td>                    <div style={{ display: 'flex', gap: '0.5rem' }}>
                       {/* Bottone visualizza - apre in nuova tab */}
                       <button
                         onClick={() => window.open(`/jobs/${job.id}`, '_blank')}
                         className="action-btn view-btn"
                         title="Visualizza annuncio"
                       >
-                        <Eye size={14} />
+                        Visualizza
                       </button>
                       {/* Bottone elimina */}
                       <button
@@ -666,7 +544,7 @@ const AdminDashboard = () => {
                         className="action-btn delete-btn"
                         title="Elimina annuncio"
                       >
-                        <Trash2 size={14} />
+                        Elimina
                       </button>
                     </div>
                   </td>
@@ -682,10 +560,8 @@ const AdminDashboard = () => {
   // RENDER GESTIONE AZIENDE: Tabella read-only con statistiche
   const renderCompanies = () => (
     <div className="data-section">
-      <div className="data-card">
-        <div className="data-header">
+      <div className="data-card">        <div className="data-header">
           <h2>
-            <Building2 size={20} />
             Gestione Aziende
             <span className="data-count">{companies.length}</span>
           </h2>
@@ -705,13 +581,7 @@ const AdminDashboard = () => {
               {companies.map(company => (
                 <tr key={company.id}>
                   <td>{company.id}</td>
-                  <td>{company.name}</td>
-                  <td>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <MapPin size={14} />
-                      {company.location || 'N/A'}
-                    </div>
-                  </td>
+                  <td>{company.name}</td>                  <td>{company.location || 'N/A'}</td>
                   <td>
                     <span className="status-badge active">
                       {company.job_count || 0}
@@ -740,16 +610,7 @@ const AdminDashboard = () => {
             <CheckCircle size={16} />
             Sistema Operativo
           </div>
-        </div>
-        <div className="admin-actions">
-          {/* Bottone Debug - Funzione devastante */}
-          <button 
-            className="debug-button"
-            onClick={handleDebugClearDatabase}
-            title="DEBUG: Cancella Database"
-          >
-            🗑️
-          </button>
+        </div>        <div className="admin-actions">
           {/* Bottone Logout */}
           <button 
             className="logout-button"
@@ -760,36 +621,30 @@ const AdminDashboard = () => {
             Disconnetti
           </button>
         </div>
-      </div>
-
-      {/* Navigazione Tab */}
+      </div>      {/* Navigazione Tab - Design Pulito Senza Icone */}
       <div className="admin-nav">
         <button 
           className={`nav-tab ${activeTab === 'overview' ? 'active' : ''}`}
           onClick={() => setActiveTab('overview')}
         >
-          <BarChart3 size={16} />
           Panoramica
         </button>
         <button 
           className={`nav-tab ${activeTab === 'users' ? 'active' : ''}`}
           onClick={() => setActiveTab('users')}
         >
-          <Users size={16} />
           Utenti ({users.length})
         </button>
         <button 
           className={`nav-tab ${activeTab === 'jobs' ? 'active' : ''}`}
           onClick={() => setActiveTab('jobs')}
         >
-          <Briefcase size={16} />
           Annunci ({jobs.length})
         </button>
         <button 
           className={`nav-tab ${activeTab === 'companies' ? 'active' : ''}`}
           onClick={() => setActiveTab('companies')}
         >
-          <Building2 size={16} />
           Aziende ({companies.length})
         </button>
       </div>
