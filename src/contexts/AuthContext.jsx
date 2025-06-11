@@ -2,7 +2,9 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 // Cambia questo URL con l'indirizzo del tuo server EC2
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL_PROD || 
+                     import.meta.env.VITE_API_URL || 
+                     'http://13.51.194.249:3001/api';
 
 // Debug: verifica che l'URL sia caricato correttamente
 console.log('🔗 API_BASE_URL:', API_BASE_URL);
