@@ -54,25 +54,31 @@ const Header = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  
-  // GESTIONE CARICAMENTO CV
+    // GESTIONE CARICAMENTO CV
   const handleCVUpload = async (file) => {
     try {
       // DEBUG: Verifica stato utente
       console.log('🔍 Debug CV Upload - User:', user);
       console.log('🔍 Debug CV Upload - User ID:', user?.id);
+      console.log('🔍 Debug CV Upload - User Type:', typeof user?.id);
       
       // Validazione: verifica autenticazione e presenza ID utente
-      if (!user || !user.id) {
+      if (!user || !user.id || user.id === undefined || user.id === null) {
+        console.error('❌ User validation failed:', { user, userId: user?.id });
         throw new Error('Utente non autenticato o ID mancante');
       }
+
+      // Conversione esplicita a stringa per sicurezza
+      const userId = String(user.id);
+      console.log('🔄 Converted userId to string:', userId);
 
       // Preparazione FormData per upload file
       const formData = new FormData();
       formData.append('cv', file);
-      formData.append('userId', user.id);
+      formData.append('userId', userId);
 
-      console.log('📤 Sending CV upload request with userId:', user.id);
+      console.log('📤 Sending CV upload request with userId:', userId);
+      console.log('📋 FormData contents:', Array.from(formData.entries()));
 
       // Chiamata API per upload CV
       const response = await fetch(`${API_CONFIG.BASE_URL}/upload-cv`, {
