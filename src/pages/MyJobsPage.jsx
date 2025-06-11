@@ -33,22 +33,17 @@ const MyJobsPage = () => {
   useEffect(() => {
     if (applications.length > 0) {
       const allSelected = applications.every(app => selectedApplications.includes(app.id));
-      setSelectAll(allSelected && selectedApplications.length === applications.length);    } else {
+      setSelectAll(allSelected && selectedApplications.length === applications.length);
+    } else {
       setSelectAll(false);
     }
-  }, [applications, selectedApplications]);  // Helper function to get the correct URL for static files
+  }, [applications, selectedApplications]);
+
+  // Helper function to get the correct URL for static files
   const getStaticFileUrl = (filename) => {
-    if (!filename) return '';
-    
-    // In produzione, usa il dominio Netlify che redirge a EC2
-    // In sviluppo, usa localhost direttamente
-    const baseUrl = import.meta.env.PROD 
-      ? 'https://careerconnectproject.netlify.app' 
-      : 'http://localhost:3001';
-    
-    const fullUrl = `${baseUrl}/uploads/${filename}`;
-    console.log('🔗 CV URL:', fullUrl);
-    return fullUrl;
+    // Utilizza la configurazione API centralizzata per coerenza
+    const baseUrl = API_CONFIG.BASE_URL.replace('/api', '');
+    return `${baseUrl}/uploads/${filename}`;
   };
 
   const fetchMyJobs = async () => {
@@ -525,48 +520,11 @@ const MyJobsPage = () => {
                                     <Phone size={14} />
                                     <span className="candidate-phone">{application.phone}</span>
                                   </div>
-                                )}                                {application.cv_filename && (
+                                )}
+                                {application.cv_filename && (
                                   <div className="candidate-contact">
                                     <FileText size={14} />                                    <button 
-                                      type="button"
-                                      onClick={(e) => {
-                                        console.log('🖱️ CV Button clicked!', {
-                                          event: e,
-                                          filename: application.cv_filename,
-                                          application: application
-                                        });
-                                        
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        
-                                        const cvUrl = getStaticFileUrl(application.cv_filename);
-                                        console.log('🔍 Opening CV URL:', cvUrl);
-                                        
-                                        // Test diretto dell'URL
-                                        console.log('🌐 Testing URL accessibility...');
-                                        fetch(cvUrl)
-                                          .then(response => {
-                                            console.log('📊 URL Response:', response.status, response.statusText);
-                                            return response;
-                                          })
-                                          .catch(err => {
-                                            console.error('❌ URL not accessible:', err);
-                                          });
-                                        
-                                        // Prova window.open, se fallisce usa location.href
-                                        try {
-                                          const newWindow = window.open(cvUrl, '_blank');
-                                          console.log('🪟 Window.open result:', newWindow);
-                                          if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-                                            // Fallback se il popup è bloccato
-                                            console.log('⚠️ Popup blocked, using location.href');
-                                            window.location.href = cvUrl;
-                                          }
-                                        } catch (error) {
-                                          console.error('❌ Error opening window:', error);
-                                          window.location.href = cvUrl;
-                                        }
-                                      }}
+                                      onClick={() => window.open(getStaticFileUrl(application.cv_filename), '_blank')}
                                       className="cv-link-btn"
                                     >
                                       Visualizza CV

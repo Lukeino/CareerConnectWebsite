@@ -8,9 +8,8 @@ import {
   Eye, 
   EyeOff, 
   AlertTriangle,
-  Users,
-  Activity,
-  Database
+  Database,
+  Activity
 } from 'lucide-react';
 import './AdminLogin.css';
 
@@ -97,33 +96,41 @@ const AdminLogin = () => {
       setLoading(false);
     }
   };
+
   return (
     <div className="admin-login-page">
+      {/* Background Pattern */}
+      <div className="admin-bg-pattern"></div>
+      
       {/* Main Container */}
       <div className="admin-login-container">
         {/* Left Side - Branding */}
         <div className="admin-branding">
           <div className="admin-brand-content">
             <div className="admin-logo-section">
+              <Shield size={48} className="admin-shield-icon" />
               <h1 className="admin-brand-title">
                 <span className="brand-career">Career</span>
                 <span className="brand-connect">Connect</span>
               </h1>
-              <p className="admin-subtitle">
-                Sistema di Amministrazione
-              </p>
-            </div>            <div className="admin-features">
-              <div className="feature-item">
-                <Users size={20} />
-                <span>Gestione utenti registrati</span>
+              <div className="admin-subtitle">
+                <Database size={16} />
+                <span>Sistema di Amministrazione</span>
               </div>
+            </div>
+            
+            <div className="admin-features">
               <div className="feature-item">
                 <Activity size={20} />
-                <span>Monitoraggio delle attività</span>
+                <span>Monitoraggio Real-time</span>
+              </div>
+              <div className="feature-item">
+                <Shield size={20} />
+                <span>Accesso Sicuro</span>
               </div>
               <div className="feature-item">
                 <Database size={20} />
-                <span>Gestione del Database</span>
+                <span>Gestione Database</span>
               </div>
             </div>
           </div>
@@ -131,15 +138,20 @@ const AdminLogin = () => {
 
         {/* Right Side - Login Form */}
         <div className="admin-form-section">
-          <div className="admin-form-container">            <div className="admin-form-header">
+          <div className="admin-form-container">
+            <div className="admin-form-header">
+              <div className="admin-form-icon">
+                <Lock size={24} />
+              </div>
               <h2>Accesso Amministratore</h2>
-              <p>Inserisci le tue credenziali per accedere al sistema di gestione</p>
+              <p>Inserisci le credenziali per accedere al pannello di controllo</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="admin-login-form">              <div className="admin-form-group">
+            <form onSubmit={handleSubmit} className="admin-login-form">
+              <div className="admin-form-group">
                 <label htmlFor="email">Email Amministratore</label>
                 <div className="admin-input-group">
-                  <input
+                  <Mail className="admin-input-icon" size={18} />                  <input
                     type="email"
                     id="email"
                     name="email"
@@ -156,7 +168,7 @@ const AdminLogin = () => {
               <div className="admin-form-group">
                 <label htmlFor="password">Password</label>
                 <div className="admin-input-group">
-                  <input
+                  <Lock className="admin-input-icon" size={18} />                  <input
                     type={showPassword ? 'text' : 'password'}
                     id="password"
                     name="password"
@@ -189,11 +201,24 @@ const AdminLogin = () => {
                 disabled={loading} 
                 className="admin-submit-btn"
               >
-                {loading ? 'Accesso in corso...' : 'Accedi al Sistema'}
+                {loading ? (
+                  <>
+                    <Activity className="loading-spinner" size={18} />
+                    Accesso in corso...
+                  </>
+                ) : (
+                  <>
+                    <Shield size={18} />
+                    Accedi al Sistema
+                  </>
+                )}
               </button>
-            </form>            <div className="admin-form-footer">
+            </form>
+
+            <div className="admin-form-footer">
               <p>
-                Accesso riservato al personale autorizzato
+                <Lock size={14} />
+                Accesso riservato esclusivamente al personale autorizzato
               </p>
             </div>
           </div>

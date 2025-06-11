@@ -7,7 +7,8 @@ const dbPath = path.join(__dirname, 'db', 'database.sqlite');
 const db = new Database(dbPath);
 
 // Create tables
-const createTables = () => {  // Users table
+const createTables = () => {
+  // Users table
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,7 +19,6 @@ const createTables = () => {  // Users table
       last_name TEXT NOT NULL,
       company TEXT,
       phone TEXT,
-      cv_filename TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )

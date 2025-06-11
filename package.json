@@ -2,8 +2,7 @@
   "name": "careerconnect",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
-  "scripts": {
+  "type": "module",  "scripts": {
     "dev": "vite",
     "server": "node simple-server.cjs",
     "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
@@ -19,7 +18,6 @@
     "express": "^5.1.0",
     "lucide-react": "^0.513.0",
     "multer": "^2.0.1",
-    "node-fetch": "^3.3.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2"
