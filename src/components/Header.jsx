@@ -192,34 +192,9 @@ const Header = () => {
           </Link>
 
           {/* Divisore visuale - mostrato solo quando necessario */}
-          {hasNavOrAuth && <div className="header-divider"></div>}
-
-          {/* NAVIGAZIONE PRINCIPALE */}
+          {hasNavOrAuth && <div className="header-divider"></div>}          {/* NAVIGAZIONE PRINCIPALE */}
           <nav className="nav">
-            {/* Navigazione nascosta per admin e ospiti */}
-            {user?.user_type !== 'admin' && isAuthenticated && (
-              <>
-                {/* Link "Lista Offerte" - solo per candidati autenticati */}
-                {user?.user_type === 'candidate' && (
-                  <Link 
-                    to="/jobs" 
-                    className={`nav-link ${isActive('/jobs') ? 'active' : ''}`}
-                  >
-                    Lista Offerte
-                  </Link>
-                )}
-                
-                {/* Link "I Miei Annunci" - solo per recruiter autenticati */}
-                {user?.user_type === 'recruiter' && (
-                  <Link 
-                    to="/my-jobs" 
-                    className={`nav-link ${isActive('/my-jobs') ? 'active' : ''}`}
-                  >
-                    I Miei Annunci
-                  </Link>
-                )}
-              </>
-            )}
+            {/* Navigazione rimossa per tutti i tipi di utente */}
           </nav>
 
           {/* SEZIONE DESTRA HEADER */}

@@ -80,23 +80,16 @@
 }
 
 @media (max-width: 992px) {
+  .login-background-gif {
+    display: none;
+  }
+  
   .side-disclaimer {
     display: none;
   }
 }
 
 @media (max-width: 768px) {
-  .login-background-gif {
-    position: relative;
-    left: 0;
-    top: 0;
-    transform: none;
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto 30px auto;
-    display: block;
-  }
-  
   .login-container {
     margin: 0 auto;
     padding: 32px;
