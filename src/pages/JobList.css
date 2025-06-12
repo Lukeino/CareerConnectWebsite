@@ -36,12 +36,10 @@
   z-index: 1;
 }
 
-.page-header h1 {
-  font-size: 3.2rem;
+.page-header h1 {  font-size: 3.2rem;
   font-weight: 700;
   margin-bottom: 16px;
   color: white;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 2;
   letter-spacing: -0.5px;
@@ -54,7 +52,6 @@
   font-weight: 400;
   position: relative;
   z-index: 2;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.5;
