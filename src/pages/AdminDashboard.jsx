@@ -75,9 +75,7 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     logout();
     navigate('/adminlogin');
-  };
-
-  // FETCH TUTTI I DATI - Funzione aggregata per caricamento parallelo
+  };  // FETCH TUTTI I DATI - Funzione aggregata per caricamento parallelo
   const fetchAllData = async () => {
     setLoading(true);
     try {
@@ -119,9 +117,7 @@ const AdminDashboard = () => {
     } catch (error) {
       console.error('Error fetching users:', error);
     }
-  };
-
-  // FETCH LISTA ANNUNCI LAVORO
+  };  // FETCH LISTA ANNUNCI LAVORO
   const fetchJobs = async () => {
     try {
       const response = await fetch(`${API_CONFIG.BASE_URL}/jobs`);
@@ -537,48 +533,7 @@ const AdminDashboard = () => {
                       </button>
                     </div>
                   </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-
-  // RENDER GESTIONE AZIENDE: Tabella read-only con statistiche
-  const renderCompanies = () => (
-    <div className="data-section">
-      <div className="data-card">        <div className="data-header">
-          <h2>
-            Gestione Aziende
-            <span className="data-count">{companies.length}</span>
-          </h2>
-        </div>
-        <div className="table-container">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Posizione</th>
-                <th>Annunci Attivi</th>
-                <th>Creata</th>
-              </tr>
-            </thead>
-            <tbody>
-              {companies.map(company => (
-                <tr key={company.id}>
-                  <td>{company.id}</td>
-                  <td>{company.name}</td>                  <td>{company.location || 'N/A'}</td>
-                  <td>
-                    <span className="status-badge active">
-                      {company.job_count || 0}
-                    </span>
-                  </td>
-                  <td>{formatDate(company.created_at)}</td>
-                </tr>
-              ))}
+                </tr>            ))}
             </tbody>
           </table>
         </div>
@@ -630,20 +585,11 @@ const AdminDashboard = () => {
         >
           Annunci ({jobs.length})
         </button>
-        <button 
-          className={`nav-tab ${activeTab === 'companies' ? 'active' : ''}`}
-          onClick={() => setActiveTab('companies')}
-        >
-          Aziende ({companies.length})
-        </button>
-      </div>
-
-      {/* Contenuto Dinamico Basato su Tab Attiva */}
+      </div>      {/* Contenuto Dinamico Basato su Tab Attiva */}
       <div className="admin-content">
         {activeTab === 'overview' && renderOverview()}
         {activeTab === 'users' && renderUsers()}
         {activeTab === 'jobs' && renderJobs()}
-        {activeTab === 'companies' && renderCompanies()}
       </div>
     </div>
   );

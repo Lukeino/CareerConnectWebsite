@@ -106,13 +106,14 @@ const RegisterPage = () => {
     } finally {
       setLoading(false);
     }
-  };
-  return (
+  };  return (
     <div className="register-page">
+      <div className="register-background-overlay"></div>
+      
       <div className="page-header">
         <h1>Entra e connettiti con il mondo professionale</h1>
       </div>
-      <div className="register-container">        {/* User Type Selection */}
+      <div className="register-container">{/* User Type Selection */}
         <div className="user-type-selection">          <label className={`user-type-option ${formData.userType === 'candidate' ? 'selected' : ''}`} data-type="candidate">
             <input
               type="radio"
