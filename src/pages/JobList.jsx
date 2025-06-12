@@ -3,17 +3,15 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { API_CONFIG } from '../config/api';
 import { formatTimeAgo } from '../utils/dateUtils';
-import { MapPin, Clock, Building, Search, Filter } from 'lucide-react';
+import { MapPin, Clock, Building, Search } from 'lucide-react';
 import './JobList.css';
 
-const JobList = () => {
-  const [jobs, setJobs] = useState([]);
+const JobList = () => {  const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
   const [jobTypeFilter, setJobTypeFilter] = useState('');
-  const [showFilters, setShowFilters] = useState(false);
   const { t } = useLanguage();
 
   // Fetch jobs from database/localStorage
@@ -120,12 +118,10 @@ const JobList = () => {
       return years === 1 ? '1 anno fa' : `${years} anni fa`;
     }
   };
-
   const clearFilters = () => {
     setSearchTerm('');
     setLocationFilter('');
     setJobTypeFilter('');
-    setShowFilters(false);
   };
 
   if (loading) {
@@ -148,9 +144,7 @@ const JobList = () => {
           <p className="page-subtitle">
             Scopri {filteredJobs.length} opportunità lavorative dalle migliori aziende
           </p>
-        </div>
-
-        {/* Search and Filter Section */}
+        </div>        {/* Search and Filter Section */}
         <div className="search-filter-section">
           <div className="search-row">
             <div className="search-group">
@@ -174,38 +168,26 @@ const JobList = () => {
                   className="location-input"
                 />
               </div>
-              <button 
-                className="filter-toggle-btn"
-                onClick={() => setShowFilters(!showFilters)}
-              >
-                <Filter size={20} />
-                Filtri
-              </button>
-            </div>
-          </div>
-
-          {/* Advanced Filters */}
-          {showFilters && (
-            <div className="filters-panel">
-              <div className="filter-group">
-                <label>Tipo di Contratto</label>
+              <div className="contract-filter-wrapper">
                 <select 
                   value={jobTypeFilter} 
                   onChange={(e) => setJobTypeFilter(e.target.value)}
-                  className="filter-select"
+                  className="contract-filter-select"
                 >
-                  <option value="">Tutti</option>
+                  <option value="">Tipo di Contratto</option>
                   <option value="full-time">Tempo Pieno</option>
                   <option value="part-time">Tempo Parziale</option>
                   <option value="contract">Contratto</option>
                   <option value="internship">Stage</option>
                 </select>
               </div>
-              <button className="clear-filters-btn" onClick={clearFilters}>
-                Cancella Filtri
-              </button>
+              {(searchTerm || locationFilter || jobTypeFilter) && (
+                <button className="clear-filters-btn-inline" onClick={clearFilters}>
+                  Cancella
+                </button>
+              )}
             </div>
-          )}
+          </div>
         </div>
 
         {/* Results Section */}
