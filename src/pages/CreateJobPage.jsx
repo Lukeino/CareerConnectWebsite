@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useLanguage } from '../contexts/LanguageContext';
 import { useDisableNumberInputWheel } from '../hooks/useDisableNumberInputWheel';
 import { API_CONFIG } from '../config/api';
 import { 
@@ -16,10 +15,8 @@ import {
 } from 'lucide-react';
 import './CreateJobPage.css';
 
-const CreateJobPage = () => {
-  const navigate = useNavigate();
+const CreateJobPage = () => {  const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
-  const { t } = useLanguage();
     const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -90,43 +87,36 @@ const CreateJobPage = () => {
     
     setLoading(true);
     
-    try {
-      const jobData = {
+    try {      const jobData = {
         ...formData,
         recruiter_id: user.id,
         salary_min: formData.salary_min ? parseInt(formData.salary_min) : null,
         salary_max: formData.salary_max ? parseInt(formData.salary_max) : null
       };
-        console.log('Creating job with data:', jobData);
-        const response = await fetch(`${API_CONFIG.BASE_URL}/jobs`, {
+      
+      const response = await fetch(`${API_CONFIG.BASE_URL}/jobs`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(jobData)
       });
-        console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
       
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('HTTP Error Response:', errorText);
         throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
       }
       
       const responseText = await response.text();
-      console.log('Raw response:', responseText);
       
       let result;
       try {
         result = JSON.parse(responseText);
       } catch (parseError) {
-        console.error('JSON parse error:', parseError);
-        console.error('Response text:', responseText);
         throw new Error('Invalid response format from server');
       }
-        if (result.success) {
-        console.log('Job created successfully:', result.job);
+      
+      if (result.success) {
         // Redirect to My Jobs page
         navigate('/my-jobs');
       } else {
@@ -151,7 +141,6 @@ const CreateJobPage = () => {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              console.log('Back button clicked!');
               navigate('/my-jobs');
             }}
             type="button"

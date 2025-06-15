@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, MapPin, Briefcase, Users, Building2, TrendingUp } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { useLanguage } from '../contexts/LanguageContext';
 import { API_CONFIG } from '../config/api';
 import { formatTimeAgo } from '../utils/dateUtils';
 import ProfessionalJobPng from '../assets/ProfessionalJob.png';
 import './HomePage.css';
 
-const HomePage = () => {
-  const { isAuthenticated, user } = useAuth();
-  const { t } = useLanguage();
-  const navigate = useNavigate();  const [searchTerm, setSearchTerm] = useState('');
+const HomePage = () => {  const { isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
   const [featuredJobs, setFeaturedJobs] = useState([]);
   const [allJobs, setAllJobs] = useState([]); // All active jobs for statistics
@@ -71,16 +68,15 @@ const HomePage = () => {
     if (min) return `Da €${min.toLocaleString()}`;
     if (max) return `Fino a €${max.toLocaleString()}`;
   };
-
   const getJobTypeLabel = (type) => {
     const typeLabels = {
-      'full-time': t('jobDetails.fullTime') || 'Tempo Pieno',
-      'part-time': t('jobDetails.partTime') || 'Tempo Parziale',
-      'contract': t('jobDetails.contract') || 'Contratto',
-      'internship': t('jobDetails.internship') || 'Stage'
+      'full-time': 'Tempo Pieno',
+      'part-time': 'Tempo Parziale',
+      'contract': 'Contratto',
+      'internship': 'Stage'
     };
     return typeLabels[type] || type;
-  };  // Calculate real statistics
+  };// Calculate real statistics
   const getStatistics = () => {
     if (statsLoading) {
       return {
@@ -128,9 +124,8 @@ const HomePage = () => {
   return (
     <div className="homepage">      {/* Hero Section */}      <section className="hero">
         <div className="hero-content">
-          <div className="hero-text">
-            <h1>{t('homepage.title')}</h1>
-            <p>{t('homepage.subtitle')}</p>
+          <div className="hero-text">            <h1>Trova il Lavoro dei Tuoi Sogni</h1>
+            <p>Connetti il tuo talento con le migliori opportunità professionali</p>
             
             {/* Show search form only for authenticated users */}
             {isAuthenticated && (
@@ -139,7 +134,7 @@ const HomePage = () => {
                   <Search className="search-icon" size={20} />
                   <input
                     type="text"
-                    placeholder={t('homepage.searchPlaceholder')}
+                    placeholder="Cerca lavori, aziende, competenze..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="search-input"
@@ -149,14 +144,14 @@ const HomePage = () => {
                   <MapPin className="search-icon" size={20} />
                   <input
                     type="text"
-                    placeholder={t('pages.locationPlaceholder')}
+                    placeholder="Città o provincia"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     className="search-input"
                   />
                 </div>
                 <button type="submit" className="search-btn">
-                  {t('homepage.searchButton')}
+                  Cerca Lavoro
                 </button>
               </form>            )}
           </div><div className="hero-image">
@@ -176,21 +171,21 @@ const HomePage = () => {
             <Briefcase className="stat-icon" size={48} />
             <div className="stat-content">
               <h3>{statistics.totalJobs}</h3>
-              <p>{t('homepage.activeJobs')}</p>
+              <p>Posizioni Attive</p>
             </div>
           </div>
           <div className="stat-item">
             <Users className="stat-icon" size={48} />
             <div className="stat-content">
               <h3>{statistics.jobSeekers}</h3>
-              <p>{t('homepage.jobSeekers')}</p>
+              <p>Candidati Registrati</p>
             </div>
           </div>
           <div className="stat-item">
             <Building2 className="stat-icon" size={48} />
             <div className="stat-content">
               <h3>{statistics.totalCompanies}</h3>
-              <p>{t('homepage.companies')}</p>
+              <p>Aziende Partner</p>
             </div>
           </div>
           <div className="stat-item">
@@ -205,7 +200,7 @@ const HomePage = () => {
       {isAuthenticated && user?.user_type === 'candidate' && (
         <section className="featured-jobs">
           <div className="section-content">
-            <h2>{t('homepage.featuredJobs')}</h2>
+            <h2>Annunci in Evidenza</h2>
             <div className="jobs-grid">
               {featuredJobs.map(job => (
                 <div key={job.id} className="job-card">
@@ -222,7 +217,7 @@ const HomePage = () => {
                   <div className="job-footer">
                     <span className="job-posted">{formatTimeAgo(job.created_at, job.id)}</span>
                     <Link to={`/jobs/${job.id}`} className="apply-btn">
-                      {t('homepage.viewDetails')}
+                      Vedi Dettagli
                     </Link>
                   </div>
                 </div>
@@ -230,7 +225,7 @@ const HomePage = () => {
             </div>
             <div className="view-all">
               <Link to="/jobs" className="btn btn-outline">
-                {t('homepage.viewAllJobs')}
+                Vedi Tutti gli Annunci
               </Link>
             </div>
           </div>
@@ -239,22 +234,19 @@ const HomePage = () => {
 
       {/* How it Works */}      <section className="how-it-works">
         <div className="section-content">
-          <h2>{t('homepage.howItWorks')}</h2>
+          <h2>Come Funziona</h2>
           <div className="steps">
             <div className="step">
-              <div className="step-number">1</div>
-              <h3>{t('homepage.createProfile')}</h3>
-              <p>{t('homepage.createProfileDesc')}</p>
+              <div className="step-number">1</div>              <h3>Crea il Tuo Profilo</h3>
+              <p>Registrati e crea un profilo completo per far emergere il tuo talento</p>
             </div>
             <div className="step">
-              <div className="step-number">2</div>
-              <h3>{t('homepage.searchConnect')}</h3>
-              <p>{t('homepage.searchConnectDesc')}</p>
+              <div className="step-number">2</div>              <h3>Cerca e Connetti</h3>
+              <p>Trova le opportunità che corrispondono alle tue competenze e aspirazioni</p>
             </div>
             <div className="step">
-              <div className="step-number">3</div>
-              <h3>{t('homepage.applySucceed')}</h3>
-              <p>{t('homepage.applySucceedDesc')}</p>
+              <div className="step-number">3</div>              <h3>Candidati e Vinci</h3>
+              <p>Invia la tua candidatura e inizia il tuo percorso verso il successo professionale</p>
             </div>
           </div>        </div>      </section>
     </div>

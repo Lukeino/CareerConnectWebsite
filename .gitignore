@@ -72,6 +72,8 @@ check-*.cjs
 analyze-*.js
 add-test-*.cjs
 add-test-*.js
+fix-*.cjs
+complete-*.cjs
 
 # Documentation files (non-essential)
 CHANGELOG.md
@@ -91,6 +93,8 @@ deploy-*.bat
 *.bak
 *.backup
 *~
+*_backup.*
+*_new.*
 
 # Editor directories and files
 .vscode/*
@@ -102,4 +106,7 @@ deploy-*.bat
 *.njsproj
 *.sln
 *.sw?
+
+# Keep essential README but ignore other docs
+!README.md
 *.md

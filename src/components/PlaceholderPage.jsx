@@ -7,16 +7,13 @@
 // ==============================================
 
 import React from 'react';
-import { useLanguage } from '../contexts/LanguageContext';
 
-const PlaceholderPage = ({ messageKey }) => {
-  // HOOK INTERNAZIONALIZZAZIONE
-  const { t } = useLanguage();  // Funzione di traduzione dal context lingue
+const PlaceholderPage = ({ message = "Pagina in sviluppo" }) => {
   
   return (
     <div className="placeholder-page">
-      {/* MESSAGGIO LOCALIZZATO - Chiave passata come prop */}
-      {t(messageKey)}
+      {/* MESSAGGIO PLACEHOLDER */}
+      {message}
     </div>
   );
 };

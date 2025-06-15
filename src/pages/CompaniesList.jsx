@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useLanguage } from '../contexts/LanguageContext';
 import { API_CONFIG } from '../config/api';
 import { 
   Building2, 
@@ -17,14 +16,12 @@ import {
 } from 'lucide-react';
 import './CompaniesList.css';
 
-const CompaniesList = () => {
-  const [companies, setCompanies] = useState([]);
+const CompaniesList = () => {  const [companies, setCompanies] = useState([]);
   const [filteredCompanies, setFilteredCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
   const [sortBy, setSortBy] = useState('jobs'); // 'jobs', 'name', 'location'
-  const { t } = useLanguage();
 
   // Fetch companies from API
   useEffect(() => {

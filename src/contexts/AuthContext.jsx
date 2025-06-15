@@ -16,7 +16,7 @@ const AuthContext = createContext();
 const API_BASE_URL = API_CONFIG.BASE_URL;
 
 // DEBUG: Verifica configurazione API
-console.log('🔗 API_BASE_URL:', API_BASE_URL);
+// console.log('🔗 API_BASE_URL:', API_BASE_URL);
 
 // HOOK PERSONALIZZATO PER UTILIZZARE IL CONTEXT
 export const useAuth = () => {
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const parsedUser = JSON.parse(savedUser);
         setUser(parsedUser);
-        console.log('👤 User restored from localStorage:', parsedUser);
+        // console.log('👤 User restored from localStorage:', parsedUser);
       } catch (error) {
         // Cleanup in caso di dati corrotti
         console.error('Error parsing saved user:', error);
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
   // FUNZIONE LOGIN - Autenticazione utente via API
   const login = async (email, password) => {
     try {
-      console.log('🔄 Attempting login via API...');
+      // console.log('🔄 Attempting login via API...');
       
       // Chiamata API per autenticazione
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
       
       if (data.success) {
         // Login riuscito: aggiorna stato e localStorage
-        console.log('✅ Login successful:', data.user);
+        // console.log('✅ Login successful:', data.user);
         setUser(data.user);
         localStorage.setItem('careerconnect_user', JSON.stringify(data.user));
         return { success: true, user: data.user };
@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }) => {
   // FUNZIONE REGISTRAZIONE - Creazione nuovo account via API
   const register = async (userData) => {
     try {
-      console.log('🔄 Starting registration via API...', userData);
+      // console.log('🔄 Starting registration via API...', userData);
       
       // Chiamata API per registrazione
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
@@ -126,7 +126,7 @@ export const AuthProvider = ({ children }) => {
       
       if (data.success) {
         // Registrazione riuscita: auto-login del nuovo utente
-        console.log('✅ Registration successful:', data.user);
+        // console.log('✅ Registration successful:', data.user);
         setUser(data.user);
         localStorage.setItem('careerconnect_user', JSON.stringify(data.user));
         return { success: true, user: data.user };      } else {
@@ -144,7 +144,7 @@ export const AuthProvider = ({ children }) => {
 
   // FUNZIONE LOGOUT - Terminazione sessione
   const logout = () => {
-    console.log('👋 Logging out user');
+    // console.log('👋 Logging out user');
     setUser(null);                                 // Reset stato utente
     localStorage.removeItem('careerconnect_user'); // Rimozione dati persistenti
   };
@@ -155,7 +155,7 @@ export const AuthProvider = ({ children }) => {
     if (!user || !user.id) return;                // Validazione: utente deve essere loggato
     
     try {
-      console.log('🔄 Refreshing user data for ID:', user.id);
+      // console.log('🔄 Refreshing user data for ID:', user.id);
       
       // Fetch dati aggiornati dal server
       const response = await fetch(`${API_BASE_URL}/user/${user.id}`);
@@ -166,7 +166,7 @@ export const AuthProvider = ({ children }) => {
         const updatedUser = { ...user, ...userData };
         setUser(updatedUser);
         localStorage.setItem('careerconnect_user', JSON.stringify(updatedUser));
-        console.log('✅ User data refreshed:', updatedUser);
+        // console.log('✅ User data refreshed:', updatedUser);
       }
     } catch (error) {
       console.error('❌ Error refreshing user data:', error);

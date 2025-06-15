@@ -47,9 +47,8 @@ const MyJobsPage = () => {
     const fullUrl = import.meta.env.PROD 
       ? `/uploads/${filename}` 
       : `http://localhost:3001/uploads/${filename}`;
-    
-    console.log('🔗 CV URL:', fullUrl);
-    console.log('🌍 Environment PROD:', import.meta.env.PROD);
+      // console.log('🔗 CV URL:', fullUrl);
+    // console.log('🌍 Environment PROD:', import.meta.env.PROD);
     return fullUrl;
   };
 
@@ -57,7 +56,7 @@ const MyJobsPage = () => {
     // Prevent multiple simultaneous calls
     if (isLoadingJobs) return;
     
-    console.log('🔄 fetchMyJobs called - Loading jobs for recruiter:', user?.id);
+    // console.log('🔄 fetchMyJobs called - Loading jobs for recruiter:', user?.id);
     
     try {
       setIsLoadingJobs(true);
@@ -75,7 +74,7 @@ const MyJobsPage = () => {
         throw new Error(errorData.error || `Errore del server: ${response.status}`);
       }        const data = await response.json();
         if (Array.isArray(data)) {
-        console.log('🔍 Debug - Jobs received:', data); // Debug line
+        // console.log('🔍 Debug - Jobs received:', data); // Debug line
         setJobs(data);
         
         // Only update selectedJob if needed to avoid infinite loops
@@ -515,19 +514,11 @@ const MyJobsPage = () => {
                                 )}                                {application.cv_filename && (
                                   <div className="candidate-contact">
                                     <FileText size={14} />                                    <button 
-                                      type="button"
-                                      onClick={(e) => {
-                                        console.log('🖱️ CV Button clicked!', {
-                                          event: e,
-                                          filename: application.cv_filename,
-                                          application: application
-                                        });
-                                        
+                                      type="button"                                      onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
                                         
                                         const cvUrl = getStaticFileUrl(application.cv_filename);
-                                        console.log('🔍 Opening CV URL:', cvUrl);
                                         
                                         // Test diretto dell'URL
                                         console.log('🌐 Testing URL accessibility...');

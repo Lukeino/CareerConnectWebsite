@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useLanguage } from '../contexts/LanguageContext';
 import { User, Mail, Lock, Phone, Building, UserCheck, Briefcase, Eye, EyeOff } from 'lucide-react';
 import './RegisterPage.css';
 
@@ -23,9 +22,7 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
-  const { register } = useAuth();
-  const { t } = useLanguage();
+    const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -46,31 +43,31 @@ const RegisterPage = () => {
 
   const validateForm = () => {
     const newErrors = {};    if (!formData.firstName.trim()) {
-      newErrors.firstName = t('auth.firstNameRequired');
+      newErrors.firstName = 'Nome è richiesto';
     }
 
     if (!formData.lastName.trim()) {
-      newErrors.lastName = t('auth.lastNameRequired');
+      newErrors.lastName = 'Cognome è richiesto';
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = t('auth.emailRequired');
+      newErrors.email = 'Email è richiesta';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = t('auth.emailInvalid');
+      newErrors.email = 'Formato email non valido';
     }
 
     if (!formData.password) {
-      newErrors.password = t('auth.passwordRequired');
+      newErrors.password = 'Password è richiesta';
     } else if (formData.password.length < 6) {
-      newErrors.password = t('auth.passwordTooShort');
+      newErrors.password = 'La password deve avere almeno 6 caratteri';
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = t('auth.passwordsNotMatch');
+      newErrors.confirmPassword = 'Le password non corrispondono';
     }
 
     if (formData.userType === 'recruiter' && !formData.company.trim()) {
-      newErrors.company = t('auth.companyRequired');
+      newErrors.company = 'Nome azienda è richiesto per i recruiter';
     }
 
     setErrors(newErrors);
@@ -102,7 +99,7 @@ const RegisterPage = () => {
         setErrors({ submit: result.error });
       }
     } catch (error) {
-      setErrors({ submit: t('auth.registrationFailed') });
+      setErrors({ submit: 'Errore durante la registrazione. Riprova.' });
     } finally {
       setLoading(false);
     }
@@ -124,7 +121,7 @@ const RegisterPage = () => {
             />            <div className="user-type-card">
               <User size={20} />
               <div className="user-type-card-content">
-                <h3>{t('auth.candidate')}</h3>
+                <h3>Candidato</h3>
               </div>
             </div>
           </label>
@@ -139,7 +136,7 @@ const RegisterPage = () => {
             />            <div className="user-type-card">
               <Briefcase size={20} />
               <div className="user-type-card-content">
-                <h3>{t('auth.recruiter')}</h3>
+                <h3>Recruiter</h3>
               </div>
             </div>
           </label>
@@ -148,7 +145,7 @@ const RegisterPage = () => {
         <form onSubmit={handleSubmit} className="register-form">
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="firstName">{t('auth.firstName')}</label>
+              <label htmlFor="firstName">Nome</label>
               <div className="register-input-group">
                 <User className="register-input-icon" size={18} />
                 <input
@@ -158,14 +155,14 @@ const RegisterPage = () => {
                   value={formData.firstName}
                   onChange={handleInputChange}
                   className={errors.firstName ? 'error' : ''}
-                  placeholder={t('auth.firstName')}
+                  placeholder="Inserisci il tuo nome"
                 />
               </div>
               {errors.firstName && <span className="error-message">{errors.firstName}</span>}
             </div>
 
             <div className="form-group">
-              <label htmlFor="lastName">{t('auth.lastName')}</label>
+              <label htmlFor="lastName">Cognome</label>
               <div className="register-input-group">
                 <UserCheck className="register-input-icon" size={18} />
                 <input
@@ -175,7 +172,7 @@ const RegisterPage = () => {
                   value={formData.lastName}
                   onChange={handleInputChange}
                   className={errors.lastName ? 'error' : ''}
-                  placeholder={t('auth.lastName')}
+                  placeholder="Inserisci il tuo cognome"
                 />
               </div>
               {errors.lastName && <span className="error-message">{errors.lastName}</span>}
@@ -183,7 +180,7 @@ const RegisterPage = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">{t('auth.email')}</label>
+            <label htmlFor="email">Email</label>
             <div className="register-input-group">
               <Mail className="register-input-icon" size={18} />
               <input
@@ -193,13 +190,13 @@ const RegisterPage = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 className={errors.email ? 'error' : ''}
-                placeholder={t('auth.enterEmail')}
+                placeholder="Inserisci la tua email"
               />
             </div>
             {errors.email && <span className="error-message">{errors.email}</span>}
           </div>          <div className="form-row">
             <div className="form-group">
-              <label htmlFor="password">{t('auth.password')}</label>
+              <label htmlFor="password">Password</label>
               <div className="register-input-group">
                 <Lock className="register-input-icon" size={18} />
                 <input
@@ -209,7 +206,7 @@ const RegisterPage = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   className={errors.password ? 'error' : ''}
-                  placeholder={t('auth.enterPassword')}
+                  placeholder="Crea una password sicura"
                 />
                 <button
                   type="button"
@@ -223,7 +220,7 @@ const RegisterPage = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="confirmPassword">{t('auth.confirmPassword')}</label>
+              <label htmlFor="confirmPassword">Conferma Password</label>
               <div className="register-input-group">
                 <Lock className="register-input-icon" size={18} />
                 <input
@@ -233,7 +230,7 @@ const RegisterPage = () => {
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                   className={errors.confirmPassword ? 'error' : ''}
-                  placeholder={t('auth.confirmPasswordPlaceholder')}
+                  placeholder="Ripeti la password"
                 />
                 <button
                   type="button"
@@ -246,7 +243,7 @@ const RegisterPage = () => {
               {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
             </div>
           </div><div className="form-group">
-            <label htmlFor="phone">{t('auth.phoneOptional')}</label>
+            <label htmlFor="phone">Telefono (Opzionale)</label>
             <div className="register-input-group">
               <Phone className="register-input-icon" size={18} />
               <input
@@ -255,12 +252,12 @@ const RegisterPage = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                placeholder={t('auth.enterPhone')}
+                placeholder="Il tuo numero di telefono"
               />
             </div>
           </div>          {formData.userType === 'recruiter' && (
             <div className="form-group">
-              <label htmlFor="company">{t('auth.companyName')}</label>
+              <label htmlFor="company">Nome Azienda</label>
               <div className="register-input-group">
                 <Building className="register-input-icon" size={18} />
                 <input
@@ -270,7 +267,7 @@ const RegisterPage = () => {
                   value={formData.company}
                   onChange={handleInputChange}
                   className={errors.company ? 'error' : ''}
-                  placeholder={t('auth.enterCompany')}
+                  placeholder="Nome della tua azienda"
                 />
               </div>
               {errors.company && <span className="error-message">{errors.company}</span>}
@@ -278,11 +275,11 @@ const RegisterPage = () => {
           )}
 
           {errors.submit && <div className="error-message submit-error">{errors.submit}</div>}          <button type="submit" disabled={loading} className="submit-btn">
-            {loading ? t('auth.creatingAccount') : t('auth.createAccount')}
+            {loading ? 'Creazione account...' : 'Crea Account'}
           </button>
 
           <p className="login-link">
-            {t('auth.alreadyHaveAccount')} <Link to="/login">{t('header.login')}</Link>
+            Hai già un account? <Link to="/login">Accedi</Link>
           </p>
         </form>
       </div>

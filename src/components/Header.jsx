@@ -25,9 +25,8 @@ const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);    // Stato dropdown menu utente
   const [isCVUploadOpen, setIsCVUploadOpen] = useState(false);    // Stato overlay caricamento CV
   const dropdownRef = useRef(null);                               // Ref per gestione click outside
-
   // DEBUG LOG - Traccia cambiamenti stato utente
-  console.log('🔍 Header render - User state:', user);
+  // console.log('🔍 Header render - User state:', user);
 
   // EFFECT: GESTIONE CLICK OUTSIDE DROPDOWN
   // Chiude il dropdown quando si clicca fuori dall'area
@@ -56,22 +55,14 @@ const Header = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
     // GESTIONE CARICAMENTO CV
-  const handleCVUpload = async (file) => {
-    try {
-      // DEBUG: Verifica stato utente
-      console.log('🔍 Debug CV Upload - User:', user);
-      console.log('🔍 Debug CV Upload - User ID:', user?.id);
-      console.log('🔍 Debug CV Upload - User Type:', typeof user?.id);
-      
+  const handleCVUpload = async (file) => {    try {
       // Validazione: verifica autenticazione e presenza ID utente
       if (!user || !user.id || user.id === undefined || user.id === null) {
-        console.error('❌ User validation failed:', { user, userId: user?.id });
         throw new Error('Utente non autenticato o ID mancante');
       }
 
       // Conversione esplicita a stringa per sicurezza
       const userId = String(user.id);
-      console.log('🔄 Converted userId to string:', userId);
 
       // Preparazione FormData per upload file
       const formData = new FormData();

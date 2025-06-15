@@ -8,7 +8,6 @@ import {
   Building2, 
   CheckCircle
 } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { API_CONFIG } from '../config/api';
 import { formatTimeAgo } from '../utils/dateUtils';
@@ -17,8 +16,7 @@ import './JobDetailsPage.css';
 const JobDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { t } = useLanguage();
-  const { isAuthenticated, isCandidate, user } = useAuth();  
+  const { isAuthenticated, isCandidate, user } = useAuth();
 
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -132,7 +130,7 @@ const JobDetailsPage = () => {
     return (
       <div className="job-details-loading">
         <div className="loading-spinner"></div>
-        <p>{t('common.loading')}</p>
+        <p>Caricamento...</p>
       </div>
     );
   }
@@ -140,11 +138,10 @@ const JobDetailsPage = () => {
   if (!job) {
     return (
       <div className="job-not-found">
-        <div className="not-found-content">
-          <h1>{t('jobDetails.jobNotFound')}</h1>
-          <p>{t('jobDetails.jobNotFoundDesc')}</p>
+        <div className="not-found-content">          <h1>Lavoro non trovato</h1>
+          <p>Il lavoro che stai cercando non esiste o è stato rimosso.</p>
           <Link to="/" className="btn btn-primary">
-            {t('jobDetails.backToJobs')}
+            Torna agli annunci
           </Link>
         </div>
       </div>
@@ -213,7 +210,7 @@ const JobDetailsPage = () => {
         <div className="job-content">
           <div className="job-main">            {/* Job Description */}
             <section className="content-section">
-              <h2>{t('jobDetails.jobDescription')}</h2>
+              <h2>Descrizione del Lavoro</h2>
               <div className="description-content">
                 {job.description.split('\n').map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
@@ -224,7 +221,7 @@ const JobDetailsPage = () => {
             {/* Requirements */}
             {job.requirements && (
               <section className="content-section">
-                <h2>{t('jobDetails.requirements')}</h2>
+                <h2>Requisiti</h2>
                 <ul className="requirements-list">
                   {job.requirements.split(',').map((requirement, index) => (
                     <li key={index}>
@@ -239,7 +236,7 @@ const JobDetailsPage = () => {
             {/* Benefits */}
             {job.benefits && (
               <section className="content-section">
-                <h2>{t('jobDetails.benefits')}</h2>
+                <h2>Benefici</h2>
                 <ul className="benefits-list">
                   {job.benefits.split(',').map((benefit, index) => (
                     <li key={index}>
@@ -253,12 +250,12 @@ const JobDetailsPage = () => {
           </div>          {/* Sidebar */}
           <div className="job-sidebar">
             <div className="company-card">
-              <h3>{t('jobDetails.companyInfo')}</h3>              <div className="company-details">
+              <h3>Informazioni Azienda</h3>              <div className="company-details">
                 <h4>{job.company_name}</h4>
                 <p>{job.company_description || '-'}</p>
                 <div className="company-stats">
                   <div className="stat">
-                    <span className="label">{t('jobDetails.location')}:</span>
+                    <span className="label">Posizione:</span>
                     <span className="value">{job.location || '-'}</span>
                   </div>
                   <div className="stat">

@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Search, MapPin, Briefcase, Filter, SlidersHorizontal } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
 import { API_CONFIG } from '../config/api';
 import { formatTimeAgo } from '../utils/dateUtils';
 import './SearchResultsPage.css';
 
 const SearchResultsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { t } = useLanguage();
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -192,7 +190,7 @@ const SearchResultsPage = () => {
     return (
       <div className="search-results-loading">
         <div className="loading-spinner"></div>
-        <p>{t('common.loading')}</p>
+        <p>Caricamento...</p>
       </div>
     );
   }
@@ -201,13 +199,13 @@ const SearchResultsPage = () => {
     <div className="search-results-page">
       <div className="search-results-container">        {/* Search Header */}
         <div className="search-header">
-          <h1>{t('searchResults.title')}</h1>
+          <h1>Risultati di Ricerca</h1>
           <form onSubmit={handleSearch} className="search-form">
             <div className="search-input-group">
               <Search className="search-icon" size={20} />
               <input
                 type="text"
-                placeholder={t('homepage.searchPlaceholder')}
+                placeholder="Cerca lavori..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="search-input"
@@ -217,14 +215,14 @@ const SearchResultsPage = () => {
               <MapPin className="search-icon" size={20} />
               <input
                 type="text"
-                placeholder={t('pages.locationPlaceholder')}
+                placeholder="Posizione"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 className="search-input"
               />
             </div>
             <button type="submit" className="search-btn">
-              {t('homepage.searchButton')}
+              Cerca
             </button>
           </form>
         </div>
@@ -232,7 +230,7 @@ const SearchResultsPage = () => {
         <div className="search-content">
           {/* Filters Sidebar */}
           <div className="filters-sidebar">            <div className="filters-header">
-              <h3><Filter size={20} /> {t('searchResults.filters')}</h3>
+              <h3><Filter size={20} /> Filtri</h3>
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className="toggle-filters-btn"
@@ -243,17 +241,16 @@ const SearchResultsPage = () => {
             
             <div className={`filters-content ${showFilters ? 'show' : ''}`}>              {/* Job Type Filter */}
               <div className="filter-group">
-                <h4>{t('searchResults.jobType')}</h4>
+                <h4>Tipo di Lavoro</h4>
                 <div className="filter-options">
                   <label>
                     <input
                       type="radio"
                       name="jobType"
                       value=""
-                      checked={selectedJobType === ''}
-                      onChange={(e) => setSelectedJobType(e.target.value)}
+                      checked={selectedJobType === ''}                      onChange={(e) => setSelectedJobType(e.target.value)}
                     />
-                    {t('searchResults.allTypes')}
+                    Tutti i Tipi
                   </label>
                   <label>
                     <input
@@ -263,7 +260,7 @@ const SearchResultsPage = () => {
                       checked={selectedJobType === 'full-time'}
                       onChange={(e) => setSelectedJobType(e.target.value)}
                     />
-                    {t('jobDetails.fullTime')}
+                    Tempo Pieno
                   </label>
                   <label>
                     <input
@@ -273,7 +270,7 @@ const SearchResultsPage = () => {
                       checked={selectedJobType === 'part-time'}
                       onChange={(e) => setSelectedJobType(e.target.value)}
                     />
-                    {t('jobDetails.partTime')}
+                    Tempo Parziale
                   </label>
                   <label>
                     <input
@@ -283,22 +280,21 @@ const SearchResultsPage = () => {
                       checked={selectedJobType === 'contract'}
                       onChange={(e) => setSelectedJobType(e.target.value)}
                     />
-                    {t('jobDetails.contract')}
+                    Contratto
                   </label>
                 </div>
               </div>              {/* Salary Range Filter */}
               <div className="filter-group">
-                <h4>{t('searchResults.salaryRange')}</h4>
+                <h4>Fascia Salariale</h4>
                 <div className="filter-options">
                   <label>
                     <input
                       type="radio"
                       name="salaryRange"
                       value=""
-                      checked={selectedSalaryRange === ''}
-                      onChange={(e) => setSelectedSalaryRange(e.target.value)}
+                      checked={selectedSalaryRange === ''}                      onChange={(e) => setSelectedSalaryRange(e.target.value)}
                     />
-                    {t('searchResults.allTypes')}
+                    Tutte le Fasce
                   </label>
                   <label>
                     <input
@@ -342,7 +338,7 @@ const SearchResultsPage = () => {
                   </label>
                 </div>
               </div>              <button onClick={clearFilters} className="clear-filters-btn">
-                {t('searchResults.clearFilters')}
+                Cancella Filtri
               </button>
             </div>
           </div>
@@ -351,22 +347,21 @@ const SearchResultsPage = () => {
           <div className="search-results">            <div className="results-header">
               <h2>
                 {filteredJobs.length === 0 ? t('searchResults.noJobsFound') : 
-                 `${filteredJobs.length} ${t('searchResults.jobsFound')}`}
+                 `${filteredJobs.length} lavori trovati`}
               </h2>
               {(searchTerm || location) && (
                 <p className="search-query">
-                  {searchTerm && `${t('searchResults.searchFor')} "${searchTerm}"`}
+                  {searchTerm && `Ricerca per "${searchTerm}"`}
                   {searchTerm && location && ' • '}
-                  {location && `${t('searchResults.locationFor')} "${location}"`}
+                  {location && `Posizione "${location}"`}
                 </p>
               )}
             </div>            {filteredJobs.length === 0 ? (
               <div className="no-results">
-                <Briefcase size={48} />
-                <h3>{t('searchResults.noResultsTitle')}</h3>
-                <p>{t('searchResults.noResultsDesc')}</p>
+                <Briefcase size={48} />                <h3>Nessun risultato trovato</h3>
+                <p>Prova a modificare i tuoi criteri di ricerca.</p>
                 <button onClick={clearFilters} className="btn btn-primary">
-                  {t('searchResults.clearAllFilters')}
+                  Cancella tutti i filtri
                 </button>
               </div>
             ) : (              <div className="jobs-list">
@@ -386,7 +381,7 @@ const SearchResultsPage = () => {
                     <div className="job-footer">
                       <span className="job-posted">{formatTimeAgo(job.created_at, job.id)}</span>
                       <Link to={`/jobs/${job.id}`} className="apply-btn">
-                        {t('homepage.viewDetails')}
+                        Vedi Dettagli
                       </Link>
                     </div>
                   </div>

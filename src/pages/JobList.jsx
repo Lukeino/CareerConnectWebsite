@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useLanguage } from '../contexts/LanguageContext';
 import { API_CONFIG } from '../config/api';
 import { formatTimeAgo } from '../utils/dateUtils';
 import { MapPin, Clock, Building, Search } from 'lucide-react';
 import './JobList.css';
 
 const JobList = () => {  const [jobs, setJobs] = useState([]);
-  const [filteredJobs, setFilteredJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [filteredJobs, setFilteredJobs] = useState([]);  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
   const [jobTypeFilter, setJobTypeFilter] = useState('');
-  const { t } = useLanguage();
 
   // Fetch jobs from database/localStorage
   useEffect(() => {
@@ -54,7 +51,7 @@ const JobList = () => {  const [jobs, setJobs] = useState([]);
       }
       
       const data = await response.json();
-      console.log('📋 Jobs fetched from API:', data);
+      // console.log('📋 Jobs fetched from API:', data);
       const activeJobs = data.filter(job => job.status === 'active');
       setJobs(activeJobs);
       
@@ -70,16 +67,15 @@ const JobList = () => {  const [jobs, setJobs] = useState([]);
     if (min) return `Da €${min.toLocaleString()}`;
     if (max) return `Fino a €${max.toLocaleString()}`;
   };
-
   const getJobTypeLabel = (type) => {
     const typeLabels = {
-      'full-time': t('jobDetails.fullTime') || 'Tempo Pieno',
-      'part-time': t('jobDetails.partTime') || 'Tempo Parziale',
-      'contract': t('jobDetails.contract') || 'Contratto',
-      'internship': t('jobDetails.internship') || 'Stage'
+      'full-time': 'Tempo Pieno',
+      'part-time': 'Tempo Parziale',
+      'contract': 'Contratto',
+      'internship': 'Stage'
     };
     return typeLabels[type] || type;
-  };  // Funzione per generare numeri pseudo-casuali deterministici
+  };// Funzione per generare numeri pseudo-casuali deterministici
   const seededRandom = (seed, min, max) => {
     const x = Math.sin(seed) * 10000;
     const random = x - Math.floor(x);
@@ -129,7 +125,7 @@ const JobList = () => {  const [jobs, setJobs] = useState([]);
       <div className="job-list-page">
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>{t('common.loading') || 'Caricamento...'}</p>
+          <p>Caricamento...</p>
         </div>
       </div>
     );

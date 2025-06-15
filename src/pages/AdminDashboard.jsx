@@ -174,16 +174,16 @@ const AdminDashboard = () => {
     // Conferma utente con messaggio specifico
     if (window.confirm('Sei sicuro di voler eliminare questo annuncio di lavoro?')) {
       try {
-        console.log('Deleting job with ID:', jobId);
+        // console.log('Deleting job with ID:', jobId);
         const response = await fetch(`${API_CONFIG.BASE_URL}/jobs/${jobId}`, {
           method: 'DELETE'
         });
         
-        console.log('Delete response status:', response.status);
+        // console.log('Delete response status:', response.status);
         
         if (response.ok) {
           const result = await response.json();
-          console.log('Delete response data:', result);
+          // console.log('Delete response data:', result);
           
           // Refresh dati dopo eliminazione
           await fetchJobs();
@@ -208,7 +208,7 @@ const AdminDashboard = () => {
     
     if (window.confirm(confirmMessage)) {
       try {
-        console.log(`${action} user ID:`, userId);
+        // console.log(`${action} user ID:`, userId);
         const response = await fetch(`${API_CONFIG.BASE_URL}/admin/users/${userId}/block`, {
           method: 'PATCH',
           headers: {
@@ -219,7 +219,7 @@ const AdminDashboard = () => {
         
         if (response.ok) {
           const result = await response.json();
-          console.log('Block/Unblock response:', result);
+          // console.log('Block/Unblock response:', result);
           
           // Refresh dati utenti
           await fetchUsers();
@@ -245,7 +245,7 @@ const AdminDashboard = () => {
     
     if (userConfirmation === "ELIMINA") {
       try {
-        console.log('Deleting user ID:', userId);
+        // console.log('Deleting user ID:', userId);
         const response = await fetch(`${API_CONFIG.BASE_URL}/admin/users/${userId}`, {
           method: 'DELETE',
           headers: {
@@ -255,7 +255,7 @@ const AdminDashboard = () => {
         
         if (response.ok) {
           const result = await response.json();
-          console.log('Delete user response:', result);
+          // console.log('Delete user response:', result);
           
           // Refresh dati utenti e statistiche
           await fetchUsers();
@@ -324,11 +324,10 @@ const AdminDashboard = () => {
     );
   }// RENDER PANORAMICA: Statistiche e analytics
   const renderOverview = () => {
-    // Debug: Verificare i dati
-    console.log('Debug Dashboard - Users:', users.length);
-    console.log('Debug Dashboard - Jobs:', jobs.length);
-    console.log('Debug Dashboard - Companies:', companies.length);
-    console.log('Debug Dashboard - Stats:', stats);
+    // Debug: Verificare i dati    // console.log('Debug Dashboard - Users:', users.length);
+    // console.log('Debug Dashboard - Jobs:', jobs.length);
+    // console.log('Debug Dashboard - Companies:', companies.length);
+    // console.log('Debug Dashboard - Stats:', stats);
     
     return (
     <>      {/* Griglia Statistiche - Design Professionale Senza Icone */}

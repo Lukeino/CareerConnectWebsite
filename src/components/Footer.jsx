@@ -3,16 +3,12 @@
 // 
 // Footer del sito con sezioni informative, link utili
 // e accesso discreto all'area amministratore.
-// Supporta internazionalizzazione tramite LanguageContext.
 // ==============================================
 
 import React from 'react';
-import { useLanguage } from '../contexts/LanguageContext';
 import './Footer.css';
 
 const Footer = () => {
-  // HOOK PER GESTIONE LINGUE
-  const { t } = useLanguage();  // Funzione di traduzione dal context
 
   return (
     <footer className="footer">
