@@ -67,16 +67,15 @@ const JobDetailsPage = () => {
 
     checkApplication();
   }, [id, isAuthenticated, isCandidate, user, job]);
-
   const getJobTypeText = (type) => {
     const typeMap = {
-      'full-time': t('jobDetails.fullTime'),
-      'part-time': t('jobDetails.partTime'),
-      'contract': t('jobDetails.contract'),
-      'internship': t('jobDetails.internship')
+      'full-time': 'Tempo Pieno',
+      'part-time': 'Tempo Parziale',
+      'contract': 'Contratto',
+      'internship': 'Stage'
     };
     return typeMap[type] || type;
-  };  const formatSalary = (min, max) => {
+  };const formatSalary = (min, max) => {
     if (!min && !max) return '-';
     if (min && max) return `€${min.toLocaleString()} - €${max.toLocaleString()}`;
     if (min) return `Da €${min.toLocaleString()}`;
@@ -198,10 +197,9 @@ const JobDetailsPage = () => {
                   onClick={handleApply} 
                   className={`apply-button ${hasApplied ? 'applied' : ''}`}
                   disabled={applying || hasApplied}
-                >
-                  {applying ? 'Invio in corso...' : 
+                >                  {applying ? 'Invio in corso...' : 
                    hasApplied ? 'Già candidato ✓' : 
-                   t('jobDetails.applyNow')}
+                   'Candidati Ora'}
                 </button>
               )}
             </div>

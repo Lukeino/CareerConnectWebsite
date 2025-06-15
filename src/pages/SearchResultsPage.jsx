@@ -98,16 +98,15 @@ const SearchResultsPage = () => {
     setSearchTerm('');
     setLocation('');
     setSearchParams({});
-  };
-  const getJobTypeText = (type) => {
+  };  const getJobTypeText = (type) => {
     const typeMap = {
-      'full-time': t('jobDetails.fullTime'),
-      'part-time': t('jobDetails.partTime'),
-      'contract': t('jobDetails.contract'),
-      'internship': t('jobDetails.internship')
+      'full-time': 'Tempo Pieno',
+      'part-time': 'Tempo Parziale',
+      'contract': 'Contratto',
+      'internship': 'Stage'
     };
     return typeMap[type] || type;
-  };  const formatSalary = (min, max) => {
+  };const formatSalary = (min, max) => {
     if (!min && !max) return 'Stipendio da concordare';
     if (min && max) return `€${min.toLocaleString()} - €${max.toLocaleString()}`;
     if (min) return `Da €${min.toLocaleString()}`;
@@ -345,8 +344,7 @@ const SearchResultsPage = () => {
 
           {/* Results */}
           <div className="search-results">            <div className="results-header">
-              <h2>
-                {filteredJobs.length === 0 ? t('searchResults.noJobsFound') : 
+              <h2>                {filteredJobs.length === 0 ? 'Nessun lavoro trovato' : 
                  `${filteredJobs.length} lavori trovati`}
               </h2>
               {(searchTerm || location) && (

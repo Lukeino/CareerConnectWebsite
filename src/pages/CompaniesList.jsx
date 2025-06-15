@@ -112,7 +112,7 @@ const CompaniesList = () => {  const [companies, setCompanies] = useState([]);
       <div className="companies-list-page">
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>{t('common.loading') || 'Caricamento...'}</p>
+          <p>Caricamento...</p>
         </div>
       </div>
     );
