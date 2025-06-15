@@ -61,6 +61,37 @@ CareerConnect_AWS_Deploy.zip
 uploads/*
 !uploads/.gitkeep
 
+# Test and debug patterns
+*test*.js
+*test*.cjs
+*test*.json
+*debug*.js
+*debug*.cjs
+check-*.js
+check-*.cjs
+analyze-*.js
+add-test-*.cjs
+add-test-*.js
+
+# Documentation files (non-essential)
+CHANGELOG.md
+CONTRIBUTING.md
+ADMIN_*.md
+
+# User blocking test files
+block-*.json
+unblock-*.json
+
+# Deployment scripts
+deploy-*.sh
+deploy-*.bat
+
+# Temporary and backup files
+*.tmp
+*.bak
+*.backup
+*~
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
