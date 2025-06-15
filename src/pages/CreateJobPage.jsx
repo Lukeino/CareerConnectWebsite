@@ -145,12 +145,11 @@ const CreateJobPage = () => {
 
   return (
     <div className="create-job-page">
-      <div className="create-job-container">        {/* Header */}
-        <div className="page-header">
-          <button className="back-btn" onClick={() => navigate(-1)}>
+      <div className="create-job-container">        {/* Header */}        <div className="page-header">
+          <button className="back-btn" onClick={() => navigate('/my-jobs')}>
             <ArrowLeft size={20} />
             Annulla
-          </button>          <h1>Crea Nuovo Annuncio di Lavoro</h1>
+          </button><h1>Crea Nuovo Annuncio di Lavoro</h1>
           <p className="page-subtitle">
             Completa il form per pubblicare un nuovo annuncio di lavoro per {user.company}
           </p>
