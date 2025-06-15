@@ -335,6 +335,79 @@ html body .admin-login-page {
   gap: 0.5rem;
 }
 
+/* PAGINA ACCESSO NON AUTORIZZATO */
+.unauthorized-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  padding: 3rem 2.5rem;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: white;
+}
+
+.unauthorized-content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.unauthorized-icon {
+  color: #ef4444;
+  margin-bottom: 2rem;
+}
+
+.unauthorized-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #ef4444;
+}
+
+.unauthorized-content p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 2.5rem;
+}
+
+.unauthorized-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 0.875rem 2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 200px;
+}
+
+.btn-primary {
+  background: #0072b1;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #005a8b;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #cbd5e1;
+  border: 1px solid #475569;
+}
+
+.btn-secondary:hover {
+  background: #475569;
+  color: white;
+}
+
 /* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
   .admin-login-page {

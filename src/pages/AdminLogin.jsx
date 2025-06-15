@@ -24,17 +24,50 @@ const AdminLogin = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   
-  const { login, isAuthenticated, user } = useAuth();
+  const { login, isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
-
   // Redirect if already authenticated as admin
   if (isAuthenticated && user?.user_type === 'admin') {
     return <Navigate to="/admin" />;
   }
 
-  // Redirect non-admin users to regular login
+  // Show unauthorized message for non-admin users
   if (isAuthenticated && user?.user_type !== 'admin') {
-    return <Navigate to="/login" />;
+    return (
+      <div className="admin-login-page">
+        <div className="admin-login-container">
+          <div className="unauthorized-container">
+            <div className="unauthorized-content">
+              <Shield size={64} className="unauthorized-icon" />
+              <h2>Accesso Non Autorizzato</h2>
+              <p>
+                Questa area è riservata esclusivamente agli amministratori del sistema.
+                <br />
+                Il tuo account attuale non dispone dei privilegi necessari per accedere a questa sezione.
+              </p>
+              <div className="unauthorized-actions">
+                <button 
+                  onClick={() => navigate('/')} 
+                  className="btn-primary"
+                >
+                  Torna alla Homepage
+                </button>
+                <button 
+                  onClick={() => {
+                    // Logout and redirect to admin login
+                    logout();
+                    window.location.href = '/adminlogin';
+                  }} 
+                  className="btn-secondary"
+                >
+                  Accedi come Amministratore
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const handleInputChange = (e) => {
