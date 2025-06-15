@@ -52,6 +52,27 @@ export const AuthProvider = ({ children }) => {
     }
     setLoading(false);                             // Termina stato caricamento
   }, []);
+  // FUNZIONE PER TRADURRE ERRORI DEL SERVER
+  const translateError = (error) => {
+    const errorTranslations = {
+      'User not found': 'Utente non trovato',
+      'Invalid password': 'Password non corretta',
+      'Invalid credentials': 'Credenziali non valide',
+      'Connection error': 'Errore di connessione al server',
+      'Email already exists': 'Email già utilizzata',
+      'UNIQUE constraint failed: users.email': 'Email già utilizzata'
+    };
+    
+    // Controlla se l'errore contiene un messaggio traducibile
+    for (const [englishError, italianError] of Object.entries(errorTranslations)) {
+      if (error.includes(englishError)) {
+        return italianError;
+      }
+    }
+    
+    // Se non trova una traduzione, restituisce l'errore originale
+    return error;
+  };
 
   // FUNZIONE LOGIN - Autenticazione utente via API
   const login = async (email, password) => {
@@ -76,16 +97,16 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('careerconnect_user', JSON.stringify(data.user));
         return { success: true, user: data.user };
       } else {
-        // Login fallito: restituisce errore
+        // Login fallito: restituisce errore tradotto
         console.error('❌ Login failed:', data.error);
-        return { success: false, error: data.error };
+        const translatedError = translateError(data.error);
+        return { success: false, error: translatedError };
       }
     } catch (error) {
       // Errore di connessione o altro
       console.error('❌ Login error:', error);
-      return { success: false, error: 'Connection error' };
-    }
-  };
+      return { success: false, error: translateError('Connection error') };
+    }  };
 
   // FUNZIONE REGISTRAZIONE - Creazione nuovo account via API
   const register = async (userData) => {
@@ -108,16 +129,16 @@ export const AuthProvider = ({ children }) => {
         console.log('✅ Registration successful:', data.user);
         setUser(data.user);
         localStorage.setItem('careerconnect_user', JSON.stringify(data.user));
-        return { success: true, user: data.user };
-      } else {
-        // Registrazione fallita: restituisce errore
+        return { success: true, user: data.user };      } else {
+        // Registrazione fallita: restituisce errore tradotto
         console.error('❌ Registration failed:', data.error);
-        return { success: false, error: data.error };
+        const translatedError = translateError(data.error);
+        return { success: false, error: translatedError };
       }
     } catch (error) {
       // Errore di connessione o altro
       console.error('❌ Registration error:', error);
-      return { success: false, error: 'Connection error' };
+      return { success: false, error: translateError('Connection error') };
     }
   };
 
