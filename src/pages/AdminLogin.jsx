@@ -44,13 +44,21 @@ const AdminLogin = () => {
                 Questa area è riservata esclusivamente agli amministratori del sistema.
                 <br />
                 Il tuo account attuale non dispone dei privilegi necessari per accedere a questa sezione.
-              </p>
-              <div className="unauthorized-actions">
+              </p>              <div className="unauthorized-actions">
                 <button 
-                  onClick={() => navigate('/')} 
+                  onClick={() => {
+                    // Navigate to appropriate page based on user type
+                    if (user?.user_type === 'recruiter') {
+                      navigate('/my-jobs');
+                    } else if (user?.user_type === 'candidate') {
+                      navigate('/jobs');
+                    } else {
+                      navigate('/');
+                    }
+                  }} 
                   className="btn-primary"
                 >
-                  Torna alla Homepage
+                  {user?.user_type === 'recruiter' ? 'Torna ai Miei Annunci' : 'Torna alle Offerte'}
                 </button>
                 <button 
                   onClick={() => {
