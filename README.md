@@ -2,7 +2,6 @@
 
 > **Una moderna piattaforma web per il recruiting e la gestione delle candidature**
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge-id/deploy-status)](https://app.netlify.com/sites/careerconnectproject/deploys)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 CareerConnect è una piattaforma completa per il recruiting che connette candidati e recruiters attraverso un'interfaccia moderna e intuitiva.
