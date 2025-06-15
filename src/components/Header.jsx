@@ -12,6 +12,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { User, LogOut, Plus, ChevronDown, Upload } from 'lucide-react';
 import { API_CONFIG } from '../config/api';
 import CVUploadOverlay from './CVUploadOverlay';
+import WebsiteLogo from '../assets/WebsiteLogo.png';
 import './Header.css';
 
 const Header = () => {
@@ -124,16 +125,10 @@ const Header = () => {
     return (
       <header className="header admin-header">
         <div className="header-container">
-          {/* Logo amministratore con badge */}
-          <Link to="/admin" className="logo">
+          {/* Logo amministratore con badge */}          <Link to="/admin" className="logo">
             <div className="custom-logo">
-              <span className="logo-text admin-logo">
-                <span className="c-first">C</span>
-                <span className="logo-middle">areer</span>
-                <span className="c-second">C</span>
-                <span className="logo-end">onnect</span>
-                <span className="admin-badge">Admin</span>
-              </span>
+              <img src={WebsiteLogo} alt="CareerConnect" className="header-logo-image" />
+              <span className="admin-badge">Admin</span>
             </div>
           </Link>
 
@@ -179,15 +174,9 @@ const Header = () => {
     <>
       <header className="header">
         <div className={`header-container ${hasNavOrAuth ? 'has-nav-or-auth' : ''}`}>
-          {/* Logo principale con destinazione dinamica */}
-          <Link to={getLogoDestination()} className="logo">
+          {/* Logo principale con destinazione dinamica */}          <Link to={getLogoDestination()} className="logo">
             <div className="custom-logo">
-              <span className="logo-text">
-                <span className="c-first">C</span>
-                <span className="logo-middle">areer</span>
-                <span className="c-second">C</span>
-                <span className="logo-end">onnect</span>
-              </span>
+              <img src={WebsiteLogo} alt="CareerConnect" className="header-logo-image" />
             </div>
           </Link>
 

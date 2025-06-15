@@ -48,7 +48,7 @@
 }
 
 .hero h1 {
-  font-size: 56px;
+  font-size: 48px; /* Ridotto da 56px a 48px */
   font-weight: 700;
   margin-bottom: 20px;
   line-height: 1.1;

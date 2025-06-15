@@ -45,13 +45,32 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchAllData();
   }, []);
-
   // AUTO LOGOUT: Sicurezza quando si abbandona la pagina
   useEffect(() => {
+    let isPageRefresh = false;
+
     const handleBeforeUnload = (event) => {
-      // Logout solo su chiusura reale, non su refresh
-      if (event.type === 'beforeunload') {
+      // Controlla se è un refresh (F5 o Ctrl+R)
+      if (event.clientY === 0 || performance.navigation.type === 1) {
+        isPageRefresh = true;
+        return; // Non fare logout su refresh
+      }
+      
+      // Logout solo su chiusura reale della pagina/tab
+      if (!isPageRefresh) {
         logout();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      // Se la pagina diventa nascosta e non è un refresh, fai logout
+      if (document.visibilityState === 'hidden' && !isPageRefresh) {
+        // Piccolo delay per distinguere refresh da chiusura
+        setTimeout(() => {
+          if (document.visibilityState === 'hidden') {
+            logout();
+          }
+        }, 100);
       }
     };
 
@@ -62,11 +81,18 @@ const AdminDashboard = () => {
 
     // Registrazione event listeners
     window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('popstate', handlePopState);
+
+    // Reset flag dopo un breve delay
+    setTimeout(() => {
+      isPageRefresh = false;
+    }, 1000);
 
     // Cleanup listeners
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('popstate', handlePopState);
     };
   }, [logout]);
@@ -306,60 +332,57 @@ const AdminDashboard = () => {
     
     return (
     <>      {/* Griglia Statistiche - Design Professionale Senza Icone */}
-      <div className="stats-grid">
-        <div className="stat-card primary">
+      <div className="stats-grid">        <div className="stat-card total-users">
           <div className="stat-content">
-            <h3 style={{color: '#f97316 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.length || 0}</h3>
-            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Utenti Totali</p>
+            <h3>{users.length || 0}</h3>
+            <p>Utenti Totali</p>
           </div>
         </div>
 
-        <div className="stat-card success">
+        <div className="stat-card candidates">
           <div className="stat-content">
-            <h3 style={{color: '#0a66c2 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.filter(u => u.user_type === 'candidate').length || 0}</h3>
-            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Candidati</p>
+            <h3>{users.filter(u => u.user_type === 'candidate').length || 0}</h3>
+            <p>Candidati</p>
           </div>
         </div>
 
-        <div className="stat-card warning">
+        <div className="stat-card recruiters">
           <div className="stat-content">
-            <h3 style={{color: '#dc2626 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.filter(u => u.user_type === 'recruiter').length || 0}</h3>
-            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Recruiter</p>
+            <h3>{users.filter(u => u.user_type === 'recruiter').length || 0}</h3>
+            <p>Recruiter</p>
           </div>
         </div>
 
-        <div className="stat-card info">
+        <div className="stat-card jobs">
           <div className="stat-content">
-            <h3 style={{color: '#7c3aed !important', fontSize: '2.5rem', fontWeight: '700'}}>{jobs.length || 0}</h3>
-            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Annunci di Lavoro</p>
+            <h3>{jobs.length || 0}</h3>
+            <p>Annunci di Lavoro</p>
           </div>
         </div>
 
-        <div className="stat-card primary">
+        <div className="stat-card active-jobs">
           <div className="stat-content">
-            <h3 style={{color: '#7c3aed !important', fontSize: '2.5rem', fontWeight: '700'}}>{jobs.filter(j => j.status === 'active').length || 0}</h3>
-            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Annunci Attivi</p>
+            <h3>{jobs.filter(j => j.status === 'active').length || 0}</h3>
+            <p>Annunci Attivi</p>
           </div>
         </div>
 
-        <div className="stat-card success">
+        <div className="stat-card companies">
           <div className="stat-content">
-            <h3 style={{color: '#d97706 !important', fontSize: '2.5rem', fontWeight: '700'}}>{companies.length || 0}</h3>
-            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Aziende</p>
+            <h3>{companies.length || 0}</h3>
+            <p>Aziende</p>
           </div>
         </div>
 
-        <div className="stat-card warning">
+        <div className="stat-card applications">
           <div className="stat-content">
-            <h3 style={{color: '#0a66c2 !important', fontSize: '2.5rem', fontWeight: '700'}}>{stats?.applications || 0}</h3>
-            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Candidature</p>
+            <h3>{stats?.applications || 0}</h3>
+            <p>Candidature</p>
           </div>
-        </div>
-
-        <div className="stat-card info">
+        </div>        <div className="stat-card new-users">
           <div className="stat-content">
-            <h3 style={{color: '#16a34a !important', fontSize: '2.5rem', fontWeight: '700'}}>{stats?.recentActivity?.users || 0}</h3>
-            <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Nuovi Utenti (30gg)</p>
+            <h3>{stats?.recentActivity?.users || 0}</h3>
+            <p>Nuovi Utenti (30gg)</p>
           </div>
         </div>
       </div>{/* Sezione Analytics - Design Pulito */}
@@ -514,10 +537,9 @@ const AdminDashboard = () => {
                     </span>
                   </td>
                   <td>{formatDate(job.created_at)}</td>
-                  <td>                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      {/* Bottone visualizza - apre in nuova tab */}
+                  <td>                    <div style={{ display: 'flex', gap: '0.5rem' }}>                      {/* Bottone visualizza - apre nella stessa pagina */}
                       <button
-                        onClick={() => window.open(`/jobs/${job.id}`, '_blank')}
+                        onClick={() => navigate(`/jobs/${job.id}`)}
                         className="action-btn view-btn"
                         title="Visualizza annuncio"
                       >

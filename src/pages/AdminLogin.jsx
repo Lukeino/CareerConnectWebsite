@@ -12,6 +12,7 @@ import {
   Activity,
   Database
 } from 'lucide-react';
+import WebsiteLogo from '../assets/WebsiteLogo.png';
 import './AdminLogin.css';
 
 const AdminLogin = () => {
@@ -103,12 +104,10 @@ const AdminLogin = () => {
       <div className="admin-login-container">
         {/* Left Side - Branding */}
         <div className="admin-branding">
-          <div className="admin-brand-content">
-            <div className="admin-logo-section">
-              <h1 className="admin-brand-title">
-                <span className="brand-career">Career</span>
-                <span className="brand-connect">Connect</span>
-              </h1>
+          <div className="admin-brand-content">            <div className="admin-logo-section">
+              <div className="logo-wrapper">
+                <img src={WebsiteLogo} alt="CareerConnect" className="logo-image" />
+              </div>
               <p className="admin-subtitle">
                 Sistema di Amministrazione
               </p>
@@ -171,7 +170,7 @@ const AdminLogin = () => {
                     className="admin-password-toggle"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
                   </button>
                 </div>
                 {errors.password && <span className="admin-error-message">{errors.password}</span>}

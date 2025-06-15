@@ -57,22 +57,18 @@
   letter-spacing: -1px;                /* Spaziatura lettere ridotta */
 }
 
-/* PRIMA 'C' DEL LOGO - EFFETTO GRADIENTE */
+/* PRIMA 'C' DEL LOGO - BLU MONOTONALE */
 .c-first {
-  color: #0072b1;
+  color: #3b82f6; /* Blu intenso monotonale */
   font-size: 36px;
   font-weight: 900;
-  background: linear-gradient(135deg, #0072b1 0%, #005a8b 50%, #004471 100%);
-  background-clip: text;               /* Applica gradiente al testo */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   position: relative;
   margin-right: -2px;                  /* Sovrapposizione leggera */
 }
 
 /* PARTE CENTRALE LOGO */
 .logo-middle {
-  color: #333;
+  color: #3b82f6; /* Stesso blu di "Career" */
   font-weight: 600;
   font-size: 24px;
   margin: 0 2px;
@@ -80,24 +76,36 @@
 
 /* SECONDA 'C' DEL LOGO - ACCENTO ARANCIONE */
 .c-second {
-  color: #FFB366;
+  color: #ffffff; /* Testo bianco */
+  background: #f97316; /* Sfondo arancione come nell'AdminLogin */
   font-size: 36px;
   font-weight: 900;
-  text-shadow: 2px 2px 4px rgba(255, 179, 102, 0.3); /* Ombra testo */
-  background: linear-gradient(135deg, #FFB366 0%, #FF9A3C 50%, #FF7F1F 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(249, 115, 22, 0.3); /* Ombra testo arancione */
   position: relative;
   margin: 0 -2px 0 -1px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center; /* Allineamento verticale */
+  padding: 0.35rem 0.1rem 0.35rem 0.4rem; /* Padding destro ridotto per eliminare gap */
+  border-radius: 6px 0 0 6px; /* Angoli arrotondati solo a sinistra */
+  line-height: 1; /* Altezza linea uniforme */
+  height: 2.4rem; /* Altezza fissa */
+  box-sizing: border-box;
 }
 
 /* PARTE FINALE LOGO */
 .logo-end {
-  color: #333;
+  color: #ffffff; /* Testo bianco */
+  background: #f97316; /* Sfondo arancione */
   font-weight: 600;
   font-size: 24px;
+  margin-left: -24px; /* Margine leggermente più negativo per attaccare perfettamente */
+  padding: 0.35rem 0.4rem 0.35rem 0.05rem; /* Padding sinistro minimo */
+  border-radius: 0 6px 6px 0; /* Angoli arrotondati solo a destra */
+  display: inline-flex;
+  align-items: center; /* Allineamento verticale */
+  line-height: 1; /* Altezza linea uniforme */
+  height: 2.4rem; /* Stessa altezza fissa */
+  box-sizing: border-box;
   margin-left: 2px;
 }
 
@@ -681,4 +689,12 @@
   80% {
     transform: scale(1.15);
   }
+}
+
+/* IMMAGINE LOGO NELL'HEADER */
+.header-logo-image {
+  height: 60px; /* Aumentato da 50px a 60px */
+  width: auto;
+  max-width: 240px; /* Aumentato da 200px a 240px */
+  object-fit: contain;
 }

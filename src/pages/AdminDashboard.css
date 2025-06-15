@@ -238,7 +238,7 @@ html body .admin-dashboard .stat-card .stat-content p {
 body .admin-dashboard .stat-card.primary .stat-content h3,
 html body .admin-dashboard .stat-card.primary .stat-content h3,
 .stat-card.primary .stat-content h3 { 
-  color: #0284c7 !important; 
+  color: #f97316 !important; /* Utenti Totali - Arancione */
 }
 
 .admin-dashboard .stat-card.success .stat-content h3,
@@ -246,7 +246,7 @@ html body .admin-dashboard .stat-card.primary .stat-content h3,
 body .admin-dashboard .stat-card.success .stat-content h3,
 html body .admin-dashboard .stat-card.success .stat-content h3,
 .stat-card.success .stat-content h3 { 
-  color: #059669 !important; 
+  color: #0a66c2 !important; /* Candidati - Blu LinkedIn */
 }
 
 .admin-dashboard .stat-card.warning .stat-content h3,
@@ -254,7 +254,7 @@ html body .admin-dashboard .stat-card.success .stat-content h3,
 body .admin-dashboard .stat-card.warning .stat-content h3,
 html body .admin-dashboard .stat-card.warning .stat-content h3,
 .stat-card.warning .stat-content h3 { 
-  color: #d97706 !important; 
+  color: #dc2626 !important; /* Recruiter - Rosso */
 }
 
 .admin-dashboard .stat-card.info .stat-content h3,
@@ -262,8 +262,18 @@ html body .admin-dashboard .stat-card.warning .stat-content h3,
 body .admin-dashboard .stat-card.info .stat-content h3,
 html body .admin-dashboard .stat-card.info .stat-content h3,
 .stat-card.info .stat-content h3 { 
-  color: #7c3aed !important; 
+  color: #7c3aed !important; /* Annunci - Viola */
 }
+
+/* COLORI SPECIFICI PER OGNI STATISTICA - PATTERN RICHIESTO */
+.stat-card.total-users .stat-content h3 { color: #f97316 !important; } /* Arancione */
+.stat-card.candidates .stat-content h3 { color: #0a66c2 !important; } /* Blu LinkedIn */
+.stat-card.recruiters .stat-content h3 { color: #dc2626 !important; } /* Rosso */
+.stat-card.jobs .stat-content h3 { color: #7c3aed !important; } /* Viola */
+.stat-card.active-jobs .stat-content h3 { color: #7c3aed !important; } /* Viola */
+.stat-card.companies .stat-content h3 { color: #d97706 !important; } /* Giallo ocra */
+.stat-card.applications .stat-content h3 { color: #0a66c2 !important; } /* Blu LinkedIn */
+.stat-card.new-users .stat-content h3 { color: #16a34a !important; } /* Verde */
 
 /* ULTIMATE OVERRIDE FOR HOMEPAGE CONFLICTS */
 html body .admin-dashboard .stats-grid .stat-content h3,

@@ -216,7 +216,7 @@ const RegisterPage = () => {
                   className="password-toggle"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
                 </button>
               </div>
               {errors.password && <span className="error-message">{errors.password}</span>}
@@ -240,7 +240,7 @@ const RegisterPage = () => {
                   className="password-toggle"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showConfirmPassword ? <Eye size={18} /> : <EyeOff size={18} />}
                 </button>
               </div>
               {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
