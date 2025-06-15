@@ -155,7 +155,15 @@ const JobDetailsPage = () => {
     <div className="job-details-page">
       <div className="job-details-container">        {/* Header */}
         <div className="job-details-header">
-          <button className="back-button" onClick={() => navigate(-1)}>
+          <button className="back-button" onClick={() => {
+            // Se l'utente è admin, torna alla dashboard admin
+            if (user?.user_type === 'admin') {
+              navigate('/admin');
+            } else {
+              // Altrimenti torna alla pagina precedente
+              navigate(-1);
+            }
+          }}>
             <ArrowLeft size={20} />
             Ritorna
           </button>

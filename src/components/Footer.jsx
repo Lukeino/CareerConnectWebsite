@@ -37,7 +37,7 @@ const Footer = () => {
           <div className="footer-section">
             <h4>Aziende</h4>
             <ul>
-              <li><a href="/create-job">Pubblica Offerta</a></li>
+              <li><a href="/create-job">Pubblica Annuncio</a></li>
             </ul>
           </div>
           

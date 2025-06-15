@@ -90,7 +90,6 @@
   -webkit-text-fill-color: transparent;
   position: relative;
   margin: 0 -2px 0 -1px;
-  transform: rotate(-5deg);            /* Rotazione leggera per dinamismo */
   display: inline-block;
 }
 

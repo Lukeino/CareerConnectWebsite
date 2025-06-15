@@ -150,10 +150,9 @@ const CreateJobPage = () => {
           <button className="back-btn" onClick={() => navigate(-1)}>
             <ArrowLeft size={20} />
             Annulla
-          </button>
-          <h1>Crea Nuova Offerta di Lavoro</h1>
+          </button>          <h1>Crea Nuovo Annuncio di Lavoro</h1>
           <p className="page-subtitle">
-            Completa il form per pubblicare una nuova offerta di lavoro per {user.company}
+            Completa il form per pubblicare un nuovo annuncio di lavoro per {user.company}
           </p>
         </div>
 
@@ -364,7 +363,7 @@ const CreateJobPage = () => {
                 ) : (
                   <>
                     <Eye size={16} />
-                    Pubblica Offerta
+                    Pubblica Annuncio
                   </>
                 )}
               </button>

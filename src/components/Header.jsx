@@ -218,16 +218,15 @@ const Header = () => {
                   
                   {/* Dropdown con azioni utente */}
                   {isDropdownOpen && (
-                    <div className="user-dropdown">
-                      {/* Opzione "Crea Offerta" - solo per recruiter */}
+                    <div className="user-dropdown">                      {/* Opzione "Crea Annuncio" - solo per recruiter */}
                       {user?.user_type === 'recruiter' && (
                         <Link
-                          to="/create-job" 
+                          to="/create-job"
                           className="dropdown-item"
                           onClick={() => setIsDropdownOpen(false)}
                         >
                           <Plus size={16} />
-                          <span>Crea Offerta</span>
+                          <span>Crea Annuncio</span>
                         </Link>
                       )}
                       

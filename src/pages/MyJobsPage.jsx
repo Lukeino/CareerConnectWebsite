@@ -318,18 +318,10 @@ const MyJobsPage = () => {
               <Plus size={20} />
               Crea Annuncio
             </button>
-          </div>
-
-          {jobs.length === 0 ? (
+          </div>          {jobs.length === 0 ? (
             <div className="empty-sidebar">
               <Briefcase size={40} />
               <p>Nessun annuncio</p>
-              <button 
-                onClick={() => navigate('/create-job')}
-                className="create-first-btn"
-              >
-                Crea il primo
-              </button>
             </div>
           ) : (
             <div className="jobs-list">

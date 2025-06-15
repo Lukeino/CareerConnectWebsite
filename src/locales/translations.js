@@ -6,7 +6,7 @@ const translations = {  it: {    header: {
       signup: "Registrati",
       logout: "Esci",
       profile: "Profilo",
-      createJob: "Crea Offerta",
+      createJob: "Crea Annuncio",
       myJobs: "I Miei Annunci"
     },    homepage: {
       title: "Connettiti e Inizia Il Tuo Percorso Professionale",

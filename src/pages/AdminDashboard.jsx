@@ -309,21 +309,21 @@ const AdminDashboard = () => {
       <div className="stats-grid">
         <div className="stat-card primary">
           <div className="stat-content">
-            <h3 style={{color: '#0f172a !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.length || 0}</h3>
+            <h3 style={{color: '#f97316 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.length || 0}</h3>
             <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Utenti Totali</p>
           </div>
         </div>
 
         <div className="stat-card success">
           <div className="stat-content">
-            <h3 style={{color: '#059669 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.filter(u => u.user_type === 'candidate').length || 0}</h3>
+            <h3 style={{color: '#0a66c2 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.filter(u => u.user_type === 'candidate').length || 0}</h3>
             <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Candidati</p>
           </div>
         </div>
 
         <div className="stat-card warning">
           <div className="stat-content">
-            <h3 style={{color: '#d97706 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.filter(u => u.user_type === 'recruiter').length || 0}</h3>
+            <h3 style={{color: '#dc2626 !important', fontSize: '2.5rem', fontWeight: '700'}}>{users.filter(u => u.user_type === 'recruiter').length || 0}</h3>
             <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Recruiter</p>
           </div>
         </div>
@@ -337,28 +337,28 @@ const AdminDashboard = () => {
 
         <div className="stat-card primary">
           <div className="stat-content">
-            <h3 style={{color: '#0284c7 !important', fontSize: '2.5rem', fontWeight: '700'}}>{jobs.filter(j => j.status === 'active').length || 0}</h3>
+            <h3 style={{color: '#7c3aed !important', fontSize: '2.5rem', fontWeight: '700'}}>{jobs.filter(j => j.status === 'active').length || 0}</h3>
             <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Annunci Attivi</p>
           </div>
         </div>
 
         <div className="stat-card success">
           <div className="stat-content">
-            <h3 style={{color: '#059669 !important', fontSize: '2.5rem', fontWeight: '700'}}>{companies.length || 0}</h3>
+            <h3 style={{color: '#d97706 !important', fontSize: '2.5rem', fontWeight: '700'}}>{companies.length || 0}</h3>
             <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Aziende</p>
           </div>
         </div>
 
         <div className="stat-card warning">
           <div className="stat-content">
-            <h3 style={{color: '#d97706 !important', fontSize: '2.5rem', fontWeight: '700'}}>{stats?.applications || 0}</h3>
+            <h3 style={{color: '#0a66c2 !important', fontSize: '2.5rem', fontWeight: '700'}}>{stats?.applications || 0}</h3>
             <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Candidature</p>
           </div>
         </div>
 
         <div className="stat-card info">
           <div className="stat-content">
-            <h3 style={{color: '#7c3aed !important', fontSize: '2.5rem', fontWeight: '700'}}>{stats?.recentActivity?.users || 0}</h3>
+            <h3 style={{color: '#16a34a !important', fontSize: '2.5rem', fontWeight: '700'}}>{stats?.recentActivity?.users || 0}</h3>
             <p style={{color: '#64748b !important', fontSize: '0.875rem', textTransform: 'uppercase'}}>Nuovi Utenti (30gg)</p>
           </div>
         </div>
