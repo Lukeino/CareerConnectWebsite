@@ -146,7 +146,16 @@ const CreateJobPage = () => {
   return (
     <div className="create-job-page">
       <div className="create-job-container">        {/* Header */}        <div className="page-header">
-          <button className="back-btn" onClick={() => navigate('/my-jobs')}>
+          <button 
+            className="back-btn" 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('Back button clicked!');
+              navigate('/my-jobs');
+            }}
+            type="button"
+          >
             <ArrowLeft size={20} />
             Annulla
           </button><h1>Crea Nuovo Annuncio di Lavoro</h1>

@@ -140,7 +140,7 @@ const JobList = () => {  const [jobs, setJobs] = useState([]);
       <div className="job-list-container">
         {/* Header Section */}
         <div className="page-header">
-          <h1>Offerte di Lavoro</h1>
+          <h1>Annunci di Lavoro</h1>
           <p className="page-subtitle">
             Scopri {filteredJobs.length} opportunità lavorative dalle migliori aziende
           </p>
