@@ -47,13 +47,13 @@ const AdminLogin = () => {
               </p>              <div className="unauthorized-actions">
                 <button 
                   onClick={() => {
-                    // Navigate to appropriate page based on user type
+                    // Use window.location.href for proper navigation
                     if (user?.user_type === 'recruiter') {
-                      navigate('/my-jobs');
+                      window.location.href = '/my-jobs';
                     } else if (user?.user_type === 'candidate') {
-                      navigate('/jobs');
+                      window.location.href = '/jobs';
                     } else {
-                      navigate('/');
+                      window.location.href = '/';
                     }
                   }} 
                   className="btn-primary"
