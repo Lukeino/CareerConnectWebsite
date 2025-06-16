@@ -44,56 +44,54 @@ const AdminDashboard = () => {
   // EFFECT: Caricamento dati iniziale
   useEffect(() => {
     fetchAllData();
-  }, []);
-  // AUTO LOGOUT: Sicurezza quando si abbandona la pagina
+  }, []);  // AUTO LOGOUT: Sicurezza solo su chiusura effettiva della finestra/tab
   useEffect(() => {
-    let isPageRefresh = false;
+    let logoutTimer = null;
+    let isReallyClosing = false;
 
     const handleBeforeUnload = (event) => {
-      // Controlla se è un refresh (F5 o Ctrl+R)
-      if (event.clientY === 0 || performance.navigation.type === 1) {
-        isPageRefresh = true;
-        return; // Non fare logout su refresh
-      }
+      // Imposta flag che indica chiusura reale
+      isReallyClosing = true;
       
-      // Logout solo su chiusura reale della pagina/tab
-      if (!isPageRefresh) {
-        logout();
-      }
+      // Imposta timer per logout dopo breve delay
+      logoutTimer = setTimeout(() => {
+        if (isReallyClosing) {
+          logout();
+        }
+      }, 500);
     };
 
     const handleVisibilityChange = () => {
-      // Se la pagina diventa nascosta e non è un refresh, fai logout
-      if (document.visibilityState === 'hidden' && !isPageRefresh) {
-        // Piccolo delay per distinguere refresh da chiusura
-        setTimeout(() => {
-          if (document.visibilityState === 'hidden') {
-            logout();
-          }
-        }, 100);
+      if (document.visibilityState === 'visible') {
+        // Se la pagina torna visibile, cancella il logout
+        isReallyClosing = false;
+        if (logoutTimer) {
+          clearTimeout(logoutTimer);
+          logoutTimer = null;
+        }
+      } else if (document.visibilityState === 'hidden') {
+        // Solo se è stata marcata come chiusura reale, procedi con logout
+        if (isReallyClosing) {
+          logoutTimer = setTimeout(() => {
+            if (isReallyClosing && document.visibilityState === 'hidden') {
+              logout();
+            }
+          }, 1000); // Delay più lungo per sicurezza
+        }
       }
     };
 
-    const handlePopState = () => {
-      // Logout quando si naviga via dalla pagina admin
-      logout();
-    };
-
-    // Registrazione event listeners
+    // Registrazione event listeners (rimuoviamo popstate che era troppo aggressivo)
     window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('popstate', handlePopState);
-
-    // Reset flag dopo un breve delay
-    setTimeout(() => {
-      isPageRefresh = false;
-    }, 1000);
 
     // Cleanup listeners
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('popstate', handlePopState);
+      if (logoutTimer) {
+        clearTimeout(logoutTimer);
+      }
     };
   }, [logout]);
 
