@@ -32,56 +32,140 @@ const AdminDashboard = () => {
   const [applications, setApplications] = useState([]);   // Candidature (non utilizzato attualmente)
   const [companies, setCompanies] = useState([]);         // Lista aziende
   const [activeTab, setActiveTab] = useState('overview'); // Tab attiva nella navigazione
-
-  // SECURITY CHECK: Redirect utenti non admin
+  // SECURITY CHECK: Redirect utenti non admin e controllo scadenza sessione
   useEffect(() => {
     if (!isAuthenticated || user?.user_type !== 'admin') {
       navigate('/adminlogin');
       return;
     }
-  }, [isAuthenticated, user, navigate]);
 
+    // Controllo scadenza sessione admin (solo per admin)
+    const adminSessionKey = 'careerconnect_admin_session';
+    const currentTime = Date.now();
+    const sessionData = sessionStorage.getItem(adminSessionKey);
+    
+    if (sessionData) {
+      try {
+        const { timestamp, userId } = JSON.parse(sessionData);
+        const sessionAge = currentTime - timestamp;
+        const maxSessionAge = 30 * 60 * 1000; // 30 minuti
+        
+        // Se la sessione è scaduta o appartiene a un altro utente, logout
+        if (sessionAge > maxSessionAge || userId !== user.id) {
+          console.log('Admin session expired or invalid, logging out...');
+          logout();
+          navigate('/adminlogin');
+          return;
+        }
+      } catch (error) {
+        console.error('Error parsing admin session data:', error);
+        logout();
+        navigate('/adminlogin');
+        return;
+      }
+    }
+    
+    // Imposta/aggiorna timestamp sessione admin
+    sessionStorage.setItem(adminSessionKey, JSON.stringify({
+      timestamp: currentTime,
+      userId: user.id
+    }));
+    
+  }, [isAuthenticated, user, navigate, logout]);
   // EFFECT: Caricamento dati iniziale
   useEffect(() => {
     fetchAllData();
-  }, []);  // AUTO LOGOUT: Sicurezza solo su chiusura effettiva della finestra/tab
-  useEffect(() => {
-    let logoutTimer = null;
-    let isReallyClosing = false;
+  }, []);
 
-    const handleBeforeUnload = (event) => {
-      // Imposta flag che indica chiusura reale
-      isReallyClosing = true;
+  // CONTROLLO PERIODICO SESSIONE ADMIN
+  useEffect(() => {
+    const sessionInterval = setInterval(() => {
+      const adminSessionKey = 'careerconnect_admin_session';
+      const sessionData = sessionStorage.getItem(adminSessionKey);
       
-      // Imposta timer per logout dopo breve delay
-      logoutTimer = setTimeout(() => {
-        if (isReallyClosing) {
+      if (!sessionData || !user?.id) {
+        logout();
+        navigate('/adminlogin');
+        return;
+      }
+      
+      try {
+        const { timestamp, userId } = JSON.parse(sessionData);
+        const sessionAge = Date.now() - timestamp;
+        const maxSessionAge = 30 * 60 * 1000; // 30 minuti
+        
+        if (sessionAge > maxSessionAge || userId !== user.id) {
+          console.log('Admin session expired during check, logging out...');
           logout();
+          navigate('/adminlogin');
+          return;
         }
-      }, 500);
+      } catch (error) {
+        console.error('Error during session check:', error);
+        logout();
+        navigate('/adminlogin');
+      }
+    }, 60000); // Controlla ogni minuto
+
+    return () => clearInterval(sessionInterval);
+  }, [user, logout, navigate]);
+
+  // AGGIORNAMENTO ATTIVITÀ UTENTE (rinnova la sessione)
+  useEffect(() => {
+    const updateActivity = () => {
+      if (user?.user_type === 'admin') {
+        const adminSessionKey = 'careerconnect_admin_session';
+        sessionStorage.setItem(adminSessionKey, JSON.stringify({
+          timestamp: Date.now(),
+          userId: user.id
+        }));
+      }
+    };
+
+    // Event listeners per attività utente
+    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+    
+    events.forEach(event => {
+      document.addEventListener(event, updateActivity, true);
+    });
+
+    return () => {
+      events.forEach(event => {
+        document.removeEventListener(event, updateActivity, true);
+      });
+    };
+  }, [user]);  // AUTO LOGOUT: Sicurezza su chiusura browser/tab per admin
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Per gli admin, rimuovi la sessione su chiusura per sicurezza
+      if (user?.user_type === 'admin') {
+        sessionStorage.removeItem('careerconnect_admin_session');
+      }
     };
 
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        // Se la pagina torna visibile, cancella il logout
-        isReallyClosing = false;
-        if (logoutTimer) {
-          clearTimeout(logoutTimer);
-          logoutTimer = null;
-        }
-      } else if (document.visibilityState === 'hidden') {
-        // Solo se è stata marcata come chiusura reale, procedi con logout
-        if (isReallyClosing) {
-          logoutTimer = setTimeout(() => {
-            if (isReallyClosing && document.visibilityState === 'hidden') {
-              logout();
-            }
-          }, 1000); // Delay più lungo per sicurezza
+      if (document.visibilityState === 'hidden' && user?.user_type === 'admin') {
+        // Imposta un timer per logout se la pagina rimane nascosta troppo a lungo
+        const logoutTimer = setTimeout(() => {
+          if (document.visibilityState === 'hidden') {
+            sessionStorage.removeItem('careerconnect_admin_session');
+            logout();
+          }
+        }, 5 * 60 * 1000); // 5 minuti di inattività
+
+        // Salva il timer per poterlo cancellare se necessario
+        sessionStorage.setItem('careerconnect_logout_timer', logoutTimer.toString());
+      } else if (document.visibilityState === 'visible') {
+        // Cancella il timer se l'utente torna sulla pagina
+        const timerId = sessionStorage.getItem('careerconnect_logout_timer');
+        if (timerId) {
+          clearTimeout(parseInt(timerId));
+          sessionStorage.removeItem('careerconnect_logout_timer');
         }
       }
     };
 
-    // Registrazione event listeners (rimuoviamo popstate che era troppo aggressivo)
+    // Registrazione event listeners
     window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('visibilitychange', handleVisibilityChange);
 
@@ -89,11 +173,8 @@ const AdminDashboard = () => {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('visibilitychange', handleVisibilityChange);
-      if (logoutTimer) {
-        clearTimeout(logoutTimer);
-      }
     };
-  }, [logout]);
+  }, [logout, user]);
 
   // GESTIONE LOGOUT MANUALE
   const handleLogout = () => {
