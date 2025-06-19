@@ -14,7 +14,7 @@ CareerConnect è una piattaforma completa per il recruiting che connette candida
 
 ### 👥 Per i Candidati
 - **Registrazione e Profilo**: Creazione profilo personalizzato con CV upload
-- **Ricerca Intelligente**: Filtra opportunità per location, tipologia, settore
+- **Ricerca Intelligente**: Filtra opportunità per titolo, località e tipo di contratto
 - **Candidature Facili**: Sistema di candidatura con un click
 
 ### 🏢 Per i Recruiters
@@ -32,8 +32,8 @@ CareerConnect è una piattaforma completa per il recruiting che connette candida
 ## 🛠️ Tecnologie Utilizzate
 
 **Frontend:**
-- ⚛️ React 18 con Hooks e Context API
-- ⚡ Vite per build ultra-veloci
+- ⚛️ React 18
+- ⚡ Vite per build
 - 🎨 CSS3 con design responsive
 - 🔍 React Router per SPA navigation
   
@@ -51,7 +51,6 @@ CareerConnect è una piattaforma completa per il recruiting che connette candida
 
 **Sviluppo:**
 - 📋 Metodologia Agile Scrum
-- 🔧 ESLint per code quality
 - 📝 Git workflow strutturato
 
 ---
