@@ -89,13 +89,11 @@ const HomePage = () => {  const { isAuthenticated, user } = useAuth();
 
     // Calculate total jobs from all active jobs
     const totalJobs = allJobs.length;
-    
-    // Calculate total companies that have active jobs
-    const companiesWithJobs = new Set(allJobs.map(job => job.company_name));
+      // Calculate total companies that have active jobs
+    const companiesWithJobs = new Set(allJobs.map(job => job.company_name).filter(name => name && name.trim()));
     const totalCompanies = companiesWithJobs.size;
-    
-    // Calculate cities covered based on active job locations
-    const citiesWithJobs = new Set(allJobs.map(job => job.location).filter(location => location));
+      // Calculate cities covered based on active job locations
+    const citiesWithJobs = new Set(allJobs.map(job => job.location).filter(location => location && location.trim()));
     const citiesCovered = citiesWithJobs.size;
     
     // Calculate job seekers (candidates)
@@ -205,13 +203,12 @@ const HomePage = () => {  const { isAuthenticated, user } = useAuth();
               {featuredJobs.map(job => (
                 <div key={job.id} className="job-card">
                   <div className="job-header">
-                    <h3>{job.title}</h3>
+                    <h3>{job.title || 'Titolo non disponibile'}</h3>
                     <span className="job-type">{getJobTypeLabel(job.job_type)}</span>
                   </div>
-                  <div className="job-company">{job.company_name}</div>
-                  <div className="job-location">
+                  <div className="job-company">{job.company_name || 'Azienda non specificata'}</div>                  <div className="job-location">
                     <MapPin size={16} />
-                    {job.location}
+                    {job.location || 'Posizione non specificata'}
                   </div>
                   <div className="job-salary">{formatSalary(job.salary_min, job.salary_max)}</div>
                   <div className="job-footer">

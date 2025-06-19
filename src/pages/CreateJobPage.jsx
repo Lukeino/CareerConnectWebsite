@@ -56,7 +56,6 @@ const CreateJobPage = () => {  const navigate = useNavigate();
       }));
     }
   };
-
   const validateForm = () => {
     const newErrors = {};
     
@@ -66,6 +65,10 @@ const CreateJobPage = () => {  const navigate = useNavigate();
     
     if (!formData.description.trim()) {
       newErrors.description = 'La descrizione è richiesta';
+    }
+    
+    if (!formData.location.trim()) {
+      newErrors.location = 'La località è richiesta';
     }
     
     if (formData.salary_min && formData.salary_max) {
@@ -197,11 +200,10 @@ const CreateJobPage = () => {  const navigate = useNavigate();
                 {errors.description && <span className="error-text">{errors.description}</span>}
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
+              <div className="form-row">                <div className="form-group">
                   <label htmlFor="location">
                     <MapPin size={16} />
-                    Località
+                    Località *
                   </label>
                   <input
                     type="text"
@@ -210,7 +212,10 @@ const CreateJobPage = () => {  const navigate = useNavigate();
                     value={formData.location}
                     onChange={handleInputChange}
                     placeholder="es. Milano, Roma, Remoto..."
+                    className={errors.location ? 'error' : ''}
+                    required
                   />
+                  {errors.location && <span className="error-text">{errors.location}</span>}
                 </div>
 
                 <div className="form-group">
