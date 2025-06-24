@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import PlaceholderPage from './components/PlaceholderPage';
 import LoadingScreen from './components/LoadingScreen';
+import DisclaimerOverlay from './components/DisclaimerOverlay';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -95,9 +96,9 @@ const AppContent = () => {
   if (isAdminLoginPage || (isAdminPage && (!isAuthenticated || user?.user_type !== 'admin'))) {
     return <AdminLogin />;
   }
-  
-  return (
+    return (
     <div className="app">
+      <DisclaimerOverlay />
       {/* Hide header for admin users */}
       {!isAdmin && <Header />}
       <main className="main-content"><Routes>
