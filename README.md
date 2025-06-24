@@ -1,6 +1,6 @@
 # 🚀 CareerConnect
 
-> **Una moderna piattaforma web per il recruiting e la gestione delle candidature**
+> **Una piattaforma web per il recruiting e la gestione delle candidature**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -47,11 +47,9 @@ CareerConnect è una piattaforma completa per il recruiting che connette candida
 - 🌍 Netlify per frontend hosting
 - ☁️ AWS EC2 per backend
 - 🔄 Proxy configuration per CORS
-- 📦 Automated build pipeline
 
 **Sviluppo:**
-- 📋 Metodologia Agile Scrum
-- 📝 Git workflow strutturato
+- 📋 Metodologia Agile - Scrum
 
 ---
 
@@ -160,25 +158,6 @@ VITE_API_URL_PROD=/api
 - Configurazione database SQLite
 - CORS origins per Netlify
 - Upload directory permissions
-
----
-
-## 🤝 Contribuire
-
-1. Fork del progetto
-2. Crea un feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit delle modifiche (`git commit -m 'Add some AmazingFeature'`)
-4. Push al branch (`git push origin feature/AmazingFeature`)
-5. Apri una Pull Request
-
----
-
-## 🐛 Bug Report e Feature Request
-
-Utilizza le [GitHub Issues](https://github.com/yourusername/careerconnect/issues) per:
-- 🐛 Segnalare bug
-- 💡 Proporre nuove funzionalità
-- 📖 Miglioramenti alla documentazione
 
 ---
 
