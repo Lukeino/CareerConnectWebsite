@@ -60,17 +60,16 @@ const DisclaimerOverlay = () => {
         
         <div className="disclaimer-content">
           <p className="disclaimer-text">
-            <strong>Attenzione.</strong> Il sito web <strong>CareerConnect</strong> è stato sviluppato 
-            esclusivamente come progetto universitario per un esame di Ingegneria del Software, 
-            realizzato in 4 settimane a scopo didattico.
+            Il sito web <strong>CareerConnect</strong> è stato sviluppato 
+            esclusivamente come progetto universitario per l'esame di Ingegneria del Software, 
+            realizzato in un arco di tempo limitato seguendo una metodologia Agile.
           </p>
           
-          <div className="disclaimer-warning-box">
-            <ul className="disclaimer-list">
+          <div className="disclaimer-warning-box">            <ul className="disclaimer-list">
               <li>Il sito <strong>non è monitorato né gestito</strong> attivamente</li>
               <li>Può contenere <strong>informazioni e account fittizi</strong></li>
-              <li>È destinato esclusivamente a <strong>scopi di portfolio</strong> e dimostrazione</li>
-              <li>Rappresenta solo parzialmente le capacità tecniche dello sviluppatore</li>
+              <li>È destinato esclusivamente a <strong>scopi di portfolio</strong> e dimostrativi</li>
+              <li>Alcune funzionalità potrebbero essere <strong>semplificate o simulate</strong> per esigenze accademiche</li>
             </ul>
           </div>
           
